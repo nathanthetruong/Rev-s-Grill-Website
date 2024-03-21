@@ -1,0 +1,28 @@
+employee_id,Name,is_manager
+1111,Philip Ritchey,TRUE
+2222,David Jones,FALSE
+3333,Susan Brown,FALSE
+4444,Michael Gonzalez,FALSE
+5555,Linda Williams,FALSE
+6666,Mary Smith,FALSE
+7777,Karen Smith,FALSE
+8888,Jessica Wilson,FALSE
+9999,John Williams,FALSE
+1000,James,TRUE
+2000,Barbara Miller,FALSE
+3000,Karen Jackson,FALSE
+4000,Karen Anderson,FALSE
+5000,James Garcia,FALSE
+6000,Susan Jackson,FALSE
+7000,Barbara Davis,FALSE
+8000,David Martinez,FALSE
+9000,Charles Smith,FALSE
+1001,TheOtherTA,TRUE
+2002,Sarah Smith,FALSE
+3003,John Garcia,FALSE
+4004,Robert Gonzalez,FALSE
+5005,Linda Anderson,FALSE
+6006,Charles Hernandez,FALSE
+7007,David Moore,FALSE
+8008,Karen Thomas,FALSE
+9009,Thomas Smith,FALSE

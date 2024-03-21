@@ -1,0 +1,172 @@
+food_item_id,food_description,quantity,inventory_description,inventory_id
+0,Three tender entree,3,chicken tenders,2
+0,Three tender entree,1,texas toast,3
+0,Three tender entree,3,napkin,35
+0,Three tender entree,1,ToGo box,37
+1,two corndogvalue mean,2,corn dogs,4
+1,two corndogvalue mean,3,napkin,35
+1,two corndogvalue mean,1,ToGo box,37
+2,hot dog value meal,2,hot dogs,5
+2,hot dog value meal,2,hot dog buns,6
+2,hot dog value meal,1,ketchup,7
+2,hot dog value meal,1,mustard,8
+2,hot dog value meal,3,napkin,35
+2,hot dog value meal,1,ToGo box,37
+3,Cheese burger (beef),1,hamburger bun,9
+3,Cheese burger (beef),1,beef patty,10
+3,Cheese burger (beef),1,yellow cheese,12
+3,Cheese burger (beef),1,pickles,13
+3,Cheese burger (beef),1,ketchup,7
+3,Cheese burger (beef),1,mustard,8
+3,Cheese burger (beef),1,burger wrapper,39
+3,Cheese burger (beef),1,paper bag,38
+3,Cheese burger (beef),3,napkin,35
+4,Cheese burger (bean),1,hamburger bun,9
+4,Cheese burger (bean),1,bean patty,11
+4,Cheese burger (bean),1,yellow cheese,12
+4,Cheese burger (bean),1,pickles,13
+4,Cheese burger (bean),1,ketchup,7
+4,Cheese burger (bean),1,mustard,8
+4,Cheese burger (bean),1,burger wrapper,39
+4,Cheese burger (bean),1,paper bag,38
+4,Cheese burger (bean),3,napkin,35
+5,Classic hamburger (beef),1,hamburger bun,9
+5,Classic hamburger (beef),1,beef patty,10
+5,Classic hamburger (beef),1,pickles,13
+5,Classic hamburger (beef),1,onions,14
+5,Classic hamburger (beef),1,ketchup,7
+5,Classic hamburger (beef),1,mustard,8
+5,Classic hamburger (beef),1,tomatoes,15
+5,Classic hamburger (beef),1,lettuce,16
+5,Classic hamburger (beef),1,burger wrapper,39
+5,Classic hamburger (beef),1,paper bag,38
+5,Classic hamburger (beef),3,napkin,35
+6,Classic hamburger (bean),1,hamburger bun,9
+6,Classic hamburger (bean),1,beef patty,11
+6,Classic hamburger (bean),1,pickles,13
+6,Classic hamburger (bean),1,onions,14
+6,Classic hamburger (bean),1,ketchup,7
+6,Classic hamburger (bean),1,mustard,8
+6,Classic hamburger (bean),1,tomatoes,15
+6,Classic hamburger (bean),1,lettuce,16
+6,Classic hamburger (bean),1,burger wrapper,39
+6,Classic hamburger (bean),1,paper bag,38
+6,Classic hamburger (bean),3,napkin,35
+7,Bacon cheese burger (beef),1,hamburger bun,9
+7,Bacon cheese burger (beef),1,beef patty,10
+7,Bacon cheese burger (beef),2,bacons,17
+7,Bacon cheese burger (beef),1,yellow cheese,12
+7,Bacon cheese burger (beef),1,burger wrapper,39
+7,Bacon cheese burger (beef),1,paper bag,38
+7,Bacon cheese burger (beef),3,napkin,35
+8,Bacon cheese burger (bean),1,hamburger bun,9
+8,Bacon cheese burger (bean),1,beef patty,11
+8,Bacon cheese burger (bean),2,bacons,17
+8,Bacon cheese burger (bean),1,yellow cheese,12
+8,Bacon cheese burger (bean),1,burger wrapper,39
+8,Bacon cheese burger (bean),1,paper bag,38
+8,Bacon cheese burger (bean),3,napkin,35
+9,Patty melt (beef),2,texas toast,3
+9,Patty melt (beef),1,beef patty,10
+9,Patty melt (beef),1,onions,14
+9,Patty melt (beef),1,white cheese,18
+9,Patty melt (beef),1,burger wrapper,39
+9,Patty melt (beef),1,paper bag,38
+9,Patty melt (beef),3,napkin,35
+10,Patty melt (bean),2,texas toast,3
+10,Patty melt (bean),1,bean patty,11
+10,Patty melt (bean),1,onions,14
+10,Patty melt (bean),1,white cheese,18
+10,Patty melt (bean),1,burger wrapper,39
+10,Patty melt (bean),1,paper bag,38
+10,Patty melt (bean),3,napkin,35
+11,Aggier chicken club,1,hamburger bun,9
+11,Aggier chicken club,1,fried chicken patty,19
+11,Aggier chicken club,1,white cheese,18
+11,Aggier chicken club,1,guacamole,22
+11,Aggier chicken club,2,bacons,17
+11,Aggier chicken club,1,burger wrapper,39
+11,Aggier chicken club,1,paper bag,38
+11,Aggier chicken club,3,napkin,35
+12,Revs Grilled chicken sandwich�,1,grilled chicken patty,20
+12,Revs Grilled chicken sandwich�,1,hamburger bun,9
+12,Revs Grilled chicken sandwich�,1,onions,14
+12,Revs Grilled chicken sandwich�,1,lettuce,16
+12,Revs Grilled chicken sandwich�,1,burger wrapper,39
+12,Revs Grilled chicken sandwich�,1,paper bag,38
+12,Revs Grilled chicken sandwich�,3,napkin,35
+13,Spicy chicken sandwich,1,hamburger bun,9
+13,Spicy chicken sandwich,1,spicy chicken patty,21
+13,Spicy chicken sandwich,1,lettuce,16
+13,Spicy chicken sandwich,1,burger wrapper,39
+13,Spicy chicken sandwich,1,paper bag,38
+13,Spicy chicken sandwich,3,napkin,35
+14,Chicken caesar salad,1,grilled chicken patty,20
+14,Chicken caesar salad,3,lettuce,16
+14,Chicken caesar salad,1,croutons,23
+14,Chicken caesar salad,1,caesar dressing,24
+14,Chicken caesar salad,3,napkin,35
+14,Chicken caesar salad,1,ToGo box,37
+14,Chicken caesar salad,1,paper bag,26
+15,Fries,1,fries,44
+16,Double ice cream scoop (vanilla),2,vanilla ice cream,41
+16,Double ice cream scoop (vanilla),3,napkin,35
+16,Double ice cream scoop (vanilla),1,paper cup,33
+26,Double ice cream scoop (chocolate),2,chocolate ice cream,42
+26,Double ice cream scoop (chocolate),3,napkin,35
+26,Double ice cream scoop (chocolate),1,paper cup,33
+27,Double ice cream scoop (strawberry),2,strawberry ice cream,43
+27,Double ice cream scoop (strawberry),3,napkin,35
+27,Double ice cream scoop (strawberry),1,paper cup,33
+17,Aggie shake (vanilla),2,vanilla ice cream,41
+17,Aggie shake (vanilla),1,Milk,25
+17,Aggie shake (vanilla),1,Whipped cream,26
+17,Aggie shake (vanilla),1,drink cup,33
+17,Aggie shake (vanilla),3,napkin,35
+17,Aggie shake (vanilla),1,straw,34
+28,Aggie shake (chocolate),2,chocolate ice cream,42
+29,Aggie shake (chocolate),1,Milk,25
+29,Aggie shake (chocolate),1,Whipped cream,26
+28,Aggie shake (chocolate),1,drink cup,33
+29,Aggie shake (chocolate),3,napkin,35
+29,Aggie shake (chocolate),1,straw,34
+30,Aggie shake (strawberry),2,strawberry ice cream,43
+30,Aggie shake (strawberry),1,Milk,25
+30,Aggie shake (strawberry),1,Whipped cream,26
+30,Aggie shake (strawberry),1,drink cup,33
+30,Aggie shake (strawberry),3,napkin,35
+30,Aggie shake (strawberry),1,straw,34
+18,Root beer float,3,vanilla ice cream,41
+18,Root beer float,1,Fountian drink,33
+18,Root beer float,1,drink cup,33
+18,Root beer float,3,napkin,35
+18,Root beer float,1,straw,34
+19,Cookie ice cream sandwich�,1,scoop vanilla ice cream,41
+19,Cookie ice cream sandwich�,2,cookies,45
+19,Cookie ice cream sandwich�,3,napkin,35
+20,Rib sandwich,1,crime against meat patty,28
+20,Rib sandwich,1,long bun,29
+20,Rib sandwich,1,pickles,13
+20,Rib sandwich,1,onions,14
+20,Rib sandwich,1,bbq sauce,30
+20,Rib sandwich,1,burger wrapper,39
+20,Rib sandwich,1,paper bag,38
+20,Rib sandwich,3,napkin,35
+21,Grilled chicken wrap,1,tortilla,31
+21,Grilled chicken wrap,1,lettuce,16
+21,Grilled chicken wrap,1,tomato,25
+21,Grilled chicken wrap,1,fried chicken patty,19
+21,Grilled chicken wrap,1,burger wrapper,39
+21,Grilled chicken wrap,1,paper bag,38
+21,Grilled chicken wrap,3,napkin,35
+22,Fried chicken wrap,1,tortilla,31
+22,Fried chicken wrap,1,lettuce,16
+22,Fried chicken wrap,1,tomato,15
+22,Fried chicken wrap,1,grilled chicken patty,20
+22,Fried chicken wrap,1,burger wrapper,39
+22,Fried chicken wrap,1,paper bag,38
+22,Fried chicken wrap,3,napkin,35
+23,small water,1,16oz water,32
+24,large water,1,20oz water,40
+25,fountian drink,1,drink cup,33
+25,fountian drink,1,straw,34
