@@ -1,5 +1,7 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/ttC5_kKh)
 
+The goal of this sprint is to create a page that allows users to place orders
+Sprint 1 plann:
 
 | Summary                     | Issue key | Status | Priority | Dependencies | Story Points | Time Spent |
 |-----------------------------|-----------|--------|----------|--------------|--------------|------------|
