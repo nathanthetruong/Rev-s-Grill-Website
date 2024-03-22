@@ -2,7 +2,7 @@
 
 The goal of this sprint is to create a page that allows users to place orders
 
-### Sprint 1 plann:
+### Sprint 1 plan:
 
 | Summary                     | Issue key | Status | Priority | Dependencies | Story Points | Time Spent |
 |-----------------------------|-----------|--------|----------|--------------|--------------|------------|
