@@ -2,8 +2,7 @@
 
 The goal of this sprint is to create a page that allows users to place orders
 
-### Subheader
-Sprint 1 plann:
+### Sprint 1 plann:
 
 | Summary                     | Issue key | Status | Priority | Dependencies | Story Points | Time Spent |
 |-----------------------------|-----------|--------|----------|--------------|--------------|------------|
