@@ -4,8 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
+
+    <!-- Imports Django Button Interaction -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    <h1> Orders </h1>
+    <div class="container">
+        <div class="main">
+            <h1> Orders </h1>
+            {% for buttonData in buttonData %}
+                <button class="menuButton" id="{{ buttonData.description }}_button">{{ buttonData.description }}</button>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>
