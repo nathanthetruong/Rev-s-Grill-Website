@@ -11,17 +11,21 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Or use your own CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'login/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'login/static/main.css' %}">
 
     <title>Login</title>
-
 </head>
 <body>
     <header>
-        <a class="weatherwidget-io" href="https://forecast7.com/en/30d63n96d33/college-station/" data-label_1="COLLEGE STATION" data-label_2="WEATHER" data-theme="original" >COLLEGE STATION WEATHER</a>
-        <script>
-        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
-        </script>
+        <!-- Weather Widget Container with added class -->
+        <div class="weather-widget-container">
+            <!-- <a class="weatherwidget-io" href="https://forecast7.com/en/30d63n96d33/college-station/" data-label_1="COLLEGE STATION" data-label_2="WEATHER" data-theme="original" >COLLEGE STATION WEATHER</a>
+            <script>
+            !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+            </script> -->
+            <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
+            <div class="elfsight-app-c090744f-9feb-4748-8c11-57759cf82b3d" data-elfsight-app-lazy></div>
+        </div>
     </header>
 
     <!-- HTML Login Screen -->
