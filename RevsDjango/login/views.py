@@ -28,9 +28,11 @@ def authenticateUser(request):
 
             if len(data) > 0:
                 if data[0][0]:
-                    return redirect('Revs-About-Screen')
+                    return JsonResponse({'result': [1]})
                 else:
-                    return redirect('Revs-Login-Screen')
+                    return JsonResponse({'result': [0]})
+            else:
+                return JsonResponse({'result': [-1]})
 
 def login(request):
     return render(request, 'login/login.html')
