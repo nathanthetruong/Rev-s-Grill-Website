@@ -1,11 +1,205 @@
+{% load static %} <!-- This will let us load in the CSS files in the static directory -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders</title>
+
+    <!-- Imports Django Button Interaction -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--  Stylesheet for the page -->
+    <link rel="stylesheet" href="{% static 'orderstyle.css' %}">
+
+
+    <script src="https://kit.fontawesome.com/066f56d2e6.js" crossorigin="anonymous"></script>
+
+
 </head>
 <body>
-    <h1> Orders </h1>
+    <header>
+        <div class="header-content">
+            <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
+            <span id="menu">Menu</span>
+            <span id="login">login</span>
+            <span id="help">Help</span>
+            <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
+            <img src="{% static 'R.png' %}" alt="cart" class="icon">
+        </div>
+    </header>
+
+    <!-- Second Header -->
+    <section class="scrollable-section">
+        <div class="header2-content">
+            <div class="search-bar"> <!-- Assuming this is your search bar -->
+                <input type="text" placeholder="Search here">
+            </div>
+            <span class="item" onclick="scrollToSection('burgers_section')">Burgers</span>
+            <span class="item" onclick="scrollToSection('baskets_section')">Baskets</span>
+            <span class="item" onclick="scrollToSection('sandwiches_section')">Sandwiches</span>
+            <span class="item" onclick="scrollToSection('shakes_section')">Shakes</span>
+            <span class="item" onclick="scrollToSection('beverages_section')">Beverages</span>
+            <span class="item" onclick="scrollToSection('sides_section')">Sides</span>
+            
+            
+        </div>
+        <div class="scroll-arrow"></div>
+    </section>
+    
+    <h2> Available Menu Items to Order </h2>
+    <div class="menu_sections">
+        <h2>Burgers</h2>
+        <div class="box-container">
+            {% for button in categorized_buttons.Burgers %}
+            <div class="box">
+                <div class="image-section">
+                    <img src="{% static 'burger.png' %}" alt="burger" class="icon">
+                </div>
+                <div class="details-section">
+                    <div class="price">{{ button.price }}</div>
+                    <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="section" id="baskets_section">
+            <h2>Baskets</h2>
+            <div class="box-container">
+                {% for button in categorized_buttons.Baskets %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price">{{ button.price }}</div>
+                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="section" id="sandwiches_section">
+            <h2>Sandwiches</h2>
+            <div class="box-container">
+                {% for button in categorized_buttons.Sandwiches %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price">{{ button.price }}</div>
+                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="section" id="shakes_section">
+            <h2>Shakes</h2>
+            <div class="box-container">
+                {% for button in categorized_buttons.Shakes %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price">{{ button.price }}</div>
+                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section" id="beverages_section">
+            <h2>Beverages</h2>
+            <div class="box-container">
+                {% for button in categorized_buttons.Beverages %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price">{{ button.price }}</div>
+                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section" id="sides_section">
+            <h2>Sides</h2>
+            <div class="box-container">
+                {% for button in categorized_buttons.Sides %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price">{{ button.price }}</div>
+                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="cart-window">
+        <!-- Cart content goes here -->
+    </div>
+
+    <!-- Foooter Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="left-column">
+                <p>Contact us: revsamericalgrill@gmail.com</p>
+                <p>Follow us on social media: 
+                    <a href="https://twitter.com" class="social-link" aria-label="Twitter"><i class="fab fa-twitter" style="color: #fafafa;"></i></a>
+                    <a href="https://revs-8f3def7ff00e.herokuapp.com/" class="social-link" aria-label="Revs"><i class="fas fa-utensils" style="color: #ffffff;"></i></a>
+                    <a href="https://instagram.com" class="social-link" aria-label="Instagram"><i class="fab fa-instagram" style="color: #fcfcfc;"></i></a>
+                </p>
+            </div>
+            <div class="logo-column">
+                <a href="orders.html">
+                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
+                </a>
+            </div>
+            
+            <div class="right-column">
+                <h4>Restaurant Open Hours:</h4>
+                <h5>Monday to Saturday: 11:00 AM - 10:00 PM</h5> 
+                <h5>Sunday: 12:00 PM - 9:00 PM</h5>
+            </div>
+        </div>
+        <div>
+            <p >About us: Rev's American Grill is committed to providing delicious and satisfying meals in a cozy and welcoming atmosphere.</p>
+            <p class="quote">"Good food is the foundation of genuine happiness." - Auguste Escoffier</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
+        </div>
+    </footer>
+    
+
+    <!-- Script to handle cart interactions -->
+    <script>
+        function scrollToSection(sectionId) {
+            var section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+    
+   
+      
+    
 </body>
 </html>

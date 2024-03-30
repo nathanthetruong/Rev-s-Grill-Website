@@ -22,7 +22,6 @@ def authenticateUser(request):
         if not employeeId:
             return JsonResponse({'error': "Empty Field"})
         with connection.cursor() as cursor:
-            print(f"\nUSER INPUT: {employeeId}\n")
             cursor.execute("SELECT is_manager FROM employees WHERE id=%s", [int(employeeId)])
             data = cursor.fetchall()
 

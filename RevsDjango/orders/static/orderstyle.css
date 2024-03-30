@@ -1,0 +1,343 @@
+/* orderstyle.css */
+
+body {
+    background-color: rgb(214, 207, 207);
+    margin: 0; 
+    font-family: Arial, sans-serif; 
+}
+
+header {
+    background-color: #5e1f1f;
+    padding: 30px;
+}
+
+/* Header content container */
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    margin-right: auto; 
+  }
+  
+.logo img {
+    width: 90px; 
+    height: auto; 
+    display: block; 
+    margin-right: 20px; 
+}
+
+.icon {
+    width: 70px; 
+    height: auto; 
+    margin-left: 10px; 
+}
+
+#menu {
+    margin-left: 10px;
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+#login {
+margin-left: 10px;
+position: relative;
+transition: color 0.3s ease;
+}
+
+#help {
+font-size: 16px; 
+margin-left: 25px; 
+position: relative;
+transition: color 0.3s ease;
+}
+  
+#help:hover::after,
+#login:hover::after,
+#menu:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; 
+    width: 100%;
+    height: 2px; 
+    background-image: linear-gradient(to right, rgb(233, 233, 233), rgb(10, 9, 9));
+    transition: width 0.3s ease;
+}
+
+#help:hover::after {
+    animation: underline-animation 0.3s forwards; 
+}
+
+@keyframes underline-animation {
+    from {
+        width: 0; 
+    }
+    to {
+        width: 100%; 
+    }
+}
+
+/* scrollable section */
+section {
+    background-color: #c0aeae;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    
+}
+.scrollable-section {
+    position: relative;
+    padding-right: 20px;
+}
+
+.scroll-arrow {
+    position: absolute;
+    top: 50%;
+    right: 10px; 
+    transform: translateY(-50%);
+    width: 20px; 
+    height: 20px; 
+    border-top: 10px solid transparent; 
+    border-bottom: 10px solid transparent; 
+    border-left: 10px solid rgb(43, 37, 37); 
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    opacity: 0;
+}
+
+
+.scrollable-section:hover .scroll-arrow {
+    opacity: 1;
+}
+
+
+.header2-content {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    white-space: nowrap;
+
+}
+
+.search-bar {
+    position: sticky; 
+    left: 0; 
+    z-index: 1;
+  }
+
+.search-bar input[type="text"] {
+    padding: 8px 10px;
+    margin-left: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 25px;
+}
+
+.item {
+    display: inline-block;
+    margin-left: 15px;
+    margin-right: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    white-space: nowrap; 
+    font-size: 25px;
+}
+.item::before {
+    content: " |   "; 
+    margin-right: 20px; 
+}
+.item:hover {
+    
+    color: #d1d1d1; 
+}
+.header2-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* item box */
+.box-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+    flex-wrap: wrap; 
+    margin-right: 40px;
+}
+
+.box {
+    border: 5px solid #504040;
+    width: 200px; 
+    height: 250px; 
+    margin-left: 40px;
+    
+    display: flex;
+    flex-direction: column;
+}
+
+.image-section {
+    margin-left: -10px;
+    margin-right: -1px;
+    height: 100%; 
+}
+
+.image-section img {
+    width: 95%;
+    height: 100%;
+    object-fit: cover; 
+}
+
+.details-section {
+    height: 50%; 
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+}
+
+.item-name,
+.price {
+    margin: 0;
+}
+
+
+/* Menu items */
+.menu_bar {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(214, 207, 207);;
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.menuButton {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.menuButton:hover {
+    background-color: #997070; 
+}
+
+h2 {
+    width: 100%;
+    text-align: center;
+}
+
+h3 {
+        width: 100%;
+        text-align: left;
+}
+
+
+.column {
+    float: left;
+    width: 50%; 
+    padding: 10px;
+}
+
+.main:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+/* Footer Styles */
+footer {
+    margin-top: 15px;
+    background-color: #5e1f1f;
+    color: #fff; 
+    padding: 20px 0; 
+    text-align: center; 
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.left-column,
+.middle-column,
+.right-column {
+    flex-basis: calc(33.33% - 10px); /* 10px for the space between columns */
+}
+
+.left-column p {
+    font-size: 20px; /* Adjust font size as needed */
+    margin-top: 40px;
+    color: #dddddd; /* Adjust color as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.left-column p:last-of-type {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #fbfbfb; /* Adjust color as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.logo-column {
+    flex-basis: calc(33.33% - 10px); /* Adjust the width of the logo column */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px;
+    margin-top: 30px;
+}
+
+.logo {
+    max-width: 30%; /* Ensure the logo does not exceed its container's width */
+}
+.right-column {
+    margin-left: 30px;
+    margin-right: -10px;
+}
+.right-column h4 {
+    font-size: 30px; /* Adjust font size as needed */
+    color: #dddddd; /* Adjust color as needed */
+    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.right-column h5 {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #fbfbfb; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+p {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #cdc9c9; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.quote {
+    font-style: italic; /* Make text italic */
+    font-size: 18px; /* Adjust font size as needed */
+    color: #c8baba; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    font-family: OCR A Std, monospace;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+}
+
