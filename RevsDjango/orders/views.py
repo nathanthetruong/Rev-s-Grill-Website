@@ -17,5 +17,31 @@ def orders(request):
         data.sort()
         buttonData = [{'description': currentItem[0]} for currentItem in data]
 
-        context = {'buttonData': buttonData}
+        # Categorize buttons based on their descriptions
+        categorized_buttons = {
+            'Burgers': [],
+            'Baskets': [],
+            'Sandwiches': [],
+            'Shakes': [],
+            'Beverages': [],
+            'Sides': []
+        }
+
+        for button in buttonData:
+            if 'Burger' in button['description']:
+                categorized_buttons['Burgers'].append(button)
+            elif 'Tender' in button['description'] or 'Meal' in button['description']:
+                categorized_buttons['Baskets'].append(button)
+            elif 'Sandwich' in button['description'] or 'Wrap' in button['description'] or 'Patty' in button['description']:
+                categorized_buttons['Sandwiches'].append(button)
+            elif 'Shake' in button['description'] or 'Ice' in button['description']:
+                categorized_buttons['Shakes'].append(button)
+            elif 'Drink' in button['description'] or'Water' in button['description'] or 'Beer' in button['description']:
+                categorized_buttons['Beverages'].append(button)
+            else:
+                categorized_buttons['Sides'].append(button)
+
+        context = {'categorized_buttons': categorized_buttons}
+
+        # context = {'buttonData': buttonData}
         return render(request, 'orders/orders.html', context)
