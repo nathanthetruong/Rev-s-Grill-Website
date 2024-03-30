@@ -32,7 +32,9 @@ CREATE TABLE menu_items (
     "price" double precision,
     "description" text,
     "category" text,
-    "times_ordered" int
+    "times_ordered" int,
+    "start_data" timestamp without time zone,
+    "end_data" timestamp without time zone
 );
 
 CREATE TABLE food_to_inventory (

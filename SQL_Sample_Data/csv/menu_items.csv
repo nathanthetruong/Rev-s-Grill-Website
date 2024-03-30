@@ -1,37 +1,38 @@
-id, price, description, category, times_ordered
-27,5.75,Double Ice Cream Scoop - Strawberry,Shakes/More,4567
-8,7.99,Bacon Cheese Burger - Bean,Burger,8234
-28,5.75,Aggie Shake - Chocolate,Shakes/More,1972
-29,5.75,Aggie Shake - Strawberry,Shakes/More,5543
-9,6.99,Patty Melt - Beef,Burger,3456
-36,0.25,Ketchup,Appetizers,8721
-19,6.5,Cookie Ice Cream Sandwich,Shakes/More,2345
-33,9.5,Three Tender Entree,Value Meal,7564
-10,7.5,Patty Melt - Bean,Burger,9087
-22,7.5,Fried Chicken Wrap,Limited Time,4321
-23,0.99,Small Water,Drink,5678
-31,9.99,Revs Double Decker,Burgers,5432
-24,1.5,Large Water,Drink,8765
-15,1.99,Fries,Appetizers,2345
-34,9.5,Three Tender Entree,Value Meal,9876
-20,7.5,Rib Sandwich,Limited Time,7654
-35,9.5,Three Tender Entree,Value Meal,3456
-25,1.25,Fountain Drink,Drink,6543
-16,5.75,Double Ice Cream Scoop - Vanilla,Shakes/More,6543
-17,6.5,Aggie Shake - Vanilla,Shakes/More,4321
-18,5.99,Root Beer Float,Shakes/More,9876
-1,7.5,Corn Dog Value Meal,Value Meal,4567
-11,8.5,Aggier Chicken Club,Sandwiches,5432
-5,6.25,Classic Burger - Beef,Burger,7654
-12,6.5,Revs Grilled Chicken Sandwich,Sandwiches,4321
-13,6.5,Spicy Chicken Sandwich,Sandwiches,9087
-2,8.5,Hot Dog Value Meal,Value Meal,2345
-26,5.75,Double Ice Cream Scoop - Chocolate,Shakes/More,9876
-21,7.5,Grilled Chicken Wrap,Limited Time,5678
-32,9.5,Three Tender Entree,Value Meal,4567
-0,0.25,Mustard,Appetizers,7654
-3,6.5,Cheese Burger - Beef,Burger,9876
-4,6.99,Cheese Burger - Bean,Burger,2345
-6,6.75,Classic Burger - Bean,Burger,5678
-7,7.5,Bacon Cheese Burger - Beef,Burger,4321
-14,8.5,Chicken Caesar Salad,Salad,9087
+id, price, description, category, times_ordered,start_data,end_data
+27,5.75,Double Ice Cream Scoop - Strawberry,Shakes/More,4567,1/1/2020 0:00,1/1/2000 0:00
+8,7.99,Bacon Cheese Burger - Bean,Burger,8234,1/1/2020 0:00,1/1/2000 0:00
+28,5.75,Aggie Shake - Chocolate,Shakes/More,1972,1/1/2020 0:00,1/1/2000 0:00
+29,5.75,Aggie Shake - Strawberry,Shakes/More,5543,1/1/2020 0:00,1/1/2000 0:00
+9,6.99,Patty Melt - Beef,Burger,3456,1/1/2020 0:00,1/1/2000 0:00
+36,0.25,Ketchup,Appetizers,8721,1/1/2020 0:00,1/1/2000 0:00
+19,6.5,Cookie Ice Cream Sandwich,Shakes/More,2345,1/1/2020 0:00,1/1/2000 0:00
+33,9.5,Three Tender Entree,Value Meal,7564,1/1/2020 0:00,1/1/2000 0:00
+10,7.5,Patty Melt - Bean,Burger,9087,1/1/2020 0:00,1/1/2000 0:00
+22,7.5,Fried Chicken Wrap,Limited Time,4321,1/1/2020 0:00,1/1/2000 0:00
+23,0.99,Small Water,Drink,5678,1/1/2020 0:00,1/1/2000 0:00
+31,9.99,Revs Double Decker,Burgers,5432,1/1/2020 0:00,1/1/2000 0:00
+24,1.5,Large Water,Drink,8765,1/1/2020 0:00,1/1/2000 0:00
+15,1.99,Fries,Appetizers,2345,1/1/2020 0:00,1/1/2000 0:00
+34,9.5,Three Tender Entree,Value Meal,9876,1/1/2020 0:00,1/1/2000 0:00
+20,7.5,Rib Sandwich,Limited Time,7654,1/1/2020 0:00,1/1/2000 0:00
+35,9.5,Three Tender Entree,Value Meal,3456,1/1/2020 0:00,1/1/2000 0:00
+25,1.25,Fountain Drink,Drink,6543,1/1/2020 0:00,1/1/2000 0:00
+16,5.75,Double Ice Cream Scoop - Vanilla,Shakes/More,6543,1/1/2020 0:00,1/1/2000 0:00
+17,6.5,Aggie Shake - Vanilla,Shakes/More,4321,1/1/2020 0:00,1/1/2000 0:00
+18,5.99,Root Beer Float,Shakes/More,9876,1/1/2020 0:00,1/1/2000 0:00
+1,7.5,Corn Dog Value Meal,Value Meal,4567,1/1/2020 0:00,1/1/2000 0:00
+11,8.5,Aggier Chicken Club,Sandwiches,5432,1/1/2020 0:00,1/1/2000 0:00
+5,6.25,Classic Burger - Beef,Burger,7654,1/1/2020 0:00,1/1/2000 0:00
+12,6.5,Revs Grilled Chicken Sandwich,Sandwiches,4321,1/1/2020 0:00,1/1/2000 0:00
+13,6.5,Spicy Chicken Sandwich,Sandwiches,9087,1/1/2020 0:00,1/1/2000 0:00
+2,8.5,Hot Dog Value Meal,Value Meal,2345,1/1/2020 0:00,1/1/2000 0:00
+26,5.75,Double Ice Cream Scoop - Chocolate,Shakes/More,9876,1/1/2020 0:00,1/1/2000 0:00
+21,7.5,Grilled Chicken Wrap,Limited Time,5678,1/1/2020 0:00,1/1/2000 0:00
+32,9.5,Three Tender Entree,Value Meal,4567,1/1/2020 0:00,1/1/2000 0:00
+0,0.25,Mustard,Appetizers,7654,1/1/2020 0:00,1/1/2000 0:00
+3,6.5,Cheese Burger - Beef,Burger,9876,1/1/2020 0:00,1/1/2000 0:00
+4,6.99,Cheese Burger - Bean,Burger,2345,1/1/2020 0:00,1/1/2000 0:00
+6,6.75,Classic Burger - Bean,Burger,5678,1/1/2020 0:00,1/1/2000 0:00
+7,7.5,Bacon Cheese Burger - Beef,Burger,4321,1/1/2020 0:00,1/1/2000 0:00
+14,8.5,Chicken Caesar Salad,Salad,9087,1/1/2020 0:00,1/1/2000 0:00
+30,8.5,test item,Salad,9087,1/1/2020 0:00,1/1/2000 0:00
