@@ -1,3 +1,7 @@
-python manage.py runserver
+Run Local Website: python manage.py runserver
 
 Website: https://revs-8f3def7ff00e.herokuapp.com/
+
+Get database models: python manage.py inspectdb > models.py
+
+pytest

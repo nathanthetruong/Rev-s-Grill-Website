@@ -1,11 +1,96 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manager</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <!--  Stylesheet for the page -->
+    <link rel="stylesheet" type="text/css" href="{% static 'manager/static/managerstyle.css' %}">
+    
+    <title>Manager Page</title>
+    <style>
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            position: fixed; /* This lets it stick at the top */
+            top: 0;
+            width: 100%;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        body {
+            padding-top: 70px; /* Padding between the navbar and body */
+        }
+    </style>
 </head>
 <body>
-    <h1> Manager </h1>
+    <!-- Display the menu items from the model -->
+    <h1>Menu Items</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Times Ordered</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+        </tr>
+        {% for item in menu_items %}
+        <tr>
+            <td>{{ item.price }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.times_ordered }}</td>
+            <td>{{ item.start_date }}</td>
+            <td>{{ item.end_date }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Display the inventory items from the model -->
+    <h1>Inventory Items</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>Description</th>
+            <th>Quantity Remaining</th>
+            <th>Quantity Target</th>
+        </tr>
+        {% for item in inventory_items %}
+        <tr>
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity_remaining }}</td>
+            <td>{{ item.quantity_target }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="navbar">
+        <a href="{% url 'Revs-Login-Screen' %}">Logout</a>
+        <a href="">Restock Report</a>
+        <a href="">Sales Report</a>
+        <a href="">Product Usage</a>
+        <a href="">Excess Report</a>
+        <a href="">Trends</a>
+    </div>    
+
 </body>
 </html>
