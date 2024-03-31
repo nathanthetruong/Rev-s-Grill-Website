@@ -33,7 +33,7 @@
     <section class="scrollable-section">
         <div class="header2-content">
             <div class="search-bar"> <!-- Assuming this is your search bar -->
-                <input type="text" placeholder="Search here">
+                <input type="text" placeholder="Search here" id="searchInput">
             </div>
             <span class="item" onclick="scrollToSection('burgers_section')">Burgers</span>
             <span class="item" onclick="scrollToSection('baskets_section')">Baskets</span>
@@ -188,7 +188,7 @@
     </footer>
     
 
-    <!-- Script to handle cart interactions -->
+    <!-- Script to handle scrollable functionality -->
     <script>
         function scrollToSection(sectionId) {
             var section = document.getElementById(sectionId);
@@ -196,6 +196,21 @@
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
+
+        // Function to filter menu items based on search input
+        document.getElementById('searchInput').addEventListener('input', function() {
+            var searchText = this.value.toLowerCase();
+            var menuButtons = document.querySelectorAll('.menuButton');
+            
+            menuButtons.forEach(function(button) {
+                var buttonDescription = button.textContent.toLowerCase();
+                if (buttonDescription.includes(searchText)) {
+                    button.closest('.box').style.display = 'block';
+                } else {
+                    button.closest('.box').style.display = 'none';
+                }
+            });
+        });
     </script>
     
    
