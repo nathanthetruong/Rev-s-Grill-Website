@@ -25,9 +25,29 @@
             <span id="login">login</span>
             <span id="help">Help</span>
             <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
-            <img src="{% static 'R.png' %}" alt="cart" class="icon">
+            <!-- <a href="{% url 'cart-view' %}" id="cart-link">
+                <img src="{% static 'R.png' %}" alt="cart" class="icon">
+            </a>   -->
+            <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">          
         </div>
     </header>
+
+    <div class="sidebar">
+        <h2>Cart</h2>
+        <div class="ordered-items">
+            <p>Your Ordered Items are below.</p>
+        </div>
+        <div class="menu-items">
+            <!-- Menu items will be dynamically added here -->
+        </div>
+        <div class="checkout-btn-container">
+            <button id="checkout-btn">Checkout</button> 
+        </div>
+        <button id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    
+    
 
     <!-- Second Header -->
     <section class="scrollable-section">
@@ -148,12 +168,9 @@
                 {% endfor %}
             </div>
         </div>
-        
     </div>
     
-    <div class="cart-window">
-        <!-- Cart content goes here -->
-    </div>
+
 
     <!-- Foooter Section -->
     <footer>
@@ -190,6 +207,7 @@
 
     <!-- Script to handle scrollable functionality -->
     <script>
+<<<<<<< HEAD
         function scrollToSection(sectionId) {
             var section = document.getElementById(sectionId);
             if (section) {
@@ -197,6 +215,8 @@
             }
         }
 
+=======
+>>>>>>> uzma_hamid
         // Function to filter menu items based on search input
         document.getElementById('searchInput').addEventListener('input', function() {
             var searchText = this.value.toLowerCase();
@@ -213,8 +233,59 @@
         });
     </script>
     
-   
-      
+
+    <!-- Script to handle sidebar interaction -->
+    <script>
+        $(document).ready(function() {
+            // Function to open sidebar
+            $('#sidebar').click(function() {
+                $('.sidebar').addClass('active');
+            });
+
+            // Function to close sidebar
+            $('#close-sidebar-btn').click(function() {
+                $('.sidebar').removeClass('active');
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Function to handle button clicks
+            $('.menuButton').click(function() {
+                var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
+                var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
+                var buttonHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span></div>';
+                
+                // Append the button with image to the sidebar
+                $('.sidebar').append(buttonHtml);
+                
+                // Send an AJAX request to add the item to the cart
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'cart-view' %}", // URL for adding to cart
+                    data: {
+                        'description': description,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        // Update cart count
+                        $('#cart-count').text(response.cart_count);
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle errors if any
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    
+
+    
+          
     
 </body>
 </html>

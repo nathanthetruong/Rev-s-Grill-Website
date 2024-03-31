@@ -45,3 +45,7 @@ def orders(request):
 
         # context = {'buttonData': buttonData}
         return render(request, 'orders/orders.html', context)
+
+
+def cart_view(request):
+    return render(request, 'orders/cart.html')
