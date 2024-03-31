@@ -77,9 +77,10 @@ def checkout(request):
     if request.method == 'POST':
 
         # Defaults
+        global currentPrice
         customer_id = 1
         employee_id = 1111
-        total_price = 0.0
+        total_price = currentPrice
         order_time = timezone.now()
 
         # Get a new valid ID for the order

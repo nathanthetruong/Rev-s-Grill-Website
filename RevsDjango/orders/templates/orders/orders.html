@@ -40,6 +40,9 @@
         <div class="menu-items">
             <!-- Menu items will be dynamically added here -->
         </div>
+        <div class="total-price">
+            Total: $<span id="total-price">0.00</span>
+        </div>    
         <form method="post" action="{% url 'checkout' %}">
             {% csrf_token %}
             <div class="checkout-btn-container">
@@ -257,14 +260,17 @@
                 // Send an AJAX request to add the item to the cart
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'cart-view' %}", // URL for adding to cart
+                    url: "{% url 'addItem' %}", // URL for adding to cart
                     data: {
                         'description': description,
+                        'price': price,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
                     success: function(response) {
                         // Update cart count
                         $('#cart-count').text(response.cart_count);
+                        // Update current price
+                        $('#total-price').text(response.total_price.toFixed(2));
                     },
                     error: function(xhr, status, error) {
                         // Handle errors if any
