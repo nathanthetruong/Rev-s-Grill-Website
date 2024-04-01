@@ -134,9 +134,8 @@
 
 
 
-The goal of this sprint is to create a page that allows users to place orders
-
-### Sprint 1 plan:
+## Sprint 1 plan: 
+### Create a MVP that allows a user to place an order
 | Summary                     | Issue key | Status | Priority | Dependencies | Story Points | Time Spent |
 |-----------------------------|-----------|--------|----------|--------------|--------------|------------|
 | add weather info to header  | SCRUM-47 | To Do  | Medium   |              | 2            | 0          |
