@@ -30,8 +30,8 @@
     <header>
         <div class="header-content" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
-            <span id="menu">Menu</span>
-            <span id="login">login</span>
+            <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none; color: black;">Menu</a>
+            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none; color: black;">Logout</a>
             <span id="help">Help</span>
             <!--
             <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
