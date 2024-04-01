@@ -11,6 +11,7 @@ from django.contrib import messages
 #     return render(request, 'orders/orders.html')
 
 currentPrice = 0.0
+cartCount = 0
 
 # Class to store all information on a menu item
 class MenuItem:
@@ -64,12 +65,20 @@ def cart_view(request):
 
 def addItem(request):
     global currentPrice
+    global cartCount
 
     if request.method == 'POST':
         price = float(request.POST.get('price'))
-        currentPrice += price
+        description = request.POST.get('description')
 
-        return JsonResponse({'cart_count': 1, 'total_price': currentPrice})
+        # Use a session so we don't have concurrency issues with global variables breaking heroku
+        # Retrieve the cart from the session, add new price to total, then update cart 
+        cart = request.session.get('cart', {})
+        cart[description] = cart.get(description, 0) + price
+        request.session['cart'] = cart
+        total_price = sum(cart.values())
+
+        return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
     
     return JsonResponse({'error': 'failed'}, status=400)
 
@@ -77,11 +86,12 @@ def checkout(request):
     if request.method == 'POST':
 
         # Defaults
-        global currentPrice
         customer_id = 1
         employee_id = 1111
-        total_price = currentPrice
         order_time = timezone.now()
+
+        cart = request.session.get('cart', {})
+        total_price = sum(cart.values())
 
         # Get a new valid ID for the order
         with connection.cursor() as cursor:
@@ -93,7 +103,7 @@ def checkout(request):
             cursor.execute("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) VALUES (%s, %s, %s, %s, %s)", [orderID, customer_id, employee_id, total_price, order_time])
 
         # Reset price
-        currentPrice = 0.0
+        del request.session['cart']
 
         messages.success(request, 'Success')
         return redirect('Revs-Order-Screen') 
