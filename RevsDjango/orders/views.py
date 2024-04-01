@@ -6,13 +6,6 @@ from django.db import connection
 from django.utils import timezone
 from django.contrib import messages
 
-# # Create your views here.
-# def orders(request):
-#     return render(request, 'orders/orders.html')
-
-currentPrice = 0.0
-cartCount = 0
-
 # Class to store all information on a menu item
 class MenuItem:
     def __init__(self, description, price, id, category):
@@ -25,10 +18,11 @@ class MenuItem:
 def orders(request):
     with connection.cursor() as cursor:
         # Gets a list of all the menu items and sorts in alphabetical order
-        cursor.execute("SELECT description, price FROM menu_items")
+        cursor.execute("SELECT description, price, category FROM menu_items")
         data = cursor.fetchall()
         data.sort()
-        buttonData = [{'description': currentItem[0], 'price': currentItem[1]} for currentItem in data]
+        buttonData = [{'description': currentItem[0], 'price': currentItem[1],
+                        'category': currentItem[2]} for currentItem in data]
 
         # Categorize buttons based on their descriptions
         categorized_buttons = {
@@ -41,22 +35,21 @@ def orders(request):
         }
 
         for button in buttonData:
-            if 'Burger' in button['description']:
+            if button['category'] == 'Burger':
                 categorized_buttons['Burgers'].append(button)
-            elif 'Tender' in button['description'] or 'Meal' in button['description']:
+            elif button['category'] == 'Value Meal':
                 categorized_buttons['Baskets'].append(button)
-            elif 'Sandwich' in button['description'] or 'Wrap' in button['description'] or 'Patty' in button['description']:
+            elif button['category'] == 'Sandwiches':
                 categorized_buttons['Sandwiches'].append(button)
-            elif 'Shake' in button['description'] or 'Ice' in button['description']:
+            elif button['category'] == 'Shakes/More':
                 categorized_buttons['Shakes'].append(button)
-            elif 'Drink' in button['description'] or'Water' in button['description'] or 'Beer' in button['description']:
+            elif button['category'] == 'Drink':
                 categorized_buttons['Beverages'].append(button)
             else:
                 categorized_buttons['Sides'].append(button)
 
         context = {'categorized_buttons': categorized_buttons}
 
-        # context = {'buttonData': buttonData}
         return render(request, 'orders/orders.html', context)
 
 

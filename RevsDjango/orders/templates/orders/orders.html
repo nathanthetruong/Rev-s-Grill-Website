@@ -94,7 +94,7 @@
                     <img src="{% static 'burger.png' %}" alt="burger" class="icon">
                 </div>
                 <div class="details-section">
-                    <div class="price">${{ button.price }}</div>
+                    <div class="price">${{ button.price|floatformat:"2" }}</div>
                     <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
             </div>
@@ -110,7 +110,7 @@
                         <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price">${{ button.price }}</div>
+                        <div class="price">${{ button.price|floatformat:"2" }}</div>
                         <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                         <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price">${{ button.price }}</div>
+                        <div class="price">${{ button.price|floatformat:"2" }}</div>
                         <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
@@ -144,7 +144,7 @@
                         <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price">${{ button.price }}</div>
+                        <div class="price">${{ button.price|floatformat:"2" }}</div>
                         <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
@@ -161,7 +161,7 @@
                         <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price">${{ button.price }}</div>
+                        <div class="price">${{ button.price|floatformat:"2" }}</div>
                         <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
                         <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price">${{ button.price }}</div>
+                        <div class="price">${{ button.price|floatformat:"2" }}</div>
                         <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
@@ -261,6 +261,11 @@
                 $('.sidebar').removeClass('active');
             });
         });
+    </script>
+
+    <!-- Script to Round the Prices to 2 Decimal Points -->
+    <script>
+        document.getElementsByClassName("price").innerHTML = ""
     </script>
 
     <script>
