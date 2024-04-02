@@ -17,8 +17,9 @@ class MenuItem:
 # Initializes all the menu items buttons
 def orders(request):
     with connection.cursor() as cursor:
-        cart = request.session.get('cart', {})
-        del request.session['cart']
+        if 'cart' in request.session:
+            cart = request.session.get('cart', {})
+            del request.session['cart']
 
         # Gets a list of all the menu items and sorts in alphabetical order
         cursor.execute("SELECT description, price, category FROM menu_items")
