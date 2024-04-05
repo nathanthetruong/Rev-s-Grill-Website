@@ -23,4 +23,5 @@ urlpatterns = [
     path('manager/', include('manager.urls')),
     path('menu/', include('menu.urls')),
     path('orders/', include('orders.urls')),
+    path('menuboard/', include('menuboard.urls')),
 ]

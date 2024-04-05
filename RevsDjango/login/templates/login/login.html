@@ -18,6 +18,12 @@
     
     <title>Login</title>
 </head>
+<style>
+    .btn-menuboard {
+    background-color: #ffc107; 
+    color: #000; 
+}
+</style>
 <body>
     <header>
         <!-- Weather Widget Container with added class -->
@@ -56,6 +62,7 @@
         <a href="{% url 'Revs-Menu-Screen' %}" class="btn btn-primary">Menu</a>
         <a href="{% url 'Revs-Order-Screen' %}" class="btn btn-secondary">Orders</a>
         <a href="{% url 'Revs-Manager-Screen' %}" class="btn btn-success">Manager</a>
+        <a href="{% url 'Revs-Menuboard-Screen' %}" class="btn btn-last btn-menuboard">Menu Board</a>
     </div>
 
     <!-- Optional JavaScript -->
