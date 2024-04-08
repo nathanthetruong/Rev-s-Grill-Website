@@ -8,6 +8,7 @@ body {
 
 header {
     background-color: #5e1f1f;
+    color: white;
     padding: 30px;
 }
 
@@ -16,6 +17,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: white;
+    
+
 }
 
 /* Logo */
@@ -40,12 +44,14 @@ header {
     margin-left: 10px;
     position: relative;
     transition: color 0.3s ease;
+    color: white;
 }
 
 #login {
 margin-left: 10px;
 position: relative;
 transition: color 0.3s ease;
+color: white;
 }
 
 #help {
@@ -80,6 +86,8 @@ transition: color 0.3s ease;
         width: 100%; 
     }
 }
+
+
 /* test */
 
 /* Cart Sidebar styles */
@@ -121,8 +129,6 @@ transition: color 0.3s ease;
     margin-bottom: 20px; 
 }
 
-
-
 .sidebar-item {
     display: flex;
     align-items: center;
@@ -145,6 +151,34 @@ transition: color 0.3s ease;
     cursor: pointer;
 }
 
+.cart-icon-container {
+    position: relative;
+    display: inline-block; /* Ensure the container only takes the space it needs */
+}
+
+#cart-count {
+    position: absolute;
+    top: 0;
+    right: -10px;
+    background-color: #ff0000;
+    color: #fff;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    z-index: 1; /* Ensure it's above the cart icon */
+}
+
+
+.icon {
+    width: 40px; /* Adjust icon size */
+    height: auto;
+}
+
+
 .checkout-btn-container {
     position: absolute;
     bottom: 20px;
@@ -161,6 +195,33 @@ transition: color 0.3s ease;
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* Price label */
+.price {
+    display: inline-block;
+    margin-left: 10px; /* Adjust the margin as needed */
+    font-weight: bold;
+    color: #333; /* Change the color as needed */
+}
+
+/* Remove button */
+.remove-item {
+    display: inline-block;
+    margin-left: 10px; /* Adjust the margin as needed */
+    padding: 5px 10px; /* Adjust the padding as needed */
+    background-color: #ff0000; /* Change the background color as needed */
+    color: #fff; /* Change the text color as needed */
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.remove-item:hover {
+    background-color: #cc0000; /* Change the background color on hover as needed */
+}
+
+/* Cart count */
+
 
 
 /* scrollable section */

@@ -33,13 +33,12 @@
             <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none; color: black;">Menu</a>
             <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none; color: black;">Logout</a>
             <span id="help">Help</span>
-            <!--
-            <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
-            -->
-            <!-- <a href="{% url 'cart-view' %}" id="cart-link">
-                <img src="{% static 'R.png' %}" alt="cart" class="icon">
-            </a>   -->
-            <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">          
+            <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
+            <!-- Add the count span below -->
+            <div class="cart-icon-container">
+                <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
+                <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
+            </div>
         </div>
     </header>
 
@@ -51,19 +50,28 @@
         <div class="menu-items">
             <!-- Menu items will be dynamically added here -->
         </div>
-        <div class="total-price">
+        <!-- <div class="total-price">
             Total: $<span id="total-price">0.00</span>
-        </div>    
+        </div>     -->
         <form method="post" action="{% url 'checkout' %}">
             {% csrf_token %}
-            <div class="checkout-btn-container">
+            <!-- <div class="checkout-btn-container">
                 <button id="checkout-btn">Checkout</button> 
+            </div> -->
+            <!-- <div class="checkout-btn-container">
+                <button type="submit" id="checkout-btn">Checkout</button> 
+                <a href="{% url 'transaction' %}" id="checkout-btn">Checkout</a> 
+                
+            </div> -->
+            <div class="checkout-btn-container">
+                <button type="submit" id="checkout-btn">Checkout</button> 
             </div>
+            
+            
         </form>
+             
         <button id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    
-    
     
 
     <!-- Second Header -->
@@ -268,40 +276,85 @@
         document.getElementsByClassName("price").innerHTML = ""
     </script>
 
-    <script>
-        $(document).ready(function() {
-            // Function to handle button clicks
-            $('.menuButton').click(function() {
-                var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
-                var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
-                var buttonHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span></div>';
-                var price = $(this).closest('.box').find('.price').text().replace('$', ''); // We need to get the next and remove the $
-                
-                // Append the button with image to the sidebar
-                $('.sidebar').append(buttonHtml);
-                
-                // Send an AJAX request to add the item to the cart
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'addItem' %}", // URL for adding to cart
-                    data: {
-                        'description': description,
-                        'price': price,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        // Update cart count
-                        $('#cart-count').text(response.cart_count);
-                        // Update current price
-                        $('#total-price').text(response.total_price.toFixed(2));
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors if any
-                        console.error(xhr.responseText);
-                    }
-                });
+    <!-- Place the provided script within your existing script block -->
+<script>
+    $(document).ready(function() {
+        // Function to handle button clicks
+        $('.menuButton').click(function() {
+            var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
+            var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
+            var price = $(this).closest('.details-section').find('.price').text().replace('$', ''); // Get price from the button's parent container
+
+            // Append the menu item with price and remove button to the sidebar
+            var menuItemHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span><span class="price">$' + price + '</span><button class="remove-item">Remove</button></div>';
+            $('.sidebar').append(menuItemHtml);
+
+            // Send an AJAX request to add the item to the cart
+            $.ajax({
+                type: "POST",
+                url: "{% url 'addItem' %}", // URL for adding to cart
+                data: {
+                    'description': description,
+                    'price': price,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Update cart count
+                    $('#cart-count').text(response.cart_count);
+                    // Update current price
+                    $('#total-price').text(response.total_price.toFixed(2));
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors if any
+                    console.error(xhr.responseText);
+                }
             });
         });
-    </script>
+
+        // Function to handle removing an item from the cart
+        $(document).on('click', '.remove-item', function() {
+            $(this).closest('.sidebar-item').remove(); // Remove the item from the sidebar
+            // Optionally, you can also send an AJAX request to remove the item from the cart and update the total price
+        });
+
+        // Function to handle checkout button click
+        $('#checkout-btn').click(function() {
+            // Transfer items to the order summary container in transaction.html
+            $('.sidebar-item').each(function() {
+                var imageSrc = $(this).find('img').attr('src');
+                var itemName = $(this).find('span:first').text();
+                var itemPrice = parseFloat($(this).find('.price').text().replace('$', '')); // Get price from sidebar item
+                var itemHtml = '<li class="order-item"><img src="' + imageSrc + '" alt="' + itemName + '" class="item-image">' + itemName + '<span>$' + itemPrice.toFixed(2) + '</span></li>';
+                $('.order-items').append(itemHtml);
+            });
+            // Navigate to the transaction page
+            window.location.href = "{% url 'transaction' %}";
+        });
+
+        // Function to clear the cart and order summary
+        $('#close-sidebar-btn').click(function() {
+            // Clear the cart
+            $('.sidebar').empty();
+            $('#total-price').text('0.00');
+            // Clear the order summary
+            $('.order-items').empty();
+        });
+
+        // Add the provided code snippet here
+        // This part of the script handles updating the cart count when an item is added or removed
+        $('.menuButton').click(function() {
+            var currentCount = parseInt($('#cart-count').text());
+            $('#cart-count').text(currentCount + 1);
+        });
+
+        $(document).on('click', '.remove-item', function() {
+            var currentCount = parseInt($('#cart-count').text());
+            $('#cart-count').text(currentCount - 1);
+        });
+    });
+</script>
+
+    
+    
 </body>
 </html>
