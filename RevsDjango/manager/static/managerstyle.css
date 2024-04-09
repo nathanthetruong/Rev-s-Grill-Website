@@ -1,0 +1,45 @@
+        /* Table will alternate colors to look nicer */
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Add a black background color to the top navigation */
+        .navbar {
+            overflow: hidden;
+            background-color: #5e1f1f;
+            position: fixed; /* This lets it stick at the top */
+            top: 0;
+            width: 100%;
+        }
+
+        /* Style the links inside the navigation bar */
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        /* Change the color of links on hover */
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Padding between the navbar and body */
+        body {
+            padding-top: 90px; 
+        }
+
+        /* Logo */
+        .logo {
+            margin-right: auto; 
+        }
+        
+        .logo img {
+            width: 90px; 
+            height: auto; 
+            display: block; 
+        }
