@@ -51,8 +51,6 @@
     </style>
 </head>
 <body>
-    <h1>Sales Report</h1>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -65,6 +63,27 @@
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
         </div>
     </header>
+
+    <!-- Display the sales report -->
+    <h1>Sales Report</h1>
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Times Ordered</th>
+        </tr>
+        {% for item in sales_report %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.times_ordered }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
     <!-- Google Translate API -->
     <script type="text/javascript">
