@@ -64,8 +64,17 @@
         </div>
     </header>
 
-    <!-- Display the sales report -->
     <h1>Sales Report</h1>
+
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-sales-Screen" %}' method="post">
+        {% csrf_token %}
+        {{StartDateForm}}
+        {{EndDateForm}}
+        <button name="submit_button">Submit the Dates</button>
+    </form>
+
+    <!-- Display the sales report -->
     <table class="table table-bordered">
         <tr>
             <th>ID</th>
