@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import MenuItems, Inventory
 from django.db import connection
-from datetime import datetime
+from django.utils import timezone
+from datetime import datetime, timedelta
 
 # Create your views here.
 def manager(request):
@@ -50,7 +51,33 @@ def productusage(request):
     return render(request, 'manager/productusage.html')
 
 def sales(request):
-    return render(request, 'manager/sales.html')
+    context = getYearHistory()
+    print(f"TIMES ORDERED: {context['times_ordered']}")
+    print(f"PRICE: {context['price']}")
+    print(f"ID: {context['id']}")
+    print(f"DESCRIPTION: {context['description']}")
+
+    return render(request, 'manager/sales.html', context)
 
 def trends(request):
     return render(request, 'manager/trends.html')
+
+
+# Function for getting the whole history of sales
+def getYearHistory():
+    with connection.cursor() as cursor:
+        endTime = timezone.now().date()
+        startTime = endTime - timedelta(days = 365)
+        sqlCommand = ("SELECT menu_items.times_ordered, menu_items.price, menu_items.id AS menu_item_id, " +
+                        "menu_items.description AS menu_item_description, SUM(order_breakout.food_items) " +
+                        "AS total_quantity_ordered FROM orders JOIN order_breakout ON orders.id = " +
+                        "order_breakout.order_id JOIN menu_items ON order_breakout.food_items = menu_items.id " +
+                        "WHERE orders.order_time BETWEEN %s AND %s GROUP BY menu_items.id, menu_items.description, " +
+                        "menu_items.times_ordered, menu_items.price;")
+        cursor.execute(sqlCommand, [startTime, endTime])
+        cursorOutput = cursor.fetchall()
+        dataSorted = sorted(cursorOutput, key=lambda x: x[2])
+        dataOutput =[{'times_ordered': currentItem[0], 'price': currentItem[1],
+                       'id': currentItem[2], 'description': currentItem[3]}
+                       for currentItem in dataSorted]
+        return dataOutput
