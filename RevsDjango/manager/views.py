@@ -98,7 +98,7 @@ def getSalesReport(startDate, endDate=timezone.now().date()):
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
-                       'times_ordered': currentItem[4]}
+                       'total_quantity_ordered': currentItem[5]}
                        for currentItem in dataSorted]
         
         return dataReport
