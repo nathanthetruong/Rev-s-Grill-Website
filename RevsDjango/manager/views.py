@@ -25,7 +25,7 @@ def manager(request):
 
         # Insert into the database
         with connection.cursor() as cursor:
-            sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, start_data, end_data) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql, [next_id, price, description, category, times_ordered, start_date, end_date])
 
         return redirect('Revs-Manager-Screen')
