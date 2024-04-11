@@ -3,9 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Excess Report</title>
+    
+    <!-- Bootstrap CSS for styling and responsiveness -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
+    <title>Trends Report</title>
 </head>
 <body>
-    <h1>Trends Report</h1>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Management Portal</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'Revs-trends-Screen' %}">Trends <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Trends Report</h1>
+        
+        <!-- Dynamic content would go here. Below is an example of how you might start. -->
+        
+        <!-- Here you would insert your charts. For demonstration, these are static placeholders. -->
+        <!-- In practice, you'd replace these with dynamic charts generated using a library like Chart.js, and the data for these charts would be passed from your Django views. -->
+        
+        <div class="mb-5">
+            <h2>Sales Trends</h2>
+            <canvas id="salesTrendGraph"></canvas>
+        </div>
+        
+        <div class="mb-5">
+            <h2>Inventory Levels</h2>
+            <canvas id="inventoryLevelsGraph"></canvas>
+        </div>
+        
+        <div class="mb-5">
+            <h2>Customer Feedback Trends</h2>
+            <canvas id="customerFeedbackTrendsGraph"></canvas>
+        </div>
+        
+        <div>
+            <h2>Predictive Trends</h2>
+            <canvas id="predictiveTrendsAnalysis"></canvas>
+        </div>
+    </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ojHvJU9eo+2hszD3HoA7/3Vjz0P0M+RlJy1Tlp/5xKEAo9L/6qeAOQ6LMYlGQyJM" crossorigin="anonymous"></script>
+    
+    <!-- Chart.js for dynamic charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Scripts to generate charts. You will replace the below with your actual data fetching and chart generation logic. -->
+    <script>
+        // Example script to render a chart using Chart.js
+        // You would have similar blocks for each canvas element, feeding them data from your backend.
+        
+        var ctx = document.getElementById('salesTrendGraph').getContext('2d');
+        var salesTrendGraph = new Chart(ctx, {
+            type: 'line', // or 'bar', 'pie', etc.
+            data: {
+                labels: ["January", "February", "March", "April"], // Example labels
+                datasets: [{
+                    label: 'Sales Over Time',
+                    data: [10, 20, 30, 40], // Example data
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
