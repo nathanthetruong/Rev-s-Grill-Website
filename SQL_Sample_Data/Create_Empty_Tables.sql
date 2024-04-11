@@ -34,7 +34,7 @@ CREATE TABLE menu_items (
     "category" text,
     "times_ordered" int,
     "start_date" timestamp without time zone,
-    "end_data" timestamp without time zone
+    "end_date" timestamp without time zone
 );
 
 CREATE TABLE food_to_inventory (

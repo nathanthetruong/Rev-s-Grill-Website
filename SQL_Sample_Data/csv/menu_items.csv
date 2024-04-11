@@ -1,4 +1,4 @@
-id, price, description, category, times_ordered,start_date,end_data
+id, price, description, category, times_ordered,start_date,end_date
 27,5.75,Double Ice Cream Scoop - Strawberry,Shakes/More,4567,1/1/2020 0:00,1/1/2100 0:00
 8,7.99,Bacon Cheese Burger - Bean,Burger,8234,1/1/2020 0:00,1/1/2100 0:00
 28,5.75,Aggie Shake - Chocolate,Shakes/More,1972,1/1/2020 0:00,1/1/2100 0:00
