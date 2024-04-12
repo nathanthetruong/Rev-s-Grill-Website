@@ -17,8 +17,8 @@ class MenuItems(models.Model):
     description = models.TextField(blank=True, null=True)
     category = models.TextField(blank=True, null=True)
     times_ordered = models.IntegerField(blank=True, null=True)
-    start_data = models.DateTimeField(blank=True, null=True)
-    end_data = models.DateTimeField(blank=True, null=True)
+    start_date = models.DateTimeField(blank=True, null=True)
+    end_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
