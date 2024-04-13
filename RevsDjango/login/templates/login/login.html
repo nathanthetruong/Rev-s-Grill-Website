@@ -1,4 +1,5 @@
 {% load static %} <!-- This will let us load in the CSS files in the static directory -->
+{% load socialaccount %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +49,7 @@
 
     <h2>Are you an Employee?</h2>
     <div class="btn-group">
-        <a href="{% url 'Revs-Employee-Screen' %}" class="btn btn-primary">Employee Login</a>
+        <a href="{% provider_login_url 'google' %}" class="btn btn-primary">Employee Login</a>
     </div>
     
     <!-- Temporary Navigation buttons -->
