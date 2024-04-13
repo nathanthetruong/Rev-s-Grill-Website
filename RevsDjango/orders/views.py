@@ -80,12 +80,12 @@ def checkout(request):
     if request.method == 'POST':
 
         # Defaults
-        customer_id = 1
-        employee_id = 1111
-        order_time = timezone.now()
+        customerId = 1
+        employeeId = 1111
+        orderTime = timezone.now()
 
         cart = request.session.get('cart', {})
-        total_price = sum(cart.values())
+        totalPrice = sum(cart.values())
 
         # Get a new valid ID for the order
         with connection.cursor() as cursor:
@@ -94,7 +94,7 @@ def checkout(request):
 
         # Insert into orders table
         with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) VALUES (%s, %s, %s, %s, %s)", [orderID, customer_id, employee_id, total_price, order_time])
+            cursor.execute("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) VALUES (%s, %s, %s, %s, %s)", [orderID, customerId, employeeId, totalPrice, orderTime])
 
         # Reset price
         del request.session['cart']

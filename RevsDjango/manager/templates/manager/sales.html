@@ -51,8 +51,6 @@
     </style>
 </head>
 <body>
-    <h1>Sales Report</h1>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -65,6 +63,36 @@
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
         </div>
     </header>
+
+    <h1>Sales Report</h1>
+
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-sales-Screen" %}' method="post">
+        {% csrf_token %}
+        {{StartDateForm}}
+        {{EndDateForm}}
+        <button name="submit_button">Submit the Dates</button>
+    </form>
+
+    <!-- Display the sales report -->
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Times Ordered</th>
+        </tr>
+        {% for item in sales_report %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.price }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.category }}</td>
+            <td>{{ item.total_quantity_ordered }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
     <!-- Google Translate API -->
     <script type="text/javascript">
