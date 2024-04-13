@@ -38,3 +38,6 @@ def login(request):
 
 def about(request):
     return render(request, 'login/about.html')
+
+def employee(request):
+    return render(request, 'login/employee.html')

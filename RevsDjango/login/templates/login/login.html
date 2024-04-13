@@ -45,8 +45,11 @@
             <img src="{% static 'order.png' %}" alt="Touch anywhere to Order"></a>
         </a>
     </div>
-    <a href="{% url 'Revs-Login-Screen' %}" class="employee-link"> Employee Login </a>
-    
+
+    <h2>Are you an Employee?</h2>
+    <div class="btn-group">
+        <a href="{% url 'Revs-Employee-Screen' %}" class="btn btn-primary">Employee Login</a>
+    </div>
     
     <!-- Temporary Navigation buttons -->
     <div class="navigation" id="google_translate_element">

@@ -4,6 +4,7 @@ body, html {
     height: 100%;
     background: #eee;
 }
+
 .touch-to-order-container {
     height: 100%;
     display: flex;
@@ -11,6 +12,7 @@ body, html {
     align-items: center;
     background-color: #ffffff;
 }
+
 .touch-to-order-container img {
     width: 100%;
     max-width: 800px;
