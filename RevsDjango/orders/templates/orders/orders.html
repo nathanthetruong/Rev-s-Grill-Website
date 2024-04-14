@@ -95,7 +95,9 @@
                 </div>
                 <div class="details-section">
                     <div class="price">${{ button.price|floatformat:"2" }}</div>
-                    <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    <button class="menuButton" data-price="{{button.price}}"
+                        data-description="{{button.description}}" id="{{ button.description }}_button">
+                        {{ button.description }}</button>
                 </div>
             </div>
             {% endfor %}
@@ -111,7 +113,9 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}"
+                            data-description="{{button.description}}" id="{{ button.description }}_button">
+                            {{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -129,7 +133,9 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}"
+                            data-description="{{button.description}}" id="{{ button.description }}_button">
+                            {{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -145,7 +151,9 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}"
+                            data-description="{{button.description}}" id="{{ button.description }}_button">
+                            {{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -162,7 +170,9 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}"
+                            data-description="{{button.description}}" id="{{ button.description }}_button">
+                            {{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -179,7 +189,9 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}"
+                            data-description="{{button.description}}" id="{{ button.description }}_button">
+                            {{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -272,10 +284,10 @@
         $(document).ready(function() {
             // Function to handle button clicks
             $('.menuButton').click(function() {
-                var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
+                var description = $(this).data('description') // Extract description from button id
                 var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
                 var buttonHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span></div>';
-                var price = $(this).closest('.box').find('.price').text().replace('$', ''); // We need to get the next and remove the $
+                var price = $(this).data('price');
                 
                 // Append the button with image to the sidebar
                 $('.sidebar').append(buttonHtml);

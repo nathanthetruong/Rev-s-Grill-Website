@@ -18,11 +18,10 @@ class MenuItem:
 def orders(request):
     with connection.cursor() as cursor:
         if 'cart' in request.session:
-            cart = request.session.get('cart', {})
             del request.session['cart']
 
         # Gets a list of all the menu items and sorts in alphabetical order
-        cursor.execute("SELECT description, price, category FROM menu_items")
+        cursor.execute("SELECT description, price, category, id FROM menu_items")
         data = cursor.fetchall()
         data.sort()
         buttonData = [{'description': currentItem[0], 'price': currentItem[1],
@@ -86,6 +85,9 @@ def checkout(request):
 
         cart = request.session.get('cart', {})
         totalPrice = sum(cart.values())
+        descriptions = cart.keys()
+
+
 
         # Get a new valid ID for the order
         with connection.cursor() as cursor:
