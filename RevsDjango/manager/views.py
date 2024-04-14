@@ -4,7 +4,11 @@ from .models import MenuItems, Inventory
 from django.db import connection
 from django.utils import timezone
 from datetime import datetime, timedelta
+import calendar
 from django import forms
+
+
+
 
 # Create your views here.
 def manager(request):
@@ -78,8 +82,29 @@ def sales(request):
 
 
 def trends(request):
-    return render(request, 'manager/trends.html')
+    startingDate = timezone.now().date() - timedelta(days=365)
+    endingDate = timezone.now().date()
 
+    if request.method == 'POST':
+        # Get dates from POST request
+        start_date_str = request.POST.get('startDate')
+        end_date_str = request.POST.get('endDate')
+
+        # Convert string dates to date objects
+        startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+        endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+
+    # Fetch real sales trends data
+    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
+    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
+
+    # Pass data to the template
+    context = {
+        'sales_trends_data': sales_trends_data,
+        'monthly_growth_rates': monthly_growth_rates,
+
+    }
+    return render(request, 'manager/trends.html', context)
 
 # Function for getting the whole history of sales
 # By default, gives the year
@@ -102,8 +127,60 @@ def getSalesReport(startDate, endDate=timezone.now().date()):
                        for currentItem in dataSorted]
         
         return dataReport
+    
+def getSalesTrendsData(startDate, endDate):
+    with connection.cursor() as cursor:
+        sqlCommand = """
+        SELECT DATE(orders.order_time) AS order_date, SUM(menu_items.price * order_breakout.food_items) AS total_sales
+        FROM orders 
+        JOIN order_breakout ON orders.id = order_breakout.order_id 
+        JOIN menu_items ON order_breakout.food_items = menu_items.id 
+        WHERE orders.order_time BETWEEN %s AND %s 
+        GROUP BY DATE(orders.order_time)
+        ORDER BY DATE(orders.order_time);
+        """
+        cursor.execute(sqlCommand, [startDate, endDate])
+        result = cursor.fetchall()
 
+        # Convert query results into a list of dictionaries
+        trends_data = [{'date': row[0], 'total_sales': row[1]} for row in result]
+        return trends_data
 
+def getMonthlySalesData(startDate, endDate):
+    with connection.cursor() as cursor:
+        sqlCommand = """
+        SELECT DATE_TRUNC('month', orders.order_time) AS order_month, SUM(menu_items.price * order_breakout.food_items) AS monthly_sales
+        FROM orders 
+        JOIN order_breakout ON orders.id = order_breakout.order_id 
+        JOIN menu_items ON order_breakout.food_items = menu_items.id 
+        WHERE orders.order_time BETWEEN %s AND %s 
+        GROUP BY DATE_TRUNC('month', orders.order_time)
+        ORDER BY DATE_TRUNC('month', orders.order_time);
+        """
+        cursor.execute(sqlCommand, [startDate, endDate])
+        result = cursor.fetchall()
+        
+        # Store monthly data in a dict for easy month-to-month comparison
+        monthly_data = {}
+        for row in result:
+            # Convert date to first day of the month for uniformity
+            month = row[0].strftime('%Y-%m')
+            monthly_data[month] = row[1]
+        
+        # Calculate growth rates
+        months_sorted = sorted(monthly_data.keys())
+        monthly_growth_rates = []
+        for i in range(1, len(months_sorted)):
+            earlier_month = monthly_data[months_sorted[i-1]]
+            later_month = monthly_data[months_sorted[i]]
+            if earlier_month > 0:  # To avoid division by zero
+                growth_rate = ((later_month - earlier_month) / earlier_month) * 100
+            else:
+                growth_rate = 0
+            monthly_growth_rates.append((months_sorted[i], growth_rate))
+        
+        return monthly_growth_rates
+    
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
     startDate = forms.DateField()
