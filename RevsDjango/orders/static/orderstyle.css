@@ -1,5 +1,4 @@
 /* orderstyle.css */
-
 body {
     background-color: rgb(214, 207, 207);
     margin: 0; 
@@ -204,7 +203,7 @@ header {
 .item-label {
     font-weight: bold;
     color: #070606;
-    margin-bottom: 5px; /* Add space between label and price */
+    margin-bottom: 5px; 
 }
 
 .price {
@@ -214,8 +213,8 @@ header {
 
 /* Remove button */
 .remove-item {
-    margin-top: 10px; /* Adjust margin-top to create space between items */
-    margin-left: auto; /* Push the button to the right */
+    margin-top: 10px; 
+    margin-left: auto; 
     margin-right: 5px;
     padding: 5px 10px; 
     background-color: #8b6f6f; 
@@ -291,7 +290,7 @@ th, td {
 .price {
     font-weight: bold;
     color: #070606;
-    text-align: center; /* Align the text to the left */
+    text-align: center; 
 }
 
 
@@ -495,24 +494,24 @@ footer {
 .left-column,
 .middle-column,
 .right-column {
-    flex-basis: calc(33.33% - 10px); /* 10px for the space between columns */
+    flex-basis: calc(33.33% - 10px); 
 }
 
 .left-column p {
-    font-size: 20px; /* Adjust font size as needed */
+    font-size: 20px; 
     margin-top: 40px;
-    color: #dddddd; /* Adjust color as needed */
+    color: #dddddd; 
     font-family: Times, Times New Roman, serif;
 }
 
 .left-column p:last-of-type {
-    font-size: 20px; /* Adjust font size as needed */
-    color: #fbfbfb; /* Adjust color as needed */
+    font-size: 20px; 
+    color: #fbfbfb; 
     font-family: Times, Times New Roman, serif;
 }
 
 .logo-column {
-    flex-basis: calc(33.33% - 10px); /* Adjust the width of the logo column */
+    flex-basis: calc(33.33% - 10px); 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -521,39 +520,39 @@ footer {
 }
 
 .logo {
-    max-width: 30%; /* Ensure the logo does not exceed its container's width */
+    max-width: 30%; 
 }
 .right-column {
     margin-left: 30px;
     margin-right: -10px;
 }
 .right-column h4 {
-    font-size: 30px; /* Adjust font size as needed */
-    color: #dddddd; /* Adjust color as needed */
-    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-size: 30px; 
+    color: #dddddd; 
+    margin-bottom: 5px;
     font-family: Times, Times New Roman, serif;
 }
 
 .right-column h5 {
-    font-size: 20px; /* Adjust font size as needed */
-    color: #fbfbfb; /* Adjust color as needed */
-    margin-top: 10px; /* Adjust margin top as needed */
-    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-size: 20px; 
+    color: #fbfbfb; 
+    margin-top: 10px; 
+    margin-bottom: 5px; 
     font-family: Times, Times New Roman, serif;
 }
 
 p {
-    font-size: 20px; /* Adjust font size as needed */
-    color: #cdc9c9; /* Adjust color as needed */
-    margin-top: 10px; /* Adjust margin top as needed */
+    font-size: 20px;
+    color: #cdc9c9; 
+    margin-top: 10px; 
     font-family: Times, Times New Roman, serif;
 }
 
 .quote {
-    font-style: italic; /* Make text italic */
-    font-size: 18px; /* Adjust font size as needed */
-    color: #c8baba; /* Adjust color as needed */
-    margin-top: 10px; /* Adjust margin top as needed */
+    font-style: italic; 
+    font-size: 18px; 
+    color: #c8baba; 
+    margin-top: 10px; 
     font-family: OCR A Std, monospace;
 }
 
