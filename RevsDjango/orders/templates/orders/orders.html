@@ -30,16 +30,15 @@
     <header>
         <div class="header-content" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
-            <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none; color: black;">Menu</a>
-            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none; color: black;">Logout</a>
+            <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none;">Menu</a>
+            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a>
             <span id="help">Help</span>
-            <!--
-            <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
-            -->
-            <!-- <a href="{% url 'cart-view' %}" id="cart-link">
-                <img src="{% static 'R.png' %}" alt="cart" class="icon">
-            </a>   -->
-            <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">          
+            <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
+            <!-- Add the count span below -->
+            <div class="cart-icon-container">
+                <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
+                <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
+            </div>
         </div>
     </header>
 
@@ -47,23 +46,31 @@
         <h2>Cart</h2>
         <div class="ordered-items">
             <p>Your Ordered Items are below.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+               
+            </table>
         </div>
         <div class="menu-items">
-            <!-- Menu items will be dynamically added here -->
         </div>
-        <div class="total-price">
-            Total: $<span id="total-price">0.00</span>
-        </div>    
         <form method="post" action="{% url 'checkout' %}">
             {% csrf_token %}
             <div class="checkout-btn-container">
-                <button id="checkout-btn">Checkout</button> 
+                <button type="submit" id="checkout-btn">Checkout</button> 
             </div>
-        </form>
+            
+            
+        </form>   
         <button id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    
-    
     
 
     <!-- Second Header -->
@@ -72,6 +79,7 @@
             <div class="search-bar"> <!-- Assuming this is your search bar -->
                 <input type="text" placeholder="Search here" id="searchInput">
             </div>
+            <span class="item" onclick="scrollToSection('All_section')">All</span>
             <span class="item" onclick="scrollToSection('burgers_section')">Burgers</span>
             <span class="item" onclick="scrollToSection('baskets_section')">Baskets</span>
             <span class="item" onclick="scrollToSection('sandwiches_section')">Sandwiches</span>
@@ -91,13 +99,14 @@
             {% for button in categorized_buttons.Burgers %}
             <div class="box">
                 <div class="image-section">
-                    <img src="{% static 'burger.png' %}" alt="burger" class="icon">
+                    <!-- <img src="{% static 'burger.png' %}" alt="burger" class="icon"> -->
+                    <!-- <img src="{% static 'images/'|add:button.description|add:'.jpeg' %}" alt="{{ button.description }}" class="icon"> -->
+                    <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                 </div>
                 <div class="details-section">
-                    <div class="price">${{ button.price|floatformat:"2" }}</div>
-                    <button class="menuButton" data-price="{{button.price}}" data-description="{{button.description}}"
-                        data-id="{{button.id}}" id="{{ button.description }}_button">
-                        {{ button.description }}</button>
+                    <div class="price" >${{ button.price|floatformat:"2" }}</div>
+                    <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
             </div>
             {% endfor %}
@@ -109,7 +118,8 @@
                 {% for button in categorized_buttons.Baskets %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon">
+                        <!-- <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -129,7 +139,8 @@
                 {% for button in categorized_buttons.Sandwiches %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon">
+                        <!-- <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -147,7 +158,9 @@
                 {% for button in categorized_buttons.Shakes %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon">
+                        <!-- <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -166,7 +179,9 @@
                 {% for button in categorized_buttons.Beverages %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon">
+                        <!-- <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -185,7 +200,8 @@
                 {% for button in categorized_buttons.Sides %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon">
+                        <!-- <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -239,6 +255,7 @@
         document.getElementById('searchInput').addEventListener('input', function() {
             var searchText = this.value.toLowerCase();
             var menuButtons = document.querySelectorAll('.menuButton');
+            var sections = document.querySelectorAll('h2');
             
             menuButtons.forEach(function(button) {
                 var buttonDescription = button.textContent.toLowerCase();
@@ -248,6 +265,16 @@
                     button.closest('.box').style.display = 'none';
                 }
             });
+            // Hide all h2 elements when searching
+            if (searchText === '') {
+                sections.forEach(function(section) {
+                    section.style.display = 'block';
+                });
+            } else {
+                sections.forEach(function(section) {
+                    section.style.display = 'none';
+                });
+            }
         });
     </script>
     
@@ -284,11 +311,10 @@
         $(document).ready(function() {
             // Function to handle button clicks
             $('.menuButton').click(function() {
-                var id = $(this).data('id'); // Extract description from button id
-                var description = $(this).data('description');
+                var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
                 var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
                 var buttonHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span></div>';
-                var price = $(this).data('price');
+                var price = $(this).closest('.box').find('.price').text().replace('$', ''); // We need to get the next and remove the $
                 
                 // Append the button with image to the sidebar
                 $('.sidebar').append(buttonHtml);
@@ -298,7 +324,7 @@
                     type: "POST",
                     url: "{% url 'addItem' %}", // URL for adding to cart
                     data: {
-                        'id': id,
+                        'description': description,
                         'price': price,
                         'csrfmiddlewaretoken': '{{ csrf_token }}'
                     },
