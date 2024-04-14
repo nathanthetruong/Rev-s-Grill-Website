@@ -30,16 +30,15 @@
     <header>
         <div class="header-content" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
-            <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none; color: black;">Menu</a>
-            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none; color: black;">Logout</a>
+            <a id="menu" href="{% url 'Revs-Menu-Screen' %}" style="text-decoration: none;">Menu</a>
+            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a>
             <span id="help">Help</span>
-            <!--
-            <img src="{% static 'translate_icon.png' %}" alt="Translate" class="icon">
-            -->
-            <!-- <a href="{% url 'cart-view' %}" id="cart-link">
-                <img src="{% static 'R.png' %}" alt="cart" class="icon">
-            </a>   -->
-            <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">          
+            <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
+            <!-- Add the count span below -->
+            <div class="cart-icon-container">
+                <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
+                <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
+            </div>
         </div>
     </header>
 
@@ -47,23 +46,31 @@
         <h2>Cart</h2>
         <div class="ordered-items">
             <p>Your Ordered Items are below.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+               
+            </table>
         </div>
         <div class="menu-items">
-            <!-- Menu items will be dynamically added here -->
         </div>
-        <div class="total-price">
-            Total: $<span id="total-price">0.00</span>
-        </div>    
         <form method="post" action="{% url 'checkout' %}">
             {% csrf_token %}
             <div class="checkout-btn-container">
-                <button id="checkout-btn">Checkout</button> 
+                <button type="submit" id="checkout-btn">Checkout</button> 
             </div>
-        </form>
+            
+            
+        </form>   
         <button id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    
-    
     
 
     <!-- Second Header -->
@@ -72,6 +79,7 @@
             <div class="search-bar"> <!-- Assuming this is your search bar -->
                 <input type="text" placeholder="Search here" id="searchInput">
             </div>
+            <span class="item" onclick="scrollToSection('All_section')">All</span>
             <span class="item" onclick="scrollToSection('burgers_section')">Burgers</span>
             <span class="item" onclick="scrollToSection('baskets_section')">Baskets</span>
             <span class="item" onclick="scrollToSection('sandwiches_section')">Sandwiches</span>
@@ -91,10 +99,13 @@
             {% for button in categorized_buttons.Burgers %}
             <div class="box">
                 <div class="image-section">
-                    <img src="{% static 'burger.png' %}" alt="burger" class="icon">
+                    <!-- <img src="{% static 'burger.png' %}" alt="burger" class="icon"> -->
+                    <!-- <img src="{% static 'images/'|add:button.description|add:'.jpeg' %}" alt="{{ button.description }}" class="icon"> -->
+                    <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                 </div>
                 <div class="details-section">
-                    <div class="price">${{ button.price|floatformat:"2" }}</div>
+                    <div class="price" >${{ button.price|floatformat:"2" }}</div>
                     <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
             </div>
@@ -107,7 +118,8 @@
                 {% for button in categorized_buttons.Baskets %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon">
+                        <!-- <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -125,7 +137,8 @@
                 {% for button in categorized_buttons.Sandwiches %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon">
+                        <!-- <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -141,7 +154,9 @@
                 {% for button in categorized_buttons.Shakes %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon">
+                        <!-- <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -158,7 +173,9 @@
                 {% for button in categorized_buttons.Beverages %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon">
+                        <!-- <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
+
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -175,7 +192,8 @@
                 {% for button in categorized_buttons.Sides %}
                 <div class="box">
                     <div class="image-section">
-                        <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon">
+                        <!-- <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon"> -->
+                        <img src="{% static button.description|lower %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
@@ -227,6 +245,7 @@
         document.getElementById('searchInput').addEventListener('input', function() {
             var searchText = this.value.toLowerCase();
             var menuButtons = document.querySelectorAll('.menuButton');
+            var sections = document.querySelectorAll('h2');
             
             menuButtons.forEach(function(button) {
                 var buttonDescription = button.textContent.toLowerCase();
@@ -236,6 +255,16 @@
                     button.closest('.box').style.display = 'none';
                 }
             });
+            // Hide all h2 elements when searching
+            if (searchText === '') {
+                sections.forEach(function(section) {
+                    section.style.display = 'block';
+                });
+            } else {
+                sections.forEach(function(section) {
+                    section.style.display = 'none';
+                });
+            }
         });
     </script>
     
@@ -268,40 +297,161 @@
         document.getElementsByClassName("price").innerHTML = ""
     </script>
 
-    <script>
-        $(document).ready(function() {
-            // Function to handle button clicks
-            $('.menuButton').click(function() {
-                var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
-                var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
-                var buttonHtml = '<div class="sidebar-item"><img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon"><span>' + description + '</span></div>';
-                var price = $(this).closest('.box').find('.price').text().replace('$', ''); // We need to get the next and remove the $
-                
-                // Append the button with image to the sidebar
-                $('.sidebar').append(buttonHtml);
-                
-                // Send an AJAX request to add the item to the cart
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'addItem' %}", // URL for adding to cart
-                    data: {
-                        'description': description,
-                        'price': price,
-                        'csrfmiddlewaretoken': '{{ csrf_token }}'
-                    },
-                    success: function(response) {
-                        // Update cart count
-                        $('#cart-count').text(response.cart_count);
-                        // Update current price
-                        $('#total-price').text(response.total_price.toFixed(2));
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors if any
-                        console.error(xhr.responseText);
-                    }
-                });
+    
+
+<script>
+    $(document).ready(function() {
+        // Function to handle button clicks
+        $('.menuButton').click(function() {
+            var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
+            var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
+            var price = parseFloat($(this).closest('.details-section').find('.price').text().replace('$', '')); // Get price from the button's parent container
+
+            // Check if item already exists in the cart
+            var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+            if (existingItem.length > 0) {
+                // If item already exists, update its quantity and price
+                var currentQuantity = parseInt(existingItem.find('.quantity').text());
+                existingItem.find('.quantity').text(currentQuantity + 1);
+                var totalPrice = parseFloat(existingItem.find('.price').text().replace('$', '')) + price;
+                existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+            } else {
+                // If item doesn't exist, append it to the sidebar
+                var menuItemHtml = '<div class="sidebar-item" data-description="' + description + '">' +
+                                        '<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
+                                        '<span>' + description + '</span>' +
+                                        '<button class="decrease-quantity">-</button>' +
+                                        '<span class="quantity">1</span>' +
+                                        '<button class="increase-quantity">+</button>' +
+                                        '<span class="price">$' + price.toFixed(2) + '</span>' +
+                                        '<button class="remove-item">Remove</button>' +
+                                '</div>';
+                $('.sidebar').append(menuItemHtml);
+            }
+
+            // Send an AJAX request to add the item to the cart
+            $.ajax({
+                type: "POST",
+                url: "{% url 'addItem' %}", // URL for adding to cart
+                data: {
+                    'description': description,
+                    'price': price,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Update cart count
+                    $('#cart-count').text(response.cart_count);
+                    // Update current price
+                    $('#total-price').text(response.total_price.toFixed(2));
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors if any
+                    console.error(xhr.responseText);
+                }
             });
         });
-    </script>
+
+        // Function to handle removing an item from the cart
+        $(document).on('click', '.remove-item', function() {
+            var description = $(this).closest('.sidebar-item').data('description');
+            var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+            var currentQuantity = parseInt(existingItem.find('.quantity').text());
+            if (currentQuantity > 1) {
+                // If quantity is more than 1, decrease quantity and update price
+                existingItem.find('.quantity').text(currentQuantity - 1);
+                var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
+                var totalPrice = price - parseFloat(existingItem.find('.price').text().replace('$', ''));
+                existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+            } else {
+                // If quantity is 1, remove the item from the sidebar
+                existingItem.remove();
+            }
+            // Optionally, you can also send an AJAX request to remove the item from the cart and update the total price
+        });
+
+        // Function to handle checkout button click
+        $('#checkout-btn').click(function() {
+            // Transfer items to the order summary container in transaction.html
+            $('.sidebar-item').each(function() {
+                var imageSrc = $(this).find('img').attr('src');
+                var itemName = $(this).find('span:first').text();
+                var itemQuantity = parseInt($(this).find('.quantity').text());
+                var itemPrice = parseFloat($(this).find('.price').text().replace('$', '')); // Get price from sidebar item
+                var itemHtml = '<li class="order-item"><img src="' + imageSrc + '" alt="' + itemName + '" class="item-image">' + itemName + ' x' + itemQuantity + '<span>$' + itemPrice.toFixed(2) + '</span></li>';
+                $('.order-items').append(itemHtml);
+            });
+            // Navigate to the transaction page
+            window.location.href = "{% url 'transaction' %}";
+        });
+
+        // This part of the script handles updating the cart count when an item is added or removed
+        $('.menuButton').click(function() {
+            var currentCount = parseInt($('#cart-count').text());
+            $('#cart-count').text(currentCount + 1);
+        });
+
+        $(document).on('click', '.remove-item', function() {
+            var currentCount = parseInt($('#cart-count').text());
+            $('#cart-count').text(currentCount - 1);
+        });
+    });
+</script>
+<script>
+    // Function to handle decreasing the quantity of an item
+$(document).on('click', '.decrease-quantity', function() {
+    var description = $(this).closest('.sidebar-item').data('description');
+    var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+    var currentQuantity = parseInt(existingItem.find('.quantity').text());
+    if (currentQuantity > 1) {
+        // If quantity is more than 1, decrease quantity and update price
+        existingItem.find('.quantity').text(currentQuantity - 1);
+        var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
+        var totalPrice = price * (currentQuantity - 1);
+        existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+        
+        // Optionally, you can also send an AJAX request to update the item quantity in the backend
+    }
+});
+
+// Function to handle increasing the quantity of an item
+$(document).on('click', '.increase-quantity', function() {
+    var description = $(this).closest('.sidebar-item').data('description');
+    var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+    var currentQuantity = parseInt(existingItem.find('.quantity').text());
+    // Increase quantity and update price
+    existingItem.find('.quantity').text(currentQuantity + 1);
+    var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
+    var totalPrice = price * (currentQuantity + 1);
+    existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+    
+    // Optionally, you can also send an AJAX request to update the item quantity in the backend
+});
+
+</script>
+<script>
+    window.addEventListener('scroll', function() {
+    var header = document.querySelector('header');
+    if (window.scrollY > 0) {
+        header.classList.add('fixed-header');
+    } else {
+        header.classList.remove('fixed-header');
+    }
+});
+
+</script>
+<script>
+    // Function to handle scrolling and fix header2-content
+    window.addEventListener('scroll', function() {
+        var header2 = document.querySelector('.header2-content');
+        if (window.scrollY > 0) {
+            header2.classList.add('fixed-header2');
+        } else {
+            header2.classList.remove('fixed-header2');
+        }
+    });
+</script>
+
+
+    
 </body>
 </html>
