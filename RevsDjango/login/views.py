@@ -38,3 +38,12 @@ def login(request):
 
 def about(request):
     return render(request, 'login/about.html')
+
+def employee(request):
+    return render(request, 'login/employee.html')
+
+def employee_redirect(request):
+    if request.user.is_authenticated:
+        return redirect('login/employee.html')
+    else:
+        return redirect('login/login.html')

@@ -24,6 +24,11 @@ urlpatterns = [
     path('menu/', include('menu.urls')),
     path('orders/', include('orders.urls')),
     path('menuboard/', include('menuboard.urls')),
+<<<<<<< HEAD
     #path('transaction/', include('transaction.urls')),
     
+=======
+    path('accounts/', include('allauth.urls')),
+    path('social/', include('allauth.socialaccount.urls')),
+>>>>>>> 2039101bfa8593c657faad33e45d8cf2494e2786
 ]

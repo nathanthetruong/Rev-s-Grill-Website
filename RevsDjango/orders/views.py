@@ -2,33 +2,31 @@ import json
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
-from django.db import connection
+from django.db import connection, transaction, IntegrityError
 from django.utils import timezone
 from django.contrib import messages
 from .models import CartItem
 from collections import defaultdict
+import time
 
-# Class to store all information on a menu item
-class MenuItem:
-    def __init__(self, description, price, id, category):
-        self.description = description
-        self.price = price
-        self.id = id
-        self.category = category
 
 # Initializes all the menu items buttons
 def orders(request):
     with connection.cursor() as cursor:
         if 'cart' in request.session:
-            cart = request.session.get('cart', {})
             del request.session['cart']
 
         # Gets a list of all the menu items and sorts in alphabetical order
-        cursor.execute("SELECT description, price, category FROM menu_items")
+        cursor.execute("SELECT description, price, category, id FROM menu_items")
         data = cursor.fetchall()
         data.sort()
         buttonData = [{'description': currentItem[0], 'price': currentItem[1],
-                        'category': currentItem[2]} for currentItem in data]
+                        'category': currentItem[2], 'id': currentItem[3]} for currentItem in data]
+        
+        menuItems = {currentItem[3]: {'description': currentItem[0], 'price': currentItem[1],
+                        'category': currentItem[2]} for currentItem in data}
+
+        request.session['menuItems'] = menuItems
 
         # Categorize buttons based on their descriptions
         categorized_buttons = {
@@ -41,15 +39,16 @@ def orders(request):
         }
 
         for button in buttonData:
-            if button['category'] == 'Burger':
+            category = button['category']
+            if category == 'Burger':
                 categorized_buttons['Burgers'].append(button)
-            elif button['category'] == 'Value Meal':
+            elif category == 'Value Meal':
                 categorized_buttons['Baskets'].append(button)
-            elif button['category'] == 'Sandwiches':
+            elif category == 'Sandwiches':
                 categorized_buttons['Sandwiches'].append(button)
-            elif button['category'] == 'Shakes/More':
+            elif category == 'Shakes/More':
                 categorized_buttons['Shakes'].append(button)
-            elif button['category'] == 'Drink':
+            elif category == 'Drink':
                 categorized_buttons['Beverages'].append(button)
             else:
                 categorized_buttons['Sides'].append(button)
@@ -62,15 +61,18 @@ def orders(request):
 def addItem(request):
     if request.method == 'POST':
         price = float(request.POST.get('price'))
-        description = request.POST.get('description')
+        id = request.POST.get('id')
 
         # Retrieve the cart from the session, add new price to total, then update cart 
-        cart = request.session.get('cart', {})
-        cart[description] = cart.get(description, 0) + price
+        if 'cart' not in request.session:
+            request.session['cart'] = {'total_price': 0.0, 'ids': []}
+        cart = request.session.get('cart')
+        cart['total_price'] += price
+        totalPrice = cart['total_price']
+        cart['ids'].append(id)
         request.session['cart'] = cart
-        total_price = sum(cart.values())
 
-        return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
+        return JsonResponse({'cart_count': len(cart['ids']), 'total_price': totalPrice})
     
     return JsonResponse({'error': 'failed'}, status=400)
 
