@@ -19,6 +19,10 @@
 <body>
     <h1>Excess Report</h1>
 
+    <!--
+    <div>Excess Report Test?: {{ excess_report }}</div>
+    -->
+
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -31,6 +35,38 @@
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
         </div>
     </header>
+
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-excess-Screen" %}' method="post">
+        {% csrf_token %}
+        {{ StartDateForm }}
+        {{ EndDateForm }}
+        <button name="submit">Generate Report</button>
+    </form>
+    
+    <!-- Display the excess report -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Inventory ID</th>
+                <th>Description</th>
+                <th>Target Quantity</th>
+                <th>Quantity Consumed</th>
+                <th>10% of Target</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in excess_report  %}
+            <tr>
+                <td>{{ item.inventory_id }}</td>
+                <td>{{ item.inventory_description }}</td>
+                <td>{{ item.quantity_target }}</td>
+                <td>{{ item.quantity_consumed }}</td>
+                <td>{{ item.ten_percent_target }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Foooter Section -->
     <footer>
