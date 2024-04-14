@@ -398,35 +398,62 @@
 </script>
 <script>
     // Function to handle decreasing the quantity of an item
-$(document).on('click', '.decrease-quantity', function() {
-    var description = $(this).closest('.sidebar-item').data('description');
-    var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
-    var currentQuantity = parseInt(existingItem.find('.quantity').text());
-    if (currentQuantity > 1) {
-        // If quantity is more than 1, decrease quantity and update price
-        existingItem.find('.quantity').text(currentQuantity - 1);
+    $(document).on('click', '.decrease-quantity', function() {
+        var description = $(this).closest('.sidebar-item').data('description');
+        var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+        var currentQuantity = parseInt(existingItem.find('.quantity').text());
+        if (currentQuantity > 1) {
+            // If quantity is more than 1, decrease quantity and update price
+            existingItem.find('.quantity').text(currentQuantity - 1);
+            var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
+            var totalPrice = price * (currentQuantity - 1);
+            existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+            
+            //Send an AJAX request to update the item quantity in the backend
+            $.ajax({
+                url: '/update_quantity', // URL to your backend endpoint for updating quantity
+                method: 'POST', // or 'GET' depending on your backend setup
+                data: {
+                    description: description,
+                    quantity: currentQuantity - 1
+                },
+                success: function(response) {
+                    // Handle success response if needed
+                },
+                error: function(xhr, status, error) {
+                    // Handle error if needed
+                }
+            });
+        }
+    });
+
+    // Function to handle increasing the quantity of an item
+    $(document).on('click', '.increase-quantity', function() {
+        var description = $(this).closest('.sidebar-item').data('description');
+        var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
+        var currentQuantity = parseInt(existingItem.find('.quantity').text());
+        // Increase quantity and update price
+        existingItem.find('.quantity').text(currentQuantity + 1);
         var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
-        var totalPrice = price * (currentQuantity - 1);
+        var totalPrice = price * (currentQuantity + 1);
         existingItem.find('.price').text('$' + totalPrice.toFixed(2));
         
-        // Optionally, you can also send an AJAX request to update the item quantity in the backend
-    }
-});
-
-// Function to handle increasing the quantity of an item
-$(document).on('click', '.increase-quantity', function() {
-    var description = $(this).closest('.sidebar-item').data('description');
-    var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
-    var currentQuantity = parseInt(existingItem.find('.quantity').text());
-    // Increase quantity and update price
-    existingItem.find('.quantity').text(currentQuantity + 1);
-    var price = parseFloat(existingItem.find('.price').text().replace('$', ''));
-    var totalPrice = price * (currentQuantity + 1);
-    existingItem.find('.price').text('$' + totalPrice.toFixed(2));
-    
-    // Optionally, you can also send an AJAX request to update the item quantity in the backend
-});
-
+        //send an AJAX request to update the item quantity in the backend
+        $.ajax({
+            url: '/update_quantity', // URL to your backend endpoint for updating quantity
+            method: 'POST', // or 'GET' depending on your backend setup
+            data: {
+                description: description,
+                quantity: currentQuantity + 1
+            },
+            success: function(response) {
+                // Handle success response if needed
+            },
+            error: function(xhr, status, error) {
+                // Handle error if needed
+            }
+        });
+    });
 </script>
 <script>
     window.addEventListener('scroll', function() {
