@@ -66,6 +66,28 @@
         </div>
     </header>
 
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-sales-Screen" %}' method="post">
+        {% csrf_token %}
+        {{StartDateForm}}
+        {{EndDateForm}}
+        <button name="submit_button">Submit the Dates</button>
+    </form>
+
+    <!-- Display the sales report -->
+    <table class="table table-bordered">
+        <tr>
+            <th>Description</th>
+            <th>Times Ordered</th>
+        </tr>
+        {% for item in product_usage_report %}
+        <tr>
+            <td>{{ item.description }}</td>
+            <td>{{ item.count }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
     <!-- Google Translate API -->
     <script type="text/javascript">
         function googleTranslateElementInit() {

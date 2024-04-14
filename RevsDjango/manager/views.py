@@ -6,7 +6,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django import forms
 
-# Create your views here.
+# Creates the Manager Landing Page
 def manager(request):
     # If we're adding an item, update the database
     if request.method == 'POST':
@@ -48,9 +48,35 @@ def restock(request):
 def excess(request):
     return render(request, 'manager/excess.html')
 
-def productusage(request):
-    return render(request, 'manager/productusage.html')
 
+# Creates the Product Usage Page
+def productusage(request):
+    startingDate = timezone.now().date()-timedelta(days=365)
+    endingDate = timezone.now().date()
+    startingDateForm = StartDateForm()
+    endingDateForm = EndDateForm()
+    if request.method == "POST":
+        if "submit_button" in request.POST:
+            startingDateForm = StartDateForm(request.POST)
+            endingDateForm = EndDateForm(request.POST)
+
+            # If the date is valid, extracts the selected date
+            if startingDateForm.is_valid():
+                startingDate = startingDateForm.cleaned_data['startDate']
+            if endingDateForm.is_valid():
+                endingDate = endingDateForm.cleaned_data['endDate']
+
+    product_usage_report = getProductUsageReport(startingDate, endingDate)
+
+    # Default option
+    context = {'product_usage_report': product_usage_report,
+                'StartDateForm': startingDateForm,
+                'EndDateForm': endingDateForm}
+
+    return render(request, 'manager/productusage.html', context)
+
+
+# Creates the Sales Report Page
 def sales(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
@@ -81,9 +107,29 @@ def trends(request):
     return render(request, 'manager/trends.html')
 
 
-# Function for getting the whole history of sales
-# By default, gives the year
-def getSalesReport(startDate, endDate=timezone.now().date()):
+# Function for getting the history of product usage
+def getProductUsageReport(startDate, endDate):
+    with connection.cursor() as cursor:
+        # Queries for all items within the year
+        sqlCommand = ("SELECT inventory.id AS inventory_id, inventory.description AS inventory_description, " +
+                      "SUM(food_to_inventory.quantity) AS total_quantity_used FROM orders JOIN order_breakout " +
+                      "ON orders.id = order_breakout.order_id JOIN food_to_inventory ON order_breakout.food_items " +
+                      "= food_to_inventory.food_item_id JOIN inventory ON food_to_inventory.inventory_id = " +
+                      "inventory.id WHERE orders.order_time BETWEEN %s AND %s GROUP BY inventory.id, " +
+                      "inventory.description;")
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 'description': currentItem[1], 'quantity': currentItem[2]
+                      } for currentItem in dataSorted]
+        
+        return dataReport
+
+
+# Function for getting the history of sales
+def getSalesReport(startDate, endDate):
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, " +
@@ -102,7 +148,7 @@ def getSalesReport(startDate, endDate=timezone.now().date()):
                        for currentItem in dataSorted]
         
         return dataReport
-
+    
 
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
