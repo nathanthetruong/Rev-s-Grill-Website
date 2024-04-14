@@ -58,21 +58,35 @@ def orders(request):
         return render(request, 'orders/orders.html', context)
 
 
+# def addItem(request):
+#     if request.method == 'POST':
+#         price = float(request.POST.get('price'))
+#         id = request.POST.get('id')
+
+#         # Retrieve the cart from the session, add new price to total, then update cart 
+#         if 'cart' not in request.session:
+#             request.session['cart'] = {'total_price': 0.0, 'ids': []}
+#         cart = request.session.get('cart')
+#         cart['total_price'] += price
+#         totalPrice = cart['total_price']
+#         cart['ids'].append(id)
+#         request.session['cart'] = cart
+
+#         return JsonResponse({'cart_count': len(cart['ids']), 'total_price': totalPrice})
+    
+#     return JsonResponse({'error': 'failed'}, status=400)
 def addItem(request):
     if request.method == 'POST':
         price = float(request.POST.get('price'))
-        id = request.POST.get('id')
+        description = request.POST.get('description')
 
         # Retrieve the cart from the session, add new price to total, then update cart 
-        if 'cart' not in request.session:
-            request.session['cart'] = {'total_price': 0.0, 'ids': []}
-        cart = request.session.get('cart')
-        cart['total_price'] += price
-        totalPrice = cart['total_price']
-        cart['ids'].append(id)
+        cart = request.session.get('cart', {})
+        cart[description] = cart.get(description, 0) + price
         request.session['cart'] = cart
+        total_price = sum(cart.values())
 
-        return JsonResponse({'cart_count': len(cart['ids']), 'total_price': totalPrice})
+        return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
     
     return JsonResponse({'error': 'failed'}, status=400)
 
@@ -80,27 +94,34 @@ def addItem(request):
 #     if request.method == 'POST':
 
 #         # Defaults
-#         customer_id = 1
-#         employee_id = 1111
-#         order_time = timezone.now()
+#         customerId = 1
+#         employeeId = 1111
+#         orderTime = timezone.now()
 
-#         cart = request.session.get('cart', {})
-#         total_price = sum(cart.values())
+#         cart = request.session.get('cart')
+#         totalPrice = cart['total_price']
 
-#         # Get a new valid ID for the order
-#         with connection.cursor() as cursor:
-#             cursor.execute("SELECT MAX(id) FROM orders")
-#             orderID = cursor.fetchone()[0] + 1
+#         # Loops until the order is processed fully in the database successfully
+#         while (True):
+#             with transaction.atomic():
+#                 try:
+#                     orderId = getNewOrderID()
+#                     updateOrders(customerId, employeeId, totalPrice, orderTime, orderId)
+#                     for currentId in cart['ids']:
+#                         ingredientIds = getUsedInventoryItems(orderId, currentId)
+#                         updateInventory(ingredientIds)
 
-#         # Insert into orders table
-#         with connection.cursor() as cursor:
-#             cursor.execute("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) VALUES (%s, %s, %s, %s, %s)", [orderID, customer_id, employee_id, total_price, order_time])
+#                     break
+
+#                 # Waits for 0.1 seconds before retrying order submission
+#                 except IntegrityError:
+#                     time.sleep(0.1)
 
 #         # Reset price
 #         del request.session['cart']
 
 #         messages.success(request, 'Success')
-#         return redirect('Revs-Order-Screen') 
+#         return redirect('Revs-Order-Screen')
 
 def checkout(request):
     if request.method == 'POST':
@@ -109,7 +130,6 @@ def checkout(request):
         request.session['checkout_items'] = cart  
         request.session['total_price'] = total_price
         return redirect('transaction') 
-
 
 def transaction_view(request):
     if request.method == 'POST':
@@ -157,3 +177,47 @@ def get_cart_items(request):
 def login_view(request):
     # Your login logic here
     return render(request, 'login/login.html')
+
+# Handles getting a new order ID
+def getNewOrderID():
+    # Get a new valid ID for the order
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT MAX(id) FROM orders")
+        orderID = cursor.fetchone()[0] + 1
+    
+    return orderID
+
+# Handles updating the orders table
+def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
+    # Inputs the order information into the orders table
+    with connection.cursor() as cursor:
+        sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) " +
+                    "VALUES (%s, %s, %s, %s, %s)")
+        cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime])
+# Gets a list of all inventory items needed to be updated
+def getUsedInventoryItems(orderId, currentId):
+    # Handles insertion into Order Breakout
+    with connection.cursor() as cursor:
+        sqlCommand = "INSERT INTO order_breakout (order_id, food_items) VALUES (%s, %s)"
+        cursor.execute(sqlCommand, [orderId, currentId])
+
+    # Handles incrementing times_ordered for the menu item
+    with connection.cursor() as cursor:
+        sqlCommand = "UPDATE menu_items SET times_ordered = times_ordered + 1 WHERE id = %s"
+        cursor.execute(sqlCommand, [currentId])
+
+    # Finds all the ingredients to be updated in the inventory table
+    with connection.cursor() as cursor:
+        sqlCommand = "SELECT inventory_id FROM food_to_inventory WHERE food_item_id = %s"
+        cursor.execute(sqlCommand, [currentId])
+        ingredientIds = cursor.fetchall()
+
+    return ingredientIds
+# Handles updating all the items in a single menu item
+def updateInventory(ingredientIds):
+    # Updates all the ingredient's quantity in the inventory table
+    for currentIngredientID in ingredientIds:
+        with connection.cursor() as cursor:
+            sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
+            cursor.execute(sqlCommand, [currentIngredientID])
+
