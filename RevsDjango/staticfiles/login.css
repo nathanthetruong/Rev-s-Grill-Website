@@ -1,0 +1,41 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #eee;
+}
+
+/* .touch-to-order-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.touch-to-order-container img {
+    width: 100%;
+    max-width: 1000px;
+    height: auto;
+    cursor: pointer;
+} */
+.touch-to-order-container {
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+}
+
+.touch-to-order-container a {
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+}
+
+.touch-to-order-container img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+}
+
+
+
