@@ -33,24 +33,70 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Trends Report</h1>
         
+        <!--
         <div class="mb-5">
             <h2>Sales Trends</h2>
             <canvas id="salesTrendGraph"></canvas>
         </div>
         
         <div class="mb-5">
-            <h2>Inventory Levels</h2>
-            <canvas id="inventoryLevelsGraph"></canvas>
-        </div>
-        
-        <div class="mb-5">
             <h2>Customer Feedback Trends</h2>
             <canvas id="customerFeedbackTrendsGraph"></canvas>
         </div>
-        
+        -->
+
+        <!-- Display the Date Forms -->
+        <form action='{% url "Revs-trends-Screen" %}' method="post">
+            {% csrf_token %}
+            {{ StartDateForm }}
+            {{ EndDateForm }}
+            <button name="submit">Generate Report</button>
+        </form>
+    
+        <!-- Display the excess report -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Item 1</th>
+                    <th>Item 2</th>
+                    <th>Frequency</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in trends  %}
+                <tr>
+                    <td>{{ item.item1 }}</td>
+                    <td>{{ item.item2 }}</td>
+                    <td>{{ item.frequency }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
         <div>
             <h2>Predictive Trends</h2>
-            <canvas id="predictiveTrendsAnalysis"></canvas>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Item 1</th>
+                        <th>Item 2</th>
+                        <th>Frequency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    Recommended Items to ensure stock of:
+                    {% for item in trends  %}
+                    <tr>
+                        {% if forloop.first %}
+                            <td>{{ item.item1 }}</td>
+                            <td>{{ item.item2 }}</td>
+                            <td>{{ item.frequency }}</td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        
         </div>
     </div>
 
