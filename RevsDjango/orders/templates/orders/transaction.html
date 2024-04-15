@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Page</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'transaction.css' %}">
+</head>
+<body>
+
+    <!-- HEADER Section -->
+    <header>
+        <a href="{% url 'orders' %}" id="return">Return</a>
+        <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
+        <span id="help">Help</span>
+    </header>
+
+    <input type="hidden" id="login-url" value="{% url 'login' %}">
+
+    <div class="container">
+        <div class="payment-methods-container">
+            <div class="payment-methods">
+                <h2>Choose the payment method</h2>
+                <ul>
+                    <li>
+                        <img src="{% static 'Cash.png' %}" alt="Cash" class="payment-image">
+                        <button id="btn">Cash</button>
+                    </li>
+                    <li>
+                        <img src="{% static 'Mobile_pay.png' %}" alt="Apple Pay" class="payment-image">
+                        <button id="btn">Apple Pay</button>
+                    </li>
+                    <li>
+                        <img src="{% static 'Card.png' %}" alt="Card" class="payment-image">
+                        <button id="btn">Card</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="order-summary-container">
+            <div class="order-summary">
+                <h2>Order summary</h2>
+                <ul class="order-items">
+                    {% for description, price in cart_items.items %}
+                    <div class="order-item">
+                        <!-- path to the image -->
+                        <img src="{% static 'burger.png' %}" alt="{{ description }}" class="item-image">
+                        {{ description }}
+                        <span>${{ price }}</span>    
+                        <button class="remove-item">Remove</button>    
+                    </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- <hr> -->
+            <div class="totals">
+                <div>
+                    <span class="total_label">Subtotal</span>
+                    <span>${{ total_price }}</span> 
+                </div>
+                <div>
+                    <span class="total_label">Tax</span>
+                    <span>${{ tax }}</span> 
+                </div>
+                <hr>
+                <div>
+                    <span class="total_label">Total</span>
+                    <span>${{ total }}</span> 
+                </div>
+                <button id="place-order">Place Order</button>
+            </div>
+            
+            
+        </div>
+    </div>
+
+
+    <!-- Footer section -->
+    <footer>
+        <div class="footer-content">
+            <hr id="hr-footer">
+            <p> @Rev's American Grill</p> 
+    </div>
+    </footer>
+
+    <!-- Javascript logic -->
+    <script>
+        $(document).ready(function() {
+            //using AJAX to fetch the items from the backend
+            $.ajax({
+                type: "GET",
+                url: "{% url 'get_cart_items' %}", 
+                success: function(response) {
+                    // Iterate through each item in the response and populate the order summary container
+                    response.forEach(function(item) {
+                        var itemHtml = '<li class="order-item"><img src="' + item.image + '" alt="' + item.name + '" class="item-image">' + item.name + '<span>$' + item.price + '</span></li>';
+                        $('.order-items').append(itemHtml);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Remove item from order summary
+            $('.remove-item').click(function() {
+                // Get the price of the item being removed
+                var removedItemPrice = parseFloat($(this).siblings('span').text().replace('$', ''));
+                
+                // Remove the item from the order summary
+                $(this).closest('.order-item').remove();
+                
+                // Update the total price and tax
+                updateTotalAndTax(removedItemPrice);
+            });
+
+        
+            $('#place-order').click(function() {
+                // Get total price
+                var total_price = parseFloat('{{ total_price }}');
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'transaction' %}",
+                    data: {
+                        total_price: total_price,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        console.log('Payment/Order is successful.'); // Debugging
+                        if (response.success) {
+                            // Reset order summary container
+                            $('.order-items').empty();
+                            // Reset subtotal, tax, and total to 0.00
+                            $('.total_label').next('span').text('$0.00');
+                            // Display pop-up message
+                            alert('Payment/Order is successful.');
+                            // Redirect to login page after 2 seconds
+                            setTimeout(function() {
+                                redirectToLoginPage();
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Error occurred while placing order.');
+                    }
+                });
+            });
+    
+            // Function to redirect to login page
+            function redirectToLoginPage() {
+                // Get the login URL from the hidden input field
+                var loginUrl = $('#login-url').val();
+                // Redirect the user to the login page
+                window.location.href = loginUrl;
+            }
+    
+    
+            // Function to update total and tax
+            function updateTotalAndTax(removedItemPrice) {
+                // Get current total and tax values
+                var subtotal = parseFloat($('.total_label:contains("Subtotal")').next('span').text().replace('$', ''));
+                var tax = parseFloat($('.total_label:contains("Tax")').next('span').text().replace('$', ''));
+    
+                // Calculate new subtotal
+                var newSubtotal = subtotal - removedItemPrice;
+                
+                // Calculate new tax based on the new subtotal (assuming tax is 10%)
+                var newTax = newSubtotal * 0.1;
+    
+                // Update total price
+                var newTotal = newSubtotal + newTax;
+    
+                // Update the displayed values
+                $('.total_label:contains("Subtotal")').next('span').text('$' + newSubtotal.toFixed(2));
+                $('.total_label:contains("Tax")').next('span').text('$' + newTax.toFixed(2));
+                $('.total_label:contains("Total")').next('span').text('$' + newTotal.toFixed(2));
+            }
+        });
+    </script>
+
+</body>
+</html>

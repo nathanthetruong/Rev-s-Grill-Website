@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
 
     <title>Sales Report</title>
+    <style>
+    </style>
 </head>
 <body>
     <h1>Sales Report</h1>
@@ -57,6 +59,38 @@
         </tr>
         {% endfor %}
     </table>
+
+    <!-- Foooter Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="left-column">
+                <p>Contact us: revsamericalgrill@gmail.com</p>
+                <p>Follow us on social media: 
+                    <a href="https://twitter.com" class="social-link" aria-label="Twitter"><i class="fab fa-twitter" style="color: #fafafa;"></i></a>
+                    <a href="https://revs-8f3def7ff00e.herokuapp.com/" class="social-link" aria-label="Revs"><i class="fas fa-utensils" style="color: #ffffff;"></i></a>
+                    <a href="https://instagram.com" class="social-link" aria-label="Instagram"><i class="fab fa-instagram" style="color: #fcfcfc;"></i></a>
+                </p>
+            </div>
+            <div class="logo-column">
+                <a href="orders.html">
+                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
+                </a>
+            </div>
+            
+            <div class="right-column">
+                <h4>Restaurant Open Hours:</h4>
+                <h5>Monday to Saturday: 11:00 AM - 10:00 PM</h5> 
+                <h5>Sunday: 12:00 PM - 9:00 PM</h5>
+            </div>
+        </div>
+        <div>
+            <p >About us: Rev's American Grill is committed to providing delicious and satisfying meals in a cozy and welcoming atmosphere.</p>
+            <p class="quote">"Good food is the foundation of genuine happiness." - Auguste Escoffier</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
+        </div>
+    </footer>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

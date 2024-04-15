@@ -40,9 +40,9 @@ CREATE TABLE menu_items (
 CREATE TABLE food_to_inventory (
     "food_item_id" int,
     "food_description" text,
-    "inventory_id" int,
-    "inventory_description" text,
     "quantity" int,
+    "inventory_description" text,
+    "inventory_id" int,
     FOREIGN KEY ("food_item_id") REFERENCES menu_items ("id")
 );
 

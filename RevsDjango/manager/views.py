@@ -4,9 +4,11 @@ from .models import MenuItems, Inventory
 from django.db import connection
 from django.utils import timezone
 from datetime import datetime, timedelta
+import calendar
 from django import forms
 
-# Creates the Manager Landing Page
+
+# Create your views here.
 def manager(request):
     # If we're adding an item, update the database
     if request.method == 'POST':
@@ -46,7 +48,70 @@ def restock(request):
     return render(request, 'manager/restock.html')
 
 def excess(request):
-    return render(request, 'manager/excess.html')
+    startingDate = timezone.now().date()-timedelta(days=365)
+    endingDate = timezone.now().date()
+    startingDateForm = StartDateForm()
+    endingDateForm = EndDateForm()
+    if request.method == "POST":
+        if "submit" in request.POST:
+            startingDateForm = StartDateForm(request.POST)
+            endingDateForm = EndDateForm(request.POST)
+
+            # If the date is valid, extracts the selected date
+            if startingDateForm.is_valid():
+                startingDate = startingDateForm.cleaned_data['startDate']
+            if endingDateForm.is_valid():
+                endingDate = endingDateForm.cleaned_data['endDate']
+            print(f"Received dates: Start - {startingDate}, End - {endingDate}")  
+
+    excess_report = getExcessReport(startingDate, endingDate)
+    #print(f"Query returned {len(excess_report)} items")  
+    print(excess_report)
+
+    # Default option
+    context = {'excess_report': excess_report,
+                'StartDateForm': startingDateForm,
+                'EndDateForm': endingDateForm}
+
+    return render(request, 'manager/excess.html', context)
+
+
+def getExcessReport(startDate, endDate):
+    with connection.cursor() as cursor:
+        test_startDate = '2023-04-20'
+        test_endDate = '2023-04-21'
+        # Queries for available inventory items still below their quantity target between two dates
+        sqlCommand = ("""
+                        SELECT inv.id AS inventory_id, inv.description AS inventory_description, inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed, inv.quantity_target * 0.1 AS ten_percent_target
+                        FROM inventory inv
+                        LEFT JOIN food_to_inventory fti ON inv.id = fti.inventory_id
+                        LEFT JOIN menu_items mi ON fti.food_item_id = mi.id
+                        LEFT JOIN order_breakout ob ON mi.id = ob.food_items
+                        LEFT JOIN orders o ON ob.order_id = o.id 
+                        WHERE o.order_time BETWEEN %s AND %s
+                        GROUP BY inv.id, inv.description, inv.quantity_target
+                        HAVING COALESCE(SUM(fti.quantity), 0) < inv.quantity_target * 0.1;                      
+                      """)
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        """
+        print("Executing SQL:", sqlCommand)
+        print("With parameters:", startDate, endDate)
+        print("Query Results:", cursorOutput)
+        """
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'inventory_id': currentItem[0], 
+                      'inventory_description': currentItem[1],
+                      'quantity_target': currentItem[2],
+                      'quantity_consumed': currentItem[3],
+                      'ten_percent_target': currentItem[4]}
+                       for currentItem in dataSorted]
+        
+        print(dataReport)
+        return dataReport
 
 
 # Creates the Product Usage Page
@@ -129,7 +194,7 @@ def getProductUsageReport(startDate, endDate):
 
 
 # Function for getting the history of sales
-def getSalesReport(startDate, endDate):
+def getSalesReport(startDate, endDate=timezone.now()):
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, " +
@@ -140,16 +205,143 @@ def getSalesReport(startDate, endDate):
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
 
+        print("Executing SQL:", sqlCommand)
+        print("With parameters:", startDate, endDate)
+        print("Query Results:", cursorOutput)
+
         # Sorts and places all the items into the context
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
                        'total_quantity_ordered': currentItem[5]}
                        for currentItem in dataSorted]
-        
+        return dataReport
+
+def trends(request):
+    startingDate = timezone.now().date()-timedelta(days=365)
+    endingDate = timezone.now().date()
+    startingDateForm = StartDateForm()
+    endingDateForm = EndDateForm()
+    if request.method == "POST":
+        if "submit" in request.POST:
+            startingDateForm = StartDateForm(request.POST)
+            endingDateForm = EndDateForm(request.POST)
+
+            # If the date is valid, extracts the selected date
+            if startingDateForm.is_valid():
+                startingDate = startingDateForm.cleaned_data['startDate']
+            if endingDateForm.is_valid():
+                endingDate = endingDateForm.cleaned_data['endDate']
+            print(f"Received dates: Start - {startingDate}, End - {endingDate}")
+        elif "submit2" in request.POST:
+            # Get dates from POST request
+            start_date_str = request.POST.get('startDate')
+            end_date_str = request.POST.get('endDate')
+
+            # Convert string dates to date objects
+            startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+
+    # Fetch real sales trends data
+    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
+    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
+
+    trends = getTrends(startingDate, endingDate)
+    #print(f"Query returned {len(excess_report)} items")  
+    print(trends)
+
+    # Default option
+    context = {'trends': trends,
+               'StartDateForm': startingDateForm,
+               'EndDateForm': endingDateForm,
+                'sales_trends_data': sales_trends_data,
+                'monthly_growth_rates': monthly_growth_rates,
+               }
+
+    return render(request, 'manager/trends.html', context)
+
+def getTrends(startDate, endDate):
+    with connection.cursor() as cursor:
+        # Queries for all items within the year
+        sqlCommand = ("""
+                    SELECT mi1.description AS Item1, mi2.description AS Item2, COUNT(*) AS Frequency 
+                    FROM order_breakout ob1 
+                    JOIN order_breakout ob2 ON ob1.order_id = ob2.order_id AND ob1.food_items < ob2.food_items 
+                    JOIN menu_items mi1 ON ob1.food_items = mi1.id 
+                    JOIN menu_items mi2 ON ob2.food_items = mi2.id 
+                    JOIN orders o ON ob1.order_id = o.id 
+                    WHERE o.order_time BETWEEN %s AND %s
+                    GROUP BY mi1.description, mi2.description 
+                    ORDER BY Frequency DESC;
+                    """)
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        print("Executing SQL:", sqlCommand)
+        print("With parameters:", startDate, endDate)
+        print("Query Results:", cursorOutput)
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[2], reverse=True)
+        dataReport =[{'item1': currentItem[0],
+                      'item2': currentItem[1],
+                      'frequency': currentItem[2]}
+                       for currentItem in dataSorted]
         return dataReport
     
+def getSalesTrendsData(startDate, endDate):
+    with connection.cursor() as cursor:
+        sqlCommand = """
+        SELECT DATE(orders.order_time) AS order_date, SUM(menu_items.price * order_breakout.food_items) AS total_sales
+        FROM orders 
+        JOIN order_breakout ON orders.id = order_breakout.order_id 
+        JOIN menu_items ON order_breakout.food_items = menu_items.id 
+        WHERE orders.order_time BETWEEN %s AND %s 
+        GROUP BY DATE(orders.order_time)
+        ORDER BY DATE(orders.order_time);
+        """
+        cursor.execute(sqlCommand, [startDate, endDate])
+        result = cursor.fetchall()
 
+        # Convert query results into a list of dictionaries
+        trends_data = [{'date': row[0], 'total_sales': row[1]} for row in result]
+        return trends_data
+
+def getMonthlySalesData(startDate, endDate):
+    with connection.cursor() as cursor:
+        sqlCommand = """
+        SELECT DATE_TRUNC('month', orders.order_time) AS order_month, SUM(menu_items.price * order_breakout.food_items) AS monthly_sales
+        FROM orders 
+        JOIN order_breakout ON orders.id = order_breakout.order_id 
+        JOIN menu_items ON order_breakout.food_items = menu_items.id 
+        WHERE orders.order_time BETWEEN %s AND %s 
+        GROUP BY DATE_TRUNC('month', orders.order_time)
+        ORDER BY DATE_TRUNC('month', orders.order_time);
+        """
+        cursor.execute(sqlCommand, [startDate, endDate])
+        result = cursor.fetchall()
+        
+        # Store monthly data in a dict for easy month-to-month comparison
+        monthly_data = {}
+        for row in result:
+            # Convert date to first day of the month for uniformity
+            month = row[0].strftime('%Y-%m')
+            monthly_data[month] = row[1]
+        
+        # Calculate growth rates
+        months_sorted = sorted(monthly_data.keys())
+        monthly_growth_rates = []
+        for i in range(1, len(months_sorted)):
+            earlier_month = monthly_data[months_sorted[i-1]]
+            later_month = monthly_data[months_sorted[i]]
+            if earlier_month > 0:  # To avoid division by zero
+                growth_rate = ((later_month - earlier_month) / earlier_month) * 100
+            else:
+                growth_rate = 0
+            monthly_growth_rates.append((months_sorted[i], growth_rate))
+        
+        return monthly_growth_rates
+    
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
     startDate = forms.DateField()
