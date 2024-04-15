@@ -143,32 +143,6 @@ def sales(request):
 
     return render(request, 'manager/sales.html', context)
 
-
-def trends(request):
-    startingDate = timezone.now().date() - timedelta(days=365)
-    endingDate = timezone.now().date()
-
-    if request.method == 'POST':
-        # Get dates from POST request
-        start_date_str = request.POST.get('startDate')
-        end_date_str = request.POST.get('endDate')
-
-        # Convert string dates to date objects
-        startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-        endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
-
-    # Fetch real sales trends data
-    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
-    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
-
-    # Pass data to the template
-    context = {
-        'sales_trends_data': sales_trends_data,
-        'monthly_growth_rates': monthly_growth_rates,
-
-    }
-    return render(request, 'manager/trends.html', context)
-
 # Function for getting the whole history of sales
 # By default, gives the year
 def getSalesReport(startDate, endDate=timezone.now().date()):
@@ -209,7 +183,19 @@ def trends(request):
                 startingDate = startingDateForm.cleaned_data['startDate']
             if endingDateForm.is_valid():
                 endingDate = endingDateForm.cleaned_data['endDate']
-            print(f"Received dates: Start - {startingDate}, End - {endingDate}")  
+            print(f"Received dates: Start - {startingDate}, End - {endingDate}")
+        elif "submit2" in request.POST:
+            # Get dates from POST request
+            start_date_str = request.POST.get('startDate')
+            end_date_str = request.POST.get('endDate')
+
+            # Convert string dates to date objects
+            startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+
+    # Fetch real sales trends data
+    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
+    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
 
     trends = getTrends(startingDate, endingDate)
     #print(f"Query returned {len(excess_report)} items")  
@@ -218,7 +204,10 @@ def trends(request):
     # Default option
     context = {'trends': trends,
                'StartDateForm': startingDateForm,
-               'EndDateForm': endingDateForm}
+               'EndDateForm': endingDateForm,
+                'sales_trends_data': sales_trends_data,
+                'monthly_growth_rates': monthly_growth_rates,
+               }
 
     return render(request, 'manager/trends.html', context)
 
