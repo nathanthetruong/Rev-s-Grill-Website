@@ -37,15 +37,30 @@ def manager(request):
     # We're not adding an item, so we just get it from our model
     else:
         menu_items = MenuItems.objects.all()
-        inventory_items = Inventory.objects.all()
         context = {
             'menu_items': menu_items,
-            'inventory_items': inventory_items,
         }
         return render(request, 'manager/manager.html', context)
 
 def restock(request):
-    return render(request, 'manager/restock.html')
+    with connection.cursor() as cursor:
+        sqlCommand = ("""
+                        SELECT id, description, quantity_remaining, quantity_target
+                        FROM inventory
+                        WHERE quantity_remaining < quantity_target;
+                      """)
+        cursor.execute(sqlCommand)
+        rows = cursor.fetchall()
+        inventory_items = [
+            {'id': row[0], 'description': row[1], 'quantity_remaining': row[2], 'quantity_target': row[3]}
+            for row in rows
+        ]
+        context = {
+            'inventory_items': inventory_items,
+        }
+
+        print(context)
+        return render(request, 'manager/restock.html', context)
 
 def excess(request):
     startingDate = timezone.now().date()-timedelta(days=365)
@@ -78,8 +93,6 @@ def excess(request):
 
 def getExcessReport(startDate, endDate):
     with connection.cursor() as cursor:
-        test_startDate = '2023-04-20'
-        test_endDate = '2023-04-21'
         # Queries for available inventory items still below their quantity target between two dates
         sqlCommand = ("""
                         SELECT inv.id AS inventory_id, inv.description AS inventory_description, inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed, inv.quantity_target * 0.1 AS ten_percent_target
@@ -166,11 +179,6 @@ def sales(request):
                 'EndDateForm': endingDateForm}
 
     return render(request, 'manager/sales.html', context)
-
-
-def trends(request):
-    return render(request, 'manager/trends.html')
-
 
 # Function for getting the history of product usage
 def getProductUsageReport(startDate, endDate):
