@@ -32,6 +32,29 @@
         </div>
     </header>
 
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-productusage-Screen" %}' method="post">
+        {% csrf_token %}
+        {{StartDateForm}}
+        {{EndDateForm}}
+        <button name="submit_button">Submit the Dates</button>
+    </form>
+
+    <!-- Display the sales report -->
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Description</th>
+            <th>Times Ordered</th>
+        </tr>
+        {% for item in product_usage_report %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.quantity }}</td>
+        </tr>
+        {% endfor %}
+    </table>
     <!-- Foooter Section -->
     <footer>
         <div class="footer-content">
