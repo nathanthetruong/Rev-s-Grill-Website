@@ -67,7 +67,7 @@
     </header>
 
     <!-- Display the Date Forms -->
-    <form action='{% url "Revs-sales-Screen" %}' method="post">
+    <form action='{% url "Revs-productusage-Screen" %}' method="post">
         {% csrf_token %}
         {{StartDateForm}}
         {{EndDateForm}}
@@ -77,13 +77,15 @@
     <!-- Display the sales report -->
     <table class="table table-bordered">
         <tr>
+            <th>ID</th>
             <th>Description</th>
             <th>Times Ordered</th>
         </tr>
         {% for item in product_usage_report %}
         <tr>
+            <td>{{ item.id }}</td>
             <td>{{ item.description }}</td>
-            <td>{{ item.count }}</td>
+            <td>{{ item.quantity }}</td>
         </tr>
         {% endfor %}
     </table>
