@@ -12,4 +12,5 @@ urlpatterns = [
     path('restock/', views.restock, name='Revs-restock-Screen'),
     path('sales/', views.sales, name='Revs-sales-Screen'),
     path('trends/', views.trends, name='Revs-trends-Screen'),
+    path('ordermanagement/', views.orderManagement, name='Revs-ordermanagement-screen'),
 ]

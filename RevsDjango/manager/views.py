@@ -59,7 +59,6 @@ def restock(request):
             'inventory_items': inventory_items,
         }
 
-        print(context)
         return render(request, 'manager/restock.html', context)
 
 def excess(request):
@@ -77,11 +76,8 @@ def excess(request):
                 startingDate = startingDateForm.cleaned_data['startDate']
             if endingDateForm.is_valid():
                 endingDate = endingDateForm.cleaned_data['endDate']
-            print(f"Received dates: Start - {startingDate}, End - {endingDate}")  
 
     excess_report = getExcessReport(startingDate, endingDate)
-    #print(f"Query returned {len(excess_report)} items")  
-    print(excess_report)
 
     # Default option
     context = {'excess_report': excess_report,
@@ -108,12 +104,6 @@ def getExcessReport(startDate, endDate):
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
 
-        """
-        print("Executing SQL:", sqlCommand)
-        print("With parameters:", startDate, endDate)
-        print("Query Results:", cursorOutput)
-        """
-
         # Sorts and places all the items into the context
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'inventory_id': currentItem[0], 
@@ -123,7 +113,6 @@ def getExcessReport(startDate, endDate):
                       'ten_percent_target': currentItem[4]}
                        for currentItem in dataSorted]
         
-        print(dataReport)
         return dataReport
 
 
@@ -213,10 +202,6 @@ def getSalesReport(startDate, endDate=timezone.now()):
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
 
-        print("Executing SQL:", sqlCommand)
-        print("With parameters:", startDate, endDate)
-        print("Query Results:", cursorOutput)
-
         # Sorts and places all the items into the context
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
@@ -240,7 +225,6 @@ def trends(request):
                 startingDate = startingDateForm.cleaned_data['startDate']
             if endingDateForm.is_valid():
                 endingDate = endingDateForm.cleaned_data['endDate']
-            print(f"Received dates: Start - {startingDate}, End - {endingDate}")
         elif "submit2" in request.POST:
             # Get dates from POST request
             start_date_str = request.POST.get('startDate')
@@ -255,8 +239,6 @@ def trends(request):
     monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
 
     trends = getTrends(startingDate, endingDate)
-    #print(f"Query returned {len(excess_report)} items")  
-    print(trends)
 
     # Default option
     context = {'trends': trends,
@@ -284,10 +266,6 @@ def getTrends(startDate, endDate):
                     """)
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
-
-        print("Executing SQL:", sqlCommand)
-        print("With parameters:", startDate, endDate)
-        print("Query Results:", cursorOutput)
 
         # Sorts and places all the items into the context
         dataSorted = sorted(cursorOutput, key=lambda x: x[2], reverse=True)
@@ -349,6 +327,9 @@ def getMonthlySalesData(startDate, endDate):
             monthly_growth_rates.append((months_sorted[i], growth_rate))
         
         return monthly_growth_rates
+
+def orderManagement(request):
+    return render(request, 'manager/ordermanagement.html')
     
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
