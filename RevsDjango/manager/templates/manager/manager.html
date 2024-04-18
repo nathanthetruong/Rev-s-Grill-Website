@@ -18,9 +18,7 @@
 </head>
 <body>
     <header>
-        <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
-        <div class="elfsight-app-c090744f-9feb-4748-8c11-57759cf82b3d" data-elfsight-app-lazy></div>
-    
+
     <!-- Navigation bar -->
     <div class="navbar" id="google_translate_element">
         <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
@@ -44,16 +42,38 @@
             <th>Times Ordered</th>
             <th>Start Date</th>
             <th>End Date</th>
+            <th>Options</th>
         </tr>
         {% for item in menu_items %}
         <tr>
-            <td>{{ item.price }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.times_ordered }}</td>
-            <td>{{ item.start_date }}</td>
-            <td>{{ item.end_date }}</td>
-        </tr>
+            <form action="{% url 'Revs-modify-item' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <td><input type="text" class="form-control" name="price" value="{{ item.price }}"></td>
+                <td><input type="text" class="form-control" name="description" value="{{ item.description }}"></td>
+
+                <!-- Allow us to select from specific categories -->
+                <td>
+                    <select class="form-control" name="category">
+                        <option value="Burgers" {% if item.category == "Burgers" %}selected{% endif %}>Burgers</option>
+                        <option value="Sandwiches" {% if item.category == "Sandwiches" %}selected{% endif %}>Sandwiches</option>
+                        <option value="Shakes/More" {% if item.category == "Shakes/More" %}selected{% endif %}>Shakes/More</option>
+                        <option value="Drink" {% if item.category == "Drink" %}selected{% endif %}>Drink</option>
+                        <option value="Value Meal" {% if item.category == "Value Meal" %}selected{% endif %}>Value Meal</option>
+                        <option value="Salad" {% if item.category == "Salad" %}selected{% endif %}>Salad</option>
+                        <option value="Limited Time" {% if item.category == "Limited Time" %}selected{% endif %}>Limited Time</option>
+                    </select>
+                </td>
+
+                <td><input type="number" class="form-control" name="times_ordered" value="{{ item.times_ordered }}"></td>
+                <td><input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}"></td>
+                <td><input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}"></td>
+                <td>
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" class="btn btn-danger" formaction="{% url 'Revs-delete-item' %}" formmethod="post">Delete</button>
+                </td>
+            </form>
+        </tr>        
         {% endfor %}
     </table>
 
@@ -72,7 +92,15 @@
             </div>
             <div class="form-group">
                 <label for="category">Category</label>
-                <input type="text" class="form-control" id="category" name="category">
+                <select class="form-control" name="category">
+                    <option value="Burgers">Burgers</option>
+                    <option value="Sandwiches">Sandwiches</option>
+                    <option value="Shakes/More">Shakes/More</option>
+                    <option value="Drink">Drink</option>
+                    <option value="Value Meal">Value Meal</option>
+                    <option value="Salad">Salad</option>
+                    <option value="Limited Time">Limited Time</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="times_ordered">Times Ordered</label>
