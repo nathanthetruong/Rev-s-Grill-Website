@@ -68,11 +68,16 @@
                 <td><input type="number" class="form-control" name="times_ordered" value="{{ item.times_ordered }}"></td>
                 <td><input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}"></td>
                 <td><input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}"></td>
-                <td>
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                    <button type="button" class="btn btn-danger" formaction="{% url 'Revs-delete-item' %}" formmethod="post">Delete</button>
-                </td>
+                <td><button type="submit" class="btn btn-success">Save Changes</button></td>
             </form>
+            <td>
+                <!-- Delete button form -->
+                <form action="{% url 'Revs-delete-item' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
         </tr>        
         {% endfor %}
     </table>
