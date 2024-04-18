@@ -16,6 +16,7 @@ CREATE TABLE orders (
     "employee_id" int,
     "total_price" double precision,
     "order_time" timestamp without time zone,
+    "status" text,
     FOREIGN KEY ("customer_id") REFERENCES customers ("id"),
     FOREIGN KEY ("employee_id") REFERENCES employees ("id")
 );

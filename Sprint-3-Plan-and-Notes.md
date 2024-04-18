@@ -10,6 +10,11 @@
 - additional manager report  
 - additional accessability  
 
+
+### james goals
+- admin management page (manage what )
+- kitchen page (visable to cachiers)
+
 ## Sprint 3 Backlog
 - Return button on transaction page broke
 - Order cancels on page refresh
