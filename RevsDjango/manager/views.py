@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import MenuItems, Inventory
+from .models import MenuItems, Inventory, Employees
 from django.db import connection
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -83,6 +83,17 @@ def modifyItem(request):
         menu_item.save()
     return redirect('Revs-Manager-Screen')
 
+'''
+This function will give us the ability to display the current list of staff
+'''
+def displayStaff(request):
+
+    employees = Employees.objects.all()
+    context = {
+        'employees': employees,
+    }
+
+    return render(request, 'manager/staffmanagement.html', context)
 
 def restock(request):
     with connection.cursor() as cursor:

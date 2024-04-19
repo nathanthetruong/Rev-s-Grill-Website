@@ -12,12 +12,12 @@
     <!--  Stylesheet for the page -->
     <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
 
-    <title>Excess Report</title>
+    <title>Staff Management</title>
     <style>
     </style>
 </head>
 <body>
-    <h1>Excess Report</h1>
+    <h1>Staff Management</h1>
 
     <header>
         <!-- Navigation bar -->
@@ -27,44 +27,29 @@
             <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
-            <a href="{% url 'Revs-staffmanagement-screen' %}"> Staff Management</a>
+            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
         </div>
     </header>
 
-    <!-- Display the Date Forms -->
-    <form action='{% url "Revs-excess-Screen" %}' method="post">
-        {% csrf_token %}
-        {{ StartDateForm }}
-        {{ EndDateForm }}
-        <button name="submit">Generate Report</button>
-    </form>
-    
-    <!-- Display the excess report -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Inventory ID</th>
-                <th>Description</th>
-                <th>Target Quantity</th>
-                <th>Quantity Consumed</th>
-                <th>10% of Target</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in excess_report  %}
-            <tr>
-                <td>{{ item.inventory_id }}</td>
-                <td>{{ item.inventory_description }}</td>
-                <td>{{ item.quantity_target }}</td>
-                <td>{{ item.quantity_consumed }}</td>
-                <td>{{ item.ten_percent_target }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <!-- Display the menu items from the model -->
+    <table class="table table-bordered">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Manager</th>
+        </tr>
+        {% for employee in employees %}
+        <tr>
+            <td><input type="text" class="form-control" name="id" value="{{ employee.id }}"></td>
+            <td><input type="text" class="form-control" name="name" value="{{ employee.name }}"></td>
+            <td><input type="text" class="form-control" name="manager" value="{{ employee.is_manager }}"></td>
+        </tr>        
+        {% endfor %}
     </table>
+
 
     <!-- Foooter Section -->
     <footer>
@@ -78,7 +63,7 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="orders.html">
+                <a href="">
                     <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
                 </a>
             </div>

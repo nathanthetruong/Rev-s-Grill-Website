@@ -13,6 +13,7 @@ urlpatterns = [
     path('sales/', views.sales, name='Revs-sales-Screen'),
     path('trends/', views.trends, name='Revs-trends-Screen'),
     path('ordermanagement/', views.orderManagement, name='Revs-ordermanagement-screen'),
+    path('staffmanagement/', views.displayStaff, name='Revs-staffmanagement-screen'),
     path('deletemenuitem/', views.deleteItem, name='Revs-delete-item'),
     path('modifymenuitem/', views.modifyItem, name='Revs-modify-item'),
 ]

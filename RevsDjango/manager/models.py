@@ -23,3 +23,12 @@ class MenuItems(models.Model):
     class Meta:
         managed = False
         db_table = 'menu_items'
+
+class Employees(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.TextField(blank=True, null=True)
+    is_manager = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'employees'
