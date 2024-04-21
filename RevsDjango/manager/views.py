@@ -8,7 +8,10 @@ import calendar
 from django import forms
 
 
-# Create your views here.
+'''
+This function will display the menu_items on the main manager page
+It will also handle the ability to insert new menu items
+'''
 def manager(request):
     # If we're adding an item, update the database
     if request.method == 'POST':
@@ -41,6 +44,45 @@ def manager(request):
             'menu_items': menu_items,
         }
         return render(request, 'manager/manager.html', context)
+
+'''
+This function will give us the ability to remove menu items from our database
+'''
+def deleteItem(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        if item_id:
+            with connection.cursor() as cursor:
+                # First, delete the related entry from food_to_inventory
+                cursor.execute("DELETE FROM food_to_inventory WHERE food_item_id = %s", [item_id])
+                # Then, delete the item from menu_items
+                cursor.execute("DELETE FROM menu_items WHERE id = %s", [item_id])
+
+        return redirect('Revs-Manager-Screen')
+
+'''
+This function will give us the ability to modify menu items in our database
+'''
+def modifyItem(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        price = request.POST.get('price')
+        description = request.POST.get('description')
+        category = request.POST.get('category')
+        times_ordered = request.POST.get('times_ordered')
+        start_date = request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+
+        menu_item = MenuItems.objects.get(id=item_id)
+        menu_item.price = price
+        menu_item.description = description
+        menu_item.category = category
+        menu_item.times_ordered = times_ordered
+        menu_item.start_date = start_date
+        menu_item.end_date = end_date
+        menu_item.save()
+    return redirect('Revs-Manager-Screen')
+
 
 def restock(request):
     with connection.cursor() as cursor:
