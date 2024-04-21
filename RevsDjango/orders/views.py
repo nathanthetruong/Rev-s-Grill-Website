@@ -24,7 +24,7 @@ def orders(request):
                         'category': currentItem[2], 'id': currentItem[3]} for currentItem in data]
         
         menuItems = {currentItem[3]: {'description': currentItem[0], 'price': currentItem[1],
-                        'category': currentItem[2]} for currentItem in data}
+                        'category': currentItem[2], 'count': 1} for currentItem in data}
 
         request.session['menuItems'] = menuItems
 
@@ -58,37 +58,47 @@ def orders(request):
         return render(request, 'orders/orders.html', context)
 
 
-# def addItem(request):
-#     if request.method == 'POST':
-#         price = float(request.POST.get('price'))
-#         id = request.POST.get('id')
-
-#         # Retrieve the cart from the session, add new price to total, then update cart 
-#         if 'cart' not in request.session:
-#             request.session['cart'] = {'total_price': 0.0, 'ids': []}
-#         cart = request.session.get('cart')
-#         cart['total_price'] += price
-#         totalPrice = cart['total_price']
-#         cart['ids'].append(id)
-#         request.session['cart'] = cart
-
-#         return JsonResponse({'cart_count': len(cart['ids']), 'total_price': totalPrice})
-    
-#     return JsonResponse({'error': 'failed'}, status=400)
 def addItem(request):
     if request.method == 'POST':
         price = float(request.POST.get('price'))
-        description = request.POST.get('description')
+        buttonData = request.POST.get('buttonData')
 
-        # Retrieve the cart from the session, add new price to total, then update cart 
-        cart = request.session.get('cart', {})
-        cart[description] = cart.get(description, 0) + price
+        # Retrieve the cart from the session, add new price to total
+        if 'cart' not in request.session:
+            request.session['cart'] = {'totalPrice': 0.0, 'menuItems': []}
+        cart = request.session.get('cart')
+        cart['totalPrice'] += price
+        totalPrice = cart['totalPrice']
+
+        # Adds to cart is the item isn't in cart, if it is, adds to the count
+        menuItems = request.session['menuItems']
+        currentMenuItem = menuItems[buttonData['id']]
+        if currentMenuItem in cart['menuItems']:
+            cart['menuItems'][buttonData['id']]['count'] += 1
+        else:
+            cart['menuItems'].append(currentMenuItem)
+
         request.session['cart'] = cart
-        total_price = sum(cart.values())
 
-        return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
+        return JsonResponse({'cartItems': cart['menuItems'], 'cartCount': len(cart['menuItems']),
+                             'totalPrice': totalPrice})
     
     return JsonResponse({'error': 'failed'}, status=400)
+
+# def addItem(request):
+#     if request.method == 'POST':
+#         price = float(request.POST.get('price'))
+#         description = request.POST.get('description')
+
+#         # Retrieve the cart from the session, add new price to total, then update cart 
+#         cart = request.session.get('cart', {})
+#         cart[description] = cart.get(description, 0) + price
+#         request.session['cart'] = cart
+#         total_price = sum(cart.values())
+
+#         return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
+    
+#     return JsonResponse({'error': 'failed'}, status=400)
 
 # def checkout(request):
 #     if request.method == 'POST':
@@ -132,32 +142,41 @@ def checkout(request):
         return redirect('transaction') 
 
 def transaction_view(request):
+    cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': []})
+    totalPrice = cart['totalPrice']
+
     if request.method == 'POST':
-        # Retrieve form data
-        total_price = request.POST.get('total_price')
-       
-        # Insert into orders table
-        customer_id = 1
-        employee_id = 1111
-        order_time = timezone.now()
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT MAX(id) FROM orders")
-            orderID = cursor.fetchone()[0] + 1
-        with connection.cursor() as cursor:
-            cursor.execute("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) VALUES (%s, %s, %s, %s, %s)", [orderID, customer_id, employee_id, total_price, order_time])
-        
-        # Reset price and clear session cart
-        del request.session['checkout_items']
-        del request.session['total_price']
+        # Defaults
+        customerId = 1
+        employeeId = 1111
+        orderTime = timezone.now()
+
+        # Loops until the order is processed fully in the database successfully
+        while (True):
+            with transaction.atomic():
+                try:
+                    orderId = getNewOrderID()
+                    updateOrders(customerId, employeeId, totalPrice, orderTime, orderId)
+                    for currentItem in cart['menuItems']:
+                        for count in range(cart['menuItems']['count']):
+                            ingredientIds = getUsedInventoryItems(orderId, currentItem["id"])
+                            updateInventory(ingredientIds)
+                    break
+
+                # Waits for 0.1 seconds before retrying order submission
+                except IntegrityError:
+                    time.sleep(0.1)
+
+        # Resets the cart
+        del request.session['cart']
+
         messages.success(request, 'Payment/Order is successful.')
         return JsonResponse({'success': True})
 
-    cart_items = request.session.get('checkout_items', {})
-    total_price = sum(cart_items.values())  # Calculate total price of all items
-    tax = round(0.05 * total_price, 2)  # Calculate tax (5% of total) and round to two decimal places
-    total = round(total_price + tax, 2)  
-    total_price_rounded = round(total_price, 2)  
-    context = {'cart_items': cart_items, 'total_price': total_price_rounded, 'tax': tax, 'total': total}
+    totalPriceRounded = round(totalPrice, 2)
+    tax = round(0.05 * totalPrice, 2) # Calculate tax (5% of total) and round to two decimal places
+    total = round(totalPrice + tax, 2)
+    context = {'cartItems': cart['menuItems'], 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
     return render(request, 'orders/transaction.html', context)
 
 
@@ -194,6 +213,7 @@ def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
         sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) " +
                     "VALUES (%s, %s, %s, %s, %s)")
         cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime])
+
 # Gets a list of all inventory items needed to be updated
 def getUsedInventoryItems(orderId, currentId):
     # Handles insertion into Order Breakout
@@ -213,6 +233,7 @@ def getUsedInventoryItems(orderId, currentId):
         ingredientIds = cursor.fetchall()
 
     return ingredientIds
+
 # Handles updating all the items in a single menu item
 def updateInventory(ingredientIds):
     # Updates all the ingredient's quantity in the inventory table
