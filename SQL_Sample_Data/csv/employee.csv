@@ -26,3 +26,4 @@ employee_id,Name,is_manager
 7007,David Moore,FALSE
 8008,Karen Thomas,FALSE
 9009,Thomas Smith,FALSE
+0,Deleted Employee,FALSE

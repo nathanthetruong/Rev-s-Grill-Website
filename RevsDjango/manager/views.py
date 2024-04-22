@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import MenuItems, Inventory, Employees
+from .models import MenuItems, Inventory, Employees, Orders
 from django.db import connection
 from django.utils import timezone
 from datetime import datetime, timedelta
 import calendar
 from django import forms
+from django.db import transaction
 
 
 '''
@@ -94,6 +95,37 @@ def displayStaff(request):
     }
 
     return render(request, 'manager/staffmanagement.html', context)
+
+'''
+This function will give us the ability to modify the staff's properties
+'''
+def modifyStaff(request):
+    if request.method == 'POST':
+        employee_id = request.POST.get('id')
+        name = request.POST.get('name')
+        is_manager = request.POST.getlist('manager[]')
+
+        employee = Employees.objects.get(id=employee_id)
+        employee.id = employee_id
+        employee.name = name
+        employee.is_manager = 'on' in is_manager
+        employee.save()
+    return redirect('Revs-staffmanagement-screen')
+
+'''
+This function will give us the ability to delete staff
+'''
+def deleteStaff(request):
+    if request.method == 'POST':
+        employee_id = request.POST.get('employee_id')
+        if employee_id:
+            # Set employee_id to 0 in all related orders before deleting the employee, so the reports aren't affected
+            Orders.objects.filter(employee_id=employee_id).update(employee_id=0)
+            # Delete the employee
+            Employees.objects.filter(id=employee_id).delete()
+
+        return redirect('Revs-staffmanagement-screen')
+
 
 def restock(request):
     with connection.cursor() as cursor:

@@ -44,23 +44,27 @@
             <th></th>
         </tr>
         {% for employee in employees %}
-        <tr>
-            <form action="{% url 'Revs-modify-staff' %}" method="post">
-                {% csrf_token %}
-                <td><input type="text" class="form-control" name="id" value="{{ employee.id }}"></td>
-                <td><input type="text" class="form-control" name="name" value="{{ employee.name }}"></td>
-                <td><input type="text" class="form-control" name="manager" value="{{ employee.is_manager }}"></td>
-                <td><button type="submit" class="btn btn-success">Save Changes</button></td>
+            <!-- Display the employee besides our dummy "Deleted Employee" -->
+            {% if employee.id != 0 %}
+            <tr>
+                <!-- Modifies the staff info if saved  -->
+                <form action="{% url 'Revs-modify-staff' %}" method="post">
+                    {% csrf_token %}
+                    <td><input type="text" class="form-control" name="id" value="{{ employee.id }}" readonly></td>
+                    <td><input type="text" class="form-control" name="name" value="{{ employee.name }}"></td>
+                    <td><input type="checkbox" class="form-control" name="manager[]" value="on" {% if employee.is_manager %}checked="checked"{% endif %}></td>
+                    <td><button type="submit" class="btn btn-success">Save Changes</button></td>
+                </form>
                 <td>
                     <!-- Delete button form -->
                     <form action="{% url 'Revs-delete-staff' %}" method="post">
                         {% csrf_token %}
-                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                        <input type="hidden" name="employee_id" value="{{ employee.id }}">
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
-            </form>
-        </tr>        
+            </tr>     
+            {% endif %}   
         {% endfor %}
     </table>
 
