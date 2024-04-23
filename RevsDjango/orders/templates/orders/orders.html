@@ -96,7 +96,7 @@
     <div class="menu_sections">
         <h2>Burgers</h2>
         <div class="box-container">
-            {% for button in categorized_buttons.Burgers %}
+            {% for button in categorizedButtons.Burgers %}
             <div class="box">
                 <div class="image-section">
                     <!-- <img src="{% static 'burger.png' %}" alt="burger" class="icon"> -->
@@ -106,7 +106,8 @@
                 </div>
                 <div class="details-section">
                     <div class="price" >${{ button.price|floatformat:"2" }}</div>
-                    <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                    <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
             </div>
             {% endfor %}
@@ -115,7 +116,7 @@
         <div class="section" id="baskets_section">
             <h2>Baskets</h2>
             <div class="box-container">
-                {% for button in categorized_buttons.Baskets %}
+                {% for button in categorizedButtons.Baskets %}
                 <div class="box">
                     <div class="image-section">
                         <!-- <img src="{% static 'basket.jpeg' %}" alt="basket" class="icon"> -->
@@ -123,7 +124,8 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                                id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -134,7 +136,7 @@
         <div class="section" id="sandwiches_section">
             <h2>Sandwiches</h2>
             <div class="box-container">
-                {% for button in categorized_buttons.Sandwiches %}
+                {% for button in categorizedButtons.Sandwiches %}
                 <div class="box">
                     <div class="image-section">
                         <!-- <img src="{% static 'sandwich.jpeg' %}" alt="sandwich" class="icon"> -->
@@ -142,7 +144,8 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                                id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -151,7 +154,7 @@
         <div class="section" id="shakes_section">
             <h2>Shakes</h2>
             <div class="box-container">
-                {% for button in categorized_buttons.Shakes %}
+                {% for button in categorizedButtons.Shakes %}
                 <div class="box">
                     <div class="image-section">
                         <!-- <img src="{% static 'shake.jpeg' %}" alt="shake" class="icon"> -->
@@ -160,7 +163,8 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                                id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -170,7 +174,7 @@
         <div class="section" id="beverages_section">
             <h2>Beverages</h2>
             <div class="box-container">
-                {% for button in categorized_buttons.Beverages %}
+                {% for button in categorizedButtons.Beverages %}
                 <div class="box">
                     <div class="image-section">
                         <!-- <img src="{% static 'beverage.jpeg' %}" alt="Beverages" class="icon"> -->
@@ -179,7 +183,8 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                                id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -189,7 +194,7 @@
         <div class="section" id="sides_section">
             <h2>Sides</h2>
             <div class="box-container">
-                {% for button in categorized_buttons.Sides %}
+                {% for button in categorizedButtons.Sides %}
                 <div class="box">
                     <div class="image-section">
                         <!-- <img src="{% static 'sides.jpeg' %}" alt="Sides" class="icon"> -->
@@ -197,7 +202,8 @@
                     </div>
                     <div class="details-section">
                         <div class="price">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton" id="{{ button.description }}_button">{{ button.description }}</button>
+                        <button class="menuButton" data-price="{{button.price}}" data-id="{{button.id}}"
+                                id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -305,7 +311,8 @@
         $('.menuButton').click(function() {
             var description = $(this).attr('id').replace('_button', ''); // Extract description from button id
             var imageUrl = $(this).closest('.box').find('img').attr('src'); // Extract image source
-            var price = parseFloat($(this).closest('.details-section').find('.price').text().replace('$', '')); // Get price from the button's parent container
+            var price = $(this).data('price'); // Get price from the button's parent container
+            var id = $(this).data('id');
 
             // Check if item already exists in the cart
             var existingItem = $('.sidebar').find('.sidebar-item[data-description="' + description + '"]');
@@ -334,15 +341,15 @@
                 type: "POST",
                 url: "{% url 'addItem' %}", // URL for adding to cart
                 data: {
-                    'description': description,
+                    'id': id,
                     'price': price,
                     'csrfmiddlewaretoken': '{{ csrf_token }}'
                 },
                 success: function(response) {
                     // Update cart count
-                    $('#cart-count').text(response.cart_count);
+                    $('#cart-count').text(response.cartCount);
                     // Update current price
-                    $('#total-price').text(response.total_price.toFixed(2));
+                    $('#total-price').text(response.totalPrice.toFixed(2));
                 },
                 error: function(xhr, status, error) {
                     // Handle errors if any

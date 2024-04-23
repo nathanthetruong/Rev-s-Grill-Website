@@ -20,16 +20,14 @@ def orders(request):
         cursor.execute("SELECT description, price, category, id FROM menu_items")
         data = cursor.fetchall()
         data.sort()
-        buttonData = [{'description': currentItem[0], 'price': currentItem[1],
-                        'category': currentItem[2], 'id': currentItem[3]} for currentItem in data]
-        
-        menuItems = {currentItem[3]: {'description': currentItem[0], 'price': currentItem[1],
-                        'category': currentItem[2], 'count': 1} for currentItem in data}
+        menuItems = [{'description': currentItem[0], 'price': currentItem[1],
+                        'category': currentItem[2], 'id': currentItem[3],
+                        'count': 1} for currentItem in data]
 
         request.session['menuItems'] = menuItems
 
         # Categorize buttons based on their descriptions
-        categorized_buttons = {
+        categorizedButtons = {
             'Burgers': [],
             'Baskets': [],
             'Sandwiches': [],
@@ -38,30 +36,31 @@ def orders(request):
             'Sides': []
         }
 
-        for button in buttonData:
+        for button in menuItems:
             category = button['category']
             if category == 'Burger':
-                categorized_buttons['Burgers'].append(button)
+                categorizedButtons['Burgers'].append(button)
             elif category == 'Value Meal':
-                categorized_buttons['Baskets'].append(button)
+                categorizedButtons['Baskets'].append(button)
             elif category == 'Sandwiches':
-                categorized_buttons['Sandwiches'].append(button)
+                categorizedButtons['Sandwiches'].append(button)
             elif category == 'Shakes/More':
-                categorized_buttons['Shakes'].append(button)
+                categorizedButtons['Shakes'].append(button)
             elif category == 'Drink':
-                categorized_buttons['Beverages'].append(button)
+                categorizedButtons['Beverages'].append(button)
             else:
-                categorized_buttons['Sides'].append(button)
+                categorizedButtons['Sides'].append(button)
 
-        context = {'categorized_buttons': categorized_buttons}
+        context = {'categorizedButtons': categorizedButtons}
 
         return render(request, 'orders/orders.html', context)
 
 
+# Adds items to the cart
 def addItem(request):
     if request.method == 'POST':
         price = float(request.POST.get('price'))
-        buttonData = request.POST.get('buttonData')
+        buttonId = request.POST.get('id')
 
         # Retrieve the cart from the session, add new price to total
         if 'cart' not in request.session:
@@ -72,11 +71,10 @@ def addItem(request):
 
         # Adds to cart is the item isn't in cart, if it is, adds to the count
         menuItems = request.session['menuItems']
-        currentMenuItem = menuItems[buttonData['id']]
-        if currentMenuItem in cart['menuItems']:
-            cart['menuItems'][buttonData['id']]['count'] += 1
+        if any(buttonId == menuItemId for menuItemId in cart['menuItems']):
+            cart['menuItems'][buttonId]['count'] += 1
         else:
-            cart['menuItems'].append(currentMenuItem)
+            cart['menuItems'].append()
 
         request.session['cart'] = cart
 
@@ -85,64 +83,14 @@ def addItem(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-# def addItem(request):
-#     if request.method == 'POST':
-#         price = float(request.POST.get('price'))
-#         description = request.POST.get('description')
 
-#         # Retrieve the cart from the session, add new price to total, then update cart 
-#         cart = request.session.get('cart', {})
-#         cart[description] = cart.get(description, 0) + price
-#         request.session['cart'] = cart
-#         total_price = sum(cart.values())
-
-#         return JsonResponse({'cart_count': len(cart), 'total_price': total_price})
-    
-#     return JsonResponse({'error': 'failed'}, status=400)
-
-# def checkout(request):
-#     if request.method == 'POST':
-
-#         # Defaults
-#         customerId = 1
-#         employeeId = 1111
-#         orderTime = timezone.now()
-
-#         cart = request.session.get('cart')
-#         totalPrice = cart['total_price']
-
-#         # Loops until the order is processed fully in the database successfully
-#         while (True):
-#             with transaction.atomic():
-#                 try:
-#                     orderId = getNewOrderID()
-#                     updateOrders(customerId, employeeId, totalPrice, orderTime, orderId)
-#                     for currentId in cart['ids']:
-#                         ingredientIds = getUsedInventoryItems(orderId, currentId)
-#                         updateInventory(ingredientIds)
-
-#                     break
-
-#                 # Waits for 0.1 seconds before retrying order submission
-#                 except IntegrityError:
-#                     time.sleep(0.1)
-
-#         # Reset price
-#         del request.session['cart']
-
-#         messages.success(request, 'Success')
-#         return redirect('Revs-Order-Screen')
-
+# Redirects to the transaction
 def checkout(request):
     if request.method == 'POST':
-        cart = request.session.get('cart', {})
-        total_price = sum(cart.values())
-        request.session['checkout_items'] = cart  
-        request.session['total_price'] = total_price
         return redirect('transaction') 
 
 def transaction_view(request):
-    cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': []})
+    cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     totalPrice = cart['totalPrice']
 
     if request.method == 'POST':
@@ -176,22 +124,22 @@ def transaction_view(request):
     totalPriceRounded = round(totalPrice, 2)
     tax = round(0.05 * totalPrice, 2) # Calculate tax (5% of total) and round to two decimal places
     total = round(totalPrice + tax, 2)
-    context = {'cartItems': cart['menuItems'], 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
+
+    context = {'cartItems': cartItems, 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
+
     return render(request, 'orders/transaction.html', context)
 
 
 def order_return(request):
     return render(request, 'orders/orders.html')
 
-def get_cart_items(request):
+def getCartItems(request):
     # Retrieve cart items from the session
-    cart_items = request.session.get('cart', {})
-   
-    # Convert the cart items dictionary to a list of dictionaries
-    cart_items_list = [{'name': name, 'price': price} for name, price in cart_items.items()]
+    cartItems = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
+    context = {'cartItems': cartItems['menuItems']}
     
     # Return the cart items as JSON response
-    return JsonResponse(cart_items_list, safe=False)
+    return JsonResponse(context, safe=False)
 
 def login_view(request):
     # Your login logic here
@@ -242,3 +190,8 @@ def updateInventory(ingredientIds):
             sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
             cursor.execute(sqlCommand, [currentIngredientID])
 
+# Handles appending menu items
+def appendMenuItem(request, menuItemId):
+    menuItems = request.session.get("cart")
+    for key, value in menuItems.items():
+        
