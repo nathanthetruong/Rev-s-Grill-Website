@@ -125,8 +125,9 @@ def transactionView(request):
         messages.success(request, 'Payment/Order is successful.')
         return JsonResponse({'success': True})
 
+    # Handles tax and total calculation
     totalPriceRounded = round(totalPrice, 2)
-    tax = round(0.05 * totalPrice, 2) # Calculate tax (5% of total) and round to two decimal places
+    tax = round(0.05 * totalPrice, 2)
     total = round(totalPrice + tax, 2)
 
     context = {'cartItems': cart['menuItems'], 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
@@ -162,9 +163,9 @@ def getNewOrderID():
 def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
     # Inputs the order information into the orders table
     with connection.cursor() as cursor:
-        sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) " +
-                    "VALUES (%s, %s, %s, %s, %s)")
-        cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime])
+        sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time, status) " +
+                    "VALUES (%s, %s, %s, %s, %s, %s)")
+        cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime, "In Progress"])
 
 # Gets a list of all inventory items needed to be updated
 def getUsedInventoryItems(orderId, currentId):
