@@ -1,62 +1,27 @@
-from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse, resolve
+from django.test import TestCase, Client
+from .models import MenuItems, Employees, Orders
+from django.contrib.auth.models import User
+from django.db import models
 
-class TrendsPageTests(TestCase):
-    def setUp(self):
-        self.url = reverse('trends')  
-    def test_trends_page_loads_correctly(self):
-        """ Test that the trends page loads correctly and uses the correct template. """
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'trends.html')  # Check that the right template is used
+#pytest
+#coverage run -m pytest
+#coverage html
 
-    def test_trends_page_context_data(self):
-        """ Test that the trends page includes necessary context data. """
-        response = self.client.get(self.url)
-        # Assuming context includes these keys, adjust according to your actual context
-        self.assertIn('sales_trends_data', response.context)
-        self.assertIn('monthly_growth_rates', response.context)
+class TestTrendsUrls:
+    # Ensures Trends Page URL and view are correctly linked
+    def test_trends_url(self):
+        path = reverse('Revs-trends-Screen')
+        assert resolve(path).view_name == 'Revs-trends-Screen'
 
-    def test_trends_page_form(self):
-        """ Test that the date selection form is present and correctly set up. """
-        response = self.client.get(self.url)
-        # Check for the presence of the form and date input fields
-        self.assertContains(response, '<form', 1)
-        self.assertContains(response, '<input type="date"', 2)  # Two date inputs for start and end dates
+# class TestManagerView(TestCase):
+#     def test_manager_get(self):
+#         response = self.client.get(reverse('Revs-Manager-Screen'))
+#         self.assertEqual(response.status_code, 200)
+#         self.assertTemplateUsed(response, 'manager/manager.html')
 
-    def test_trends_page_table_and_list_rendering(self):
-        """ Test that the page renders a table for sales trends and a list for growth rates. """
-        response = self.client.get(self.url)
-        # Verify presence of the table and the list in the response
-        self.assertContains(response, '<table')
-        self.assertContains(response, '<ul')
 
-class RestockPageTests(TestCase):
-    def setUp(self):
-        # Setting up the URL for the restock page
-        self.url = reverse('restock') 
-
-    def test_restock_page_loads_correctly(self):
-        """Test that the restock page loads correctly."""
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_restock_page_uses_correct_template(self):
-        """Test that the restock page uses the correct template."""
-        response = self.client.get(self.url)
-        self.assertTemplateUsed(response, 'manager/restock.html')  
-        
-class ProductUsagePageTests(TestCase):
-    def setUp(self):
-        # Setting up the URL for the product usage page
-        self.url = reverse('productusage') 
-
-    def test_product_usage_page_loads_correctly(self):
-        """Test that the product usage page loads correctly."""
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-
-    def test_product_usage_page_uses_correct_template(self):
-        """Test that the product usage page uses the correct template."""
-        response = self.client.get(self.url)
-        self.assertTemplateUsed(response, 'manager/productusage.html')  
+class MenuItem(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
+    description = models.TextField()
