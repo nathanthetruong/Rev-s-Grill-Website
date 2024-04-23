@@ -70,15 +70,19 @@ def addItem(request):
         totalPrice = cart['totalPrice']
 
         # Adds to cart is the item isn't in cart, if it is, adds to the count
-        menuItems = request.session['menuItems']
-        if any(buttonId == menuItemId for menuItemId in cart['menuItems']):
-            cart['menuItems'][buttonId]['count'] += 1
+        for menuItem in cart['menuItems']:
+            if menuItem['id'] == int(buttonId):
+                menuItem['count'] += 1
+                break
         else:
-            cart['menuItems'].append()
+            cart['menuItems'].append(getMenuItem(request, buttonId))
 
         request.session['cart'] = cart
+        cartCount = 0
+        for menuItem in cart['menuItems']:
+            cartCount += menuItem['count']
 
-        return JsonResponse({'cartItems': cart['menuItems'], 'cartCount': len(cart['menuItems']),
+        return JsonResponse({'cartItems': cart['menuItems'], 'cartCount': cartCount,
                              'totalPrice': totalPrice})
     
     return JsonResponse({'error': 'failed'}, status=400)
@@ -89,7 +93,7 @@ def checkout(request):
     if request.method == 'POST':
         return redirect('transaction') 
 
-def transaction_view(request):
+def transactionView(request):
     cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     totalPrice = cart['totalPrice']
 
@@ -105,9 +109,9 @@ def transaction_view(request):
                 try:
                     orderId = getNewOrderID()
                     updateOrders(customerId, employeeId, totalPrice, orderTime, orderId)
-                    for currentItem in cart['menuItems']:
-                        for count in range(cart['menuItems']['count']):
-                            ingredientIds = getUsedInventoryItems(orderId, currentItem["id"])
+                    for menuItem in cart['menuItems']:
+                        for count in range(menuItem['count']):
+                            ingredientIds = getUsedInventoryItems(orderId, menuItem["id"])
                             updateInventory(ingredientIds)
                     break
 
@@ -125,7 +129,7 @@ def transaction_view(request):
     tax = round(0.05 * totalPrice, 2) # Calculate tax (5% of total) and round to two decimal places
     total = round(totalPrice + tax, 2)
 
-    context = {'cartItems': cartItems, 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
+    context = {'cartItems': cart['menuItems'], 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
 
     return render(request, 'orders/transaction.html', context)
 
@@ -141,7 +145,7 @@ def getCartItems(request):
     # Return the cart items as JSON response
     return JsonResponse(context, safe=False)
 
-def login_view(request):
+def loginView(request):
     # Your login logic here
     return render(request, 'login/login.html')
 
@@ -191,7 +195,8 @@ def updateInventory(ingredientIds):
             cursor.execute(sqlCommand, [currentIngredientID])
 
 # Handles appending menu items
-def appendMenuItem(request, menuItemId):
-    menuItems = request.session.get("cart")
-    for key, value in menuItems.items():
-        
+def getMenuItem(request, menuItemId):
+    menuItems = request.session.get("menuItems")
+    for menuItem in menuItems:
+        if menuItem['id'] == int(menuItemId):
+            return menuItem
