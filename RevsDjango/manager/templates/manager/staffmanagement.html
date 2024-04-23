@@ -19,6 +19,16 @@
 <body>
     <h1>Staff Management</h1>
 
+    <!-- Feedback for whenever we add a new employee -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">X</button>
+                <strong>{{message}}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -68,6 +78,24 @@
         {% endfor %}
     </table>
 
+    <!-- Functionality to add new staff -->
+    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Add New Employee</button>
+    <div id="demo" class="collapse">
+        <form action="{% url 'Revs-add-staff' %}" method="post">
+            {% csrf_token %}
+            <table class="table">
+                <tr>
+                    <td><input type="text" class="form-control" name="new_id" placeholder="Enter unique ID" required></td>
+                    <td><input type="text" class="form-control" name="new_name" placeholder="Enter name" required></td>
+                    <td>
+                        <input type="checkbox" class="form-check-input" name="new_manager[]" value="on" id="new_manager_check">
+                        <label class="form-check-label" for="new_manager_check">Is Manager?</label>
+                    </td>
+                    <td><button type="submit" class="btn btn-primary">Add Employee</button></td>
+                </tr>
+            </table>
+        </form>        
+    </div>
 
     <!-- Foooter Section -->
     <footer>

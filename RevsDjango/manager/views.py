@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import calendar
 from django import forms
 from django.db import transaction
+from django.contrib import messages
 
 
 '''
@@ -126,6 +127,25 @@ def deleteStaff(request):
 
         return redirect('Revs-staffmanagement-screen')
 
+'''
+This function will give us the ability to add new staff
+'''
+def addStaff(request):
+    if request.method == 'POST':
+        employee_id = request.POST.get('new_id')
+        name = request.POST.get('new_name')
+        is_manager = request.POST.getlist('new_manager[]')
+
+        # Check if the employee ID already exists
+        if Employees.objects.filter(id=employee_id).exists():
+            messages.error(request, 'Employee ID already in use. Please use a different ID.')
+            return redirect('Revs-staffmanagement-screen')
+        else:
+            # Create new employee since ID is unique
+            new_employee = Employees(id=employee_id, name=name, is_manager='on' in is_manager)
+            new_employee.save()
+            messages.success(request, 'New employee added successfully.')
+            return redirect('Revs-staffmanagement-screen')
 
 def restock(request):
     with connection.cursor() as cursor:

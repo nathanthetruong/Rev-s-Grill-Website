@@ -18,4 +18,5 @@ urlpatterns = [
     path('modifymenuitem/', views.modifyItem, name='Revs-modify-item'),
     path('deletestaff/', views.deleteStaff, name='Revs-delete-staff'),
     path('modifystaff/', views.modifyStaff, name='Revs-modify-staff'),
+    path('addstaff/', views.addStaff, name='Revs-add-staff'),
 ]
