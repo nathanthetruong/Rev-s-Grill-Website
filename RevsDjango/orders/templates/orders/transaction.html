@@ -42,13 +42,13 @@
             <div class="order-summary">
                 <h2>Order summary</h2>
                 <ul class="order-items">
-                    {% for description, price in cart_items.items %}
+                    {% for cartItem in cartItems %}
                     <div class="order-item">
                         <!-- path to the image -->
-                        <img src="{% static 'burger.png' %}" alt="{{ description }}" class="item-image">
-                        {{ description }}
-                        <span>${{ price }}</span>    
-                        <button class="remove-item">Remove</button>    
+                        <img src="{% static 'burger.png' %}" alt="{{ cartItem.description }}" class="item-image">
+                        {{cartItem.description}}
+                        <span>${{cartItem.price}}</span>    
+                        <button class="remove-item">Remove</button>
                     </div>
                     {% endfor %}
                 </ul>
@@ -57,7 +57,7 @@
             <div class="totals">
                 <div>
                     <span class="total_label">Subtotal</span>
-                    <span>${{ total_price }}</span> 
+                    <span>${{ totalPrice }}</span> 
                 </div>
                 <div>
                     <span class="total_label">Tax</span>
@@ -85,26 +85,6 @@
     </footer>
 
     <!-- Javascript logic -->
-    <script>
-        $(document).ready(function() {
-            //using AJAX to fetch the items from the backend
-            $.ajax({
-                type: "GET",
-                url: "{% url 'get_cart_items' %}", 
-                success: function(response) {
-                    // Iterate through each item in the response and populate the order summary container
-                    response.forEach(function(item) {
-                        var itemHtml = '<li class="order-item"><img src="' + item.image + '" alt="' + item.name + '" class="item-image">' + item.name + '<span>$' + item.price + '</span></li>';
-                        $('.order-items').append(itemHtml);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                }
-            });
-
-        });
-    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
