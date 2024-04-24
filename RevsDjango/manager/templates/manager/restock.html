@@ -64,8 +64,8 @@
                 {% csrf_token %}
                 <input type="hidden" name="item_id" value="{{ item.id }}">
                 <td><input type="text" class="form-control" name="description" value="{{ item.description }}"></td>
-                <td><input type="text" class="form-control" name="quantity_remaining" value="{{ item.quantity_remaining }}"></td>
-                <td><input type="text" class="form-control" name="quantity_target" value="{{ item.quantity_target }}"></td>
+                <td><input type="number" min="0" class="form-control" name="quantity_remaining" value="{{ item.quantity_remaining }}"></td>
+                <td><input type="number" min="0" class="form-control" name="quantity_target" value="{{ item.quantity_target }}"></td>
                 <td><button type="submit" class="btn btn-success">Save Changes</button></td>
             </form>
 
@@ -90,8 +90,8 @@
                 <table class="table">
                     <tr>
                         <td><input type="text" class="form-control" name="new_description" placeholder="Enter the inventory item name" required></td>
-                        <td><input type="number" class="form-control" name="new_quantity_remaining" placeholder="Enter the remaining quantity" required></td>
-                        <td><input type="number" class="form-control" name="new_quantity_target" placeholder="Enter the target quantity" required></td>
+                        <td><input type="number" min="0" class="form-control" name="new_quantity_remaining" placeholder="Enter the remaining quantity" required></td>
+                        <td><input type="number" min="0" class="form-control" name="new_quantity_target" placeholder="Enter the target quantity" required></td>
                         <td><button type="submit" class="btn btn-primary">Add Item</button></td>
                     </tr>
                 </table>
