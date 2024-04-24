@@ -17,7 +17,10 @@
     </style>
 </head>
 <body>
-    <h1>Staff Management</h1>
+    <h1>Staff Management
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
 
     <!-- Feedback for whenever we add a new employee -->
     {% if messages %}
@@ -136,6 +139,23 @@
         }
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Staff Management</h5>
+            </div>
+            <div class="modal-body">
+            This page displays a list of all the current employees. You can edit any employee's information, add new employees, or delete employees.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS, then Google Translate -->

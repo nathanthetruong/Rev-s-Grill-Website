@@ -34,7 +34,10 @@
     </header>
 
     <!-- Display the menu items from the model -->
-    <h1>Menu Items</h1>
+    <h1>Menu Items
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
     <table class="table table-bordered">
         <tr>
             <th>Price</th>
@@ -162,6 +165,24 @@
             new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
     </script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Manager Page</h5>
+            </div>
+            <div class="modal-body">
+                This page displays a list of all menu items. You can edit the prices, description, categories, ordered amounts, and 
+                the dates that a menu item will be active for. Additionally, you can add new menu items, or delete existing menu items.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS, then Google Translate -->

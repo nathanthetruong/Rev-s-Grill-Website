@@ -19,4 +19,7 @@ urlpatterns = [
     path('deletestaff/', views.deleteStaff, name='Revs-delete-staff'),
     path('modifystaff/', views.modifyStaff, name='Revs-modify-staff'),
     path('addstaff/', views.addStaff, name='Revs-add-staff'),
+    path('addinventory/', views.addInventory, name='Revs-add-inventory'),
+    path('deleteinventory/', views.deleteInventory, name='Revs-delete-inventory'),
+    path('modifyinventory/', views.modifyInventory, name='Revs-modify-inventory'),
 ]
