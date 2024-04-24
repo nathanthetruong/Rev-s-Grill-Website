@@ -105,10 +105,12 @@ def modifyStaff(request):
         employee_id = request.POST.get('id')
         name = request.POST.get('name')
         is_manager = request.POST.getlist('manager[]')
+        email = request.POST.get('email')
 
         employee = Employees.objects.get(id=employee_id)
         employee.id = employee_id
         employee.name = name
+        employee.email = email
         employee.is_manager = 'on' in is_manager
         employee.save()
     return redirect('Revs-staffmanagement-screen')

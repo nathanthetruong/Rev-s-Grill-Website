@@ -168,6 +168,7 @@ class Employees(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.TextField(blank=True, null=True)
     is_manager = models.BooleanField(blank=True, null=True)
+    email = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
@@ -195,6 +196,18 @@ class Inventory(models.Model):
     class Meta:
         managed = False
         db_table = 'inventory'
+
+
+class LoginGooglecredential(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    access_token = models.CharField(max_length=255)
+    refresh_token = models.CharField(max_length=255)
+    token_expiry = models.DateTimeField()
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'login_googlecredential'
 
 
 class MenuItems(models.Model):
