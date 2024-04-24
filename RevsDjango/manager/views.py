@@ -24,6 +24,12 @@ def manager(request):
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
 
+        # validates the dates when adding menu items
+        if end_date < start_date:
+            messages.error(request, "End date must be after start date")
+
+            return redirect('Revs-Manager-Screen')
+
         # Get an available ID for a new menu_item
         with connection.cursor() as cursor:
             
