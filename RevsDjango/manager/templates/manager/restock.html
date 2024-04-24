@@ -17,7 +17,10 @@
     </style>
 </head>
 <body>
-    <h1>Restock Report</h1>
+    <h1>Restock Report
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
 
     <!-- Feedback for whenever we add a new inventory item -->
     {% if messages %}
@@ -127,6 +130,23 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Restock Report</h5>
+            </div>
+            <div class="modal-body">
+            This page displays a list of all inventory items. Items needing restocking are highlighted. You can edit quantities, add new items, or delete existing items.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!-- Google Translate API -->
     <script type="text/javascript">
