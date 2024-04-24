@@ -19,6 +19,16 @@
 <body>
     <h1>Restock Report</h1>
 
+    <!-- Feedback for whenever we add a new inventory item -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">X</button>
+                <strong>{{message}}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -37,18 +47,54 @@
     <!-- Display the inventory items from the model -->
     <table class="table table-bordered">
         <tr>
+            <th>Needs Restocking</th>
             <th>Description</th>
             <th>Quantity Remaining</th>
             <th>Quantity Target</th>
+            <th>Options</th>
         </tr>
         {% for item in inventory_items %}
         <tr>
-            <td>{{ item.description }}</td>
-            <td>{{ item.quantity_remaining }}</td>
-            <td>{{ item.quantity_target }}</td>
+            <td><input type="checkbox" class="form-control" disabled {% if item.quantity_remaining < item.quantity_target %}checked{% endif %}></td>
+            <!-- Modifies the inventory info if saved  -->
+            <form action="{% url 'Revs-modify-inventory' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item.id }}">
+                <td><input type="text" class="form-control" name="description" value="{{ item.description }}"></td>
+                <td><input type="text" class="form-control" name="quantity_remaining" value="{{ item.quantity_remaining }}"></td>
+                <td><input type="text" class="form-control" name="quantity_target" value="{{ item.quantity_target }}"></td>
+                <td><button type="submit" class="btn btn-success">Save Changes</button></td>
+            </form>
+
+            <td>
+                <!-- Delete button form -->
+                <form action="{% url 'Revs-delete-inventory' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="item_id" value="{{ item.id }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </td>
+
         </tr>
         {% endfor %}
     </table>
+
+    <!-- Functionality to add new inventory items -->
+    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Add New Inventory Item</button>
+        <div id="demo" class="collapse">
+            <form action="{% url 'Revs-add-inventory' %}" method="post">
+                {% csrf_token %}
+                <table class="table">
+                    <tr>
+                        <td><input type="text" class="form-control" name="new_description" placeholder="Enter the inventory item name" required></td>
+                        <td><input type="number" class="form-control" name="new_quantity_remaining" placeholder="Enter the remaining quantity" required></td>
+                        <td><input type="number" class="form-control" name="new_quantity_target" placeholder="Enter the target quantity" required></td>
+                        <td><button type="submit" class="btn btn-primary">Add Item</button></td>
+                    </tr>
+                </table>
+            </form>        
+        </div>         
+    </div>
 
     <!-- Foooter Section -->
     <footer>

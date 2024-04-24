@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import MenuItems, Inventory, Employees, Orders
+from .models import MenuItems, Inventory, Employees, Orders, Inventory
 from django.db import connection
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -146,13 +146,65 @@ def addStaff(request):
             new_employee.save()
             messages.success(request, 'New employee added successfully.')
             return redirect('Revs-staffmanagement-screen')
+        
+'''
+This function will give us the ability to add new inventory items
+'''
+def addInventory(request):
+    if request.method == 'POST':
+        new_description = request.POST.get('new_description')
+        new_quantity_remaining = request.POST.get('new_quantity_remaining')
+        new_quantity_target = request.POST.get('new_quantity_target')
+
+        # Get an available ID for a new inventory item
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT MAX(id) FROM inventory")
+            max_id = cursor.fetchone()[0]
+        new_id = max_id + 1
+
+        # Insert into the database
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO inventory (id, description, quantity_remaining, quantity_target) VALUES (%s, %s, %s, %s)"
+            cursor.execute(sql, [new_id, new_description, new_quantity_remaining, new_quantity_target])
+
+        messages.success(request, 'New inventory item added successfully.')
+        return redirect('Revs-restock-Screen')
+    
+'''
+This function will give us the ability to remove inventory items
+'''
+def deleteInventory(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        item = Inventory.objects.get(id=item_id)
+        item.delete()
+        messages.success(request, 'Inventory item successfully deleted.')
+        return redirect('Revs-restock-Screen')
+    
+'''
+This function will give us the ability to modify inventory items
+'''
+def modifyInventory(request):
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        description = request.POST.get('description')
+        quantity_remaining = request.POST.get('quantity_remaining')
+        quantity_target = request.POST.get('quantity_target')
+
+        item = Inventory.objects.get(id=item_id)
+        item.description = description
+        item.quantity_remaining = quantity_remaining
+        item.quantity_target = quantity_target
+        item.save()
+        messages.success(request, 'Inventory item successfully modified.')
+
+        return redirect('Revs-restock-Screen')
 
 def restock(request):
     with connection.cursor() as cursor:
         sqlCommand = ("""
                         SELECT id, description, quantity_remaining, quantity_target
                         FROM inventory
-                        WHERE quantity_remaining < quantity_target;
                       """)
         cursor.execute(sqlCommand)
         rows = cursor.fetchall()
