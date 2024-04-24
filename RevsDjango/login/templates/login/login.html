@@ -74,32 +74,6 @@
         function googleTranslateElementInit() {
           new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
-    </script>        
-
-    <!-- Employee Password Authentication -->
-    <script>
-        document.getElementById('submit_button').addEventListener('click', function() {
-            var userInput = document.getElementById('password_box').value;
-            fetch('{% url "authenticate-user" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ user_input: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.result[0]);
-                if(data.result[0] == 1) {
-                    window.location.href = "{% url 'Revs-Manager-Screen' %}";
-                }
-                else if(data.result[0] == 0) {
-                    window.location.href = "{% url 'Revs-Login-Screen' %}";
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
     </script>
 
 </body>

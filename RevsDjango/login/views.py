@@ -3,35 +3,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.db import connection
-
-# Create your views here.
-def test_SQL(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM menu_items")
-        data = cursor.fetchall()
-        print(data)
-    return JsonResponse({'result': data})
-
-# Returns 1 if employee is a manager
-# Returns 0 if the employee isn't a manager
-# Returns -1 if the ID doesn't belong to an employee
-def authenticateUser(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        employeeId = data.get('user_input', '')
-        if not employeeId:
-            return JsonResponse({'error': "Empty Field"})
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT is_manager FROM employees WHERE id=%s", [int(employeeId)])
-            data = cursor.fetchall()
-
-            if len(data) > 0:
-                if data[0][0]:
-                    return JsonResponse({'result': [1]})
-                else:
-                    return JsonResponse({'result': [0]})
-            else:
-                return JsonResponse({'result': [-1]})
+from allauth.socialaccount.views import SignupView
+from allauth.socialaccount.models import SocialLogin
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from allauth.account.utils import perform_login
+from .models import Employees
 
 def login(request):
     return render(request, 'login/login.html')
@@ -42,8 +18,42 @@ def about(request):
 def employee(request):
     return render(request, 'login/employee.html')
 
-def employee_redirect(request):
-    if request.user.is_authenticated:
-        return redirect('login/employee.html')
+def noaccess(request):
+    return render(request, 'login/noaccess.html')
+
+def noaccessManager(request):
+    return render(request, 'login/noaccessmanager.html')
+
+class CustomSignupView(SignupView):
+    def form_valid(self, form):
+        sociallogin = self.get_form_kwargs().get('sociallogin')
+        user = sociallogin.user
+        if form.is_valid():
+            sociallogin.save(self.request)
+            return perform_login(self.request, user, email_verification='optional')
+        return super().form_valid(form)
+    
+def employeeRedirect(request):
+    if not request.user.is_authenticated:
+        return redirect('Revs-Login-Screen')
+    
+    # Check if the user's email is in the Employee table
+    user_email = request.user.email
+    if Employees.objects.filter(email=user_email).exists():
+        return redirect('Revs-Employee-Screen')
     else:
-        return redirect('login/login.html')
+        return redirect('employee-noaccess')
+
+def managerAccess(request):
+    if not request.user.is_authenticated:
+        return redirect('Revs-Login-Screen')
+    
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager:
+            return redirect('Revs-Manager-Screen')
+        else:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('manager-noaccess')
