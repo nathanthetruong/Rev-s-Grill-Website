@@ -15,4 +15,6 @@ urlpatterns = [
     path('noaccess/', views.noaccess, name='employee-noaccess'),
     path('manageraccess/', views.managerAccess, name='manager-access'),
     path('noaccessmanager/', views.noaccessManager, name='manager-noaccess'),
+    path('adminaccess/', views.adminAccess, name='admin-access'),
+    path('noaccessadmin/', views.noaccessAdmin, name='admin-noaccess'),
 ]

@@ -24,6 +24,9 @@ def noaccess(request):
 def noaccessManager(request):
     return render(request, 'login/noaccessmanager.html')
 
+def noaccessAdmin(request):
+    return render(request, 'login/noaccessadministrator.html')
+
 class CustomSignupView(SignupView):
     def form_valid(self, form):
         sociallogin = self.get_form_kwargs().get('sociallogin')
@@ -57,3 +60,17 @@ def managerAccess(request):
             return redirect('manager-noaccess')
     except Employees.DoesNotExist:
         return redirect('manager-noaccess')
+    
+def adminAccess(request):
+    if not request.user.is_authenticated:
+        return redirect('Revs-Login-Screen')
+    
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_admin:
+            return redirect('Revs-Administrator-Screen')
+        else:
+            return redirect('admin-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('admin-noaccess')
