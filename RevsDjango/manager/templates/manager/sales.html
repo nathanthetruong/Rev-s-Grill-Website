@@ -61,11 +61,11 @@
             <body>
                 {% for item in report %}
                 <tr>
-                    <td>${{ item.price }}</td>
+                    <td>${{ item.price|floatformat:2 }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.category }}</td>
                     <td>{{ item.totalQuantityOrdered }}</td>
-                    <td>${{ item.revenue }}</td>
+                    <td>${{ item.revenue|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
             </body>
