@@ -12,12 +12,15 @@
     <!--  Stylesheet for the page -->
     <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
 
-    <title>Order Management</title>
+    <title>Product Usage</title>
     <style>
     </style>
 </head>
 <body>
-    <h1>Order Management</h1>
+    <h1>Popularity Trends
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
 
     <header>
         <!-- Navigation bar -->
@@ -34,7 +37,34 @@
         </div>
     </header>
 
-    
+    <!-- Display the Date Forms -->
+    <form action='{% url "Revs-popularity-Screen" %}' method="post">
+        {% csrf_token %}
+        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+        <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1" required>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+
+    <!-- Display the popularity report -->
+    <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Times Ordered</th>
+                </tr>
+            </thead>
+            <body>
+                {% for item in report %}
+                <tr>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.times_ordered }}</td>
+                </tr>
+                {% endfor %}
+            </body>
+        </table>
+    </form>
 
     <!-- Foooter Section -->
     <footer>
@@ -75,6 +105,23 @@
         }
     </script>
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Product Usage Report</h5>
+            </div>
+            <div class="modal-body">
+                Given a time window, this page will display a statistic based on the popularity of a given number of menu items.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS, then Google Translate -->

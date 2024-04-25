@@ -49,6 +49,7 @@ def deleteStaff(request):
             Orders.objects.filter(employee_id=employee_id).update(employee_id=0)
             # Delete the employee
             Employees.objects.filter(id=employee_id).delete()
+            messages.success(request, 'Deleted employee successfully.')
 
         return redirect('Revs-Administrator-Screen')
 
@@ -61,14 +62,18 @@ def addStaff(request):
         name = request.POST.get('new_name')
         is_manager = request.POST.getlist('new_manager[]')
         is_admin = request.POST.getlist('new_admin[]')
+        email = request.POST.get('new_email')
 
-        # Check if the employee ID already exists
+        # Check if the employee ID or email already exists
         if Employees.objects.filter(id=employee_id).exists():
             messages.error(request, 'Employee ID already in use. Please use a different ID.')
             return redirect('Revs-staffmanagement-screen')
+        elif Employees.objects.filter(email=email).exists():
+            messages.error(request, 'Email already in use. Please use a different email.')
+            return redirect('Revs-Administrator-Screen')
         else:
             # Create new employee since ID is unique
-            new_employee = Employees(id=employee_id, name=name, is_manager='on' in is_manager, is_admin='on' in is_admin)
+            new_employee = Employees(id=employee_id, name=name, email=email, is_manager='on' in is_manager, is_admin='on' in is_admin)
             new_employee.save()
             messages.success(request, 'New employee added successfully.')
             return redirect('Revs-Administrator-Screen')
