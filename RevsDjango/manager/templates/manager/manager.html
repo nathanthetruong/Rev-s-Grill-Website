@@ -17,7 +17,6 @@
     </style>
 </head>
 <body>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -30,6 +29,16 @@
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
+    <!-- Feedback for whenever we add a new employee -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">X</button>
+                <strong>{{message}}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+
     </header>
 
     <!-- Feedback for whenever we add a new menu item -->
