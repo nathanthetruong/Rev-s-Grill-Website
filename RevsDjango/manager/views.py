@@ -143,6 +143,7 @@ def modifyInventory(request):
 
         return redirect('Revs-restock-Screen')
 
+
 def restock(request):
     with connection.cursor() as cursor:
         sqlCommand = ("""
@@ -164,81 +165,28 @@ def restock(request):
 def excess(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
-        if "submit" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+        startingDate = request.POST.get('start_date')
+        endingDate = request.POST.get('end_date')
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-
-    excess_report = getExcessReport(startingDate, endingDate)
-
-    # Default option
-    context = {'excess_report': excess_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+    excessReport = getExcessReport(request, startingDate, endingDate)
+    context = {'report': excessReport}
 
     return render(request, 'manager/excess.html', context)
-
-
-def getExcessReport(startDate, endDate):
-    with connection.cursor() as cursor:
-        # Queries for available inventory items still below their quantity target between two dates
-        sqlCommand = ("""
-                        SELECT inv.id AS inventory_id, inv.description AS inventory_description, inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed, inv.quantity_target * 0.1 AS ten_percent_target
-                        FROM inventory inv
-                        LEFT JOIN food_to_inventory fti ON inv.id = fti.inventory_id
-                        LEFT JOIN menu_items mi ON fti.food_item_id = mi.id
-                        LEFT JOIN order_breakout ob ON mi.id = ob.food_items
-                        LEFT JOIN orders o ON ob.order_id = o.id 
-                        WHERE o.order_time BETWEEN %s AND %s
-                        GROUP BY inv.id, inv.description, inv.quantity_target
-                        HAVING COALESCE(SUM(fti.quantity), 0) < inv.quantity_target * 0.1;                      
-                      """)
-        cursor.execute(sqlCommand, [startDate, endDate])
-        cursorOutput = cursor.fetchall()
-
-        # Sorts and places all the items into the context
-        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
-        dataReport =[{'inventory_id': currentItem[0], 
-                      'inventory_description': currentItem[1],
-                      'quantity_target': currentItem[2],
-                      'quantity_consumed': currentItem[3],
-                      'ten_percent_target': currentItem[4]}
-                       for currentItem in dataSorted]
-        
-        return dataReport
 
 
 # Creates the Product Usage Page
 def productusage(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
-        if "submit_button" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+        startingDate = request.POST.get('start_date')
+        endingDate = request.POST.get('end_date')
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-
-    product_usage_report = getProductUsageReport(startingDate, endingDate)
+    productUsageReport = getProductUsageReport(request, startingDate, endingDate)
 
     # Default option
-    context = {'product_usage_report': product_usage_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+    context = {'report': productUsageReport}
 
     return render(request, 'manager/productusage.html', context)
 
@@ -247,68 +195,18 @@ def productusage(request):
 def sales(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
         if "submit_button" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+            startingDateForm = request.POST.get('start_date')
+            endingDateForm = request.POST.get('end_date')
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-
-    sales_report = getSalesReport(startingDate, endingDate)
+    salesReport = getSalesReport(request, startingDate, endingDate)
 
     # Default option
-    context = {'sales_report': sales_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+    context = {'report': salesReport}
 
     return render(request, 'manager/sales.html', context)
 
-# Function for getting the history of product usage
-def getProductUsageReport(startDate, endDate):
-    with connection.cursor() as cursor:
-        # Queries for all items within the year
-        sqlCommand = ("SELECT inventory.id AS inventory_id, inventory.description AS inventory_description, " +
-                      "SUM(food_to_inventory.quantity) AS total_quantity_used FROM orders JOIN order_breakout " +
-                      "ON orders.id = order_breakout.order_id JOIN food_to_inventory ON order_breakout.food_items " +
-                      "= food_to_inventory.food_item_id JOIN inventory ON food_to_inventory.inventory_id = " +
-                      "inventory.id WHERE orders.order_time BETWEEN %s AND %s GROUP BY inventory.id, " +
-                      "inventory.description;")
-        cursor.execute(sqlCommand, [startDate, endDate])
-        cursorOutput = cursor.fetchall()
-
-        # Sorts and places all the items into the context
-        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
-        dataReport =[{'id': currentItem[0], 'description': currentItem[1], 'quantity': currentItem[2]
-                      } for currentItem in dataSorted]
-        
-        return dataReport
-
-
-# Function for getting the history of sales
-def getSalesReport(startDate, endDate=timezone.now()):
-    with connection.cursor() as cursor:
-        # Queries for all items within the year
-        sqlCommand = ("SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, " +
-                        "menu_items.times_ordered, SUM(order_breakout.food_items) AS total_quantity_ordered " +
-                        "FROM orders JOIN order_breakout ON orders.id = order_breakout.order_id JOIN menu_items " +
-                        "ON order_breakout.food_items = menu_items.id WHERE orders.order_time BETWEEN %s AND %s " +
-                        "GROUP BY menu_items.id, menu_items.description, menu_items.times_ordered, menu_items.price;")
-        cursor.execute(sqlCommand, [startDate, endDate])
-        cursorOutput = cursor.fetchall()
-
-        # Sorts and places all the items into the context
-        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
-        dataReport =[{'id': currentItem[0], 'price': currentItem[1],
-                       'description': currentItem[2], 'category': currentItem[3],
-                       'total_quantity_ordered': currentItem[5]}
-                       for currentItem in dataSorted]
-        return dataReport
 
 def trends(request):
     startingDate = timezone.now().date()-timedelta(days=365)
@@ -335,22 +233,100 @@ def trends(request):
             endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
 
     # Fetch real sales trends data
-    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
-    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
+    sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
+    monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
 
-    trends = getTrends(startingDate, endingDate)
+    trends = getTrends(request, startingDate, endingDate)
 
     # Default option
     context = {'trends': trends,
-               'StartDateForm': startingDateForm,
-               'EndDateForm': endingDateForm,
+                'StartDateForm': startingDateForm,
+                'EndDateForm': endingDateForm,
                 'sales_trends_data': sales_trends_data,
                 'monthly_growth_rates': monthly_growth_rates,
-               }
+                }
 
     return render(request, 'manager/trends.html', context)
 
-def getTrends(startDate, endDate):
+
+def getExcessReport(request, startDate, endDate):
+    with connection.cursor() as cursor:
+        # Queries for available inventory items still below their quantity target between two dates
+        sqlCommand = ("""
+                        SELECT inv.id AS inventory_id, inv.description AS inventory_description,
+                        inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed,
+                        CAST(inv.quantity_target AS FLOAT) * 0.1 AS ten_percent_target
+                        FROM inventory inv
+                        LEFT JOIN food_to_inventory fti ON inv.id = fti.inventory_id
+                        LEFT JOIN menu_items mi ON fti.food_item_id = mi.id
+                        LEFT JOIN order_breakout ob ON mi.id = ob.food_items
+                        LEFT JOIN orders o ON ob.order_id = o.id 
+                        WHERE o.order_time BETWEEN %s AND %s
+                        GROUP BY inv.id, inv.description, inv.quantity_target
+                        HAVING COALESCE(SUM(fti.quantity), 0) < inv.quantity_target * 0.1;                      
+                      """)
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 
+                      'description': currentItem[1],
+                      'target_quantity': currentItem[2],
+                      'quantity_consumed': currentItem[3],
+                      'ten_percent_target': float(currentItem[4])}
+                       for currentItem in dataSorted]
+        request.session['currentReport'] = dataReport
+        
+        return dataReport
+
+
+# Function for getting the history of product usage
+def getProductUsageReport(request, startDate, endDate):
+    with connection.cursor() as cursor:
+        # Queries for all items within the year
+        sqlCommand = ("SELECT inventory.id AS inventory_id, inventory.description AS inventory_description, " +
+                      "SUM(food_to_inventory.quantity) AS total_quantity_used FROM orders JOIN order_breakout " +
+                      "ON orders.id = order_breakout.order_id JOIN food_to_inventory ON order_breakout.food_items " +
+                      "= food_to_inventory.food_item_id JOIN inventory ON food_to_inventory.inventory_id = " +
+                      "inventory.id WHERE orders.order_time BETWEEN %s AND %s GROUP BY inventory.id, " +
+                      "inventory.description;")
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 'description': currentItem[1], 'quantity': currentItem[2]
+                      } for currentItem in dataSorted]
+        request.session['currentReport'] = dataReport
+
+        return dataReport
+
+
+# Function for getting the history of sales
+def getSalesReport(request, startDate, endDate=timezone.now()):
+    with connection.cursor() as cursor:
+        # Queries for all items within the year
+        sqlCommand = ("SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, " +
+                        "menu_items.times_ordered, SUM(order_breakout.food_items) AS total_quantity_ordered " +
+                        "FROM orders JOIN order_breakout ON orders.id = order_breakout.order_id JOIN menu_items " +
+                        "ON order_breakout.food_items = menu_items.id WHERE orders.order_time BETWEEN %s AND %s " +
+                        "GROUP BY menu_items.id, menu_items.description, menu_items.times_ordered, menu_items.price;")
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 'price': currentItem[1],
+                       'description': currentItem[2], 'category': currentItem[3],
+                       'totalQuantityOrdered': currentItem[5]}
+                       for currentItem in dataSorted]
+        request.session['currentReport'] = dataReport
+
+        return dataReport
+
+
+def getTrends(request, startDate, endDate):
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("""
@@ -373,9 +349,11 @@ def getTrends(startDate, endDate):
                       'item2': currentItem[1],
                       'frequency': currentItem[2]}
                        for currentItem in dataSorted]
+
         return dataReport
-    
-def getSalesTrendsData(startDate, endDate):
+
+
+def getSalesTrendsData(request, startDate, endDate):
     with connection.cursor() as cursor:
         sqlCommand = """
         SELECT DATE(orders.order_time) AS order_date, SUM(menu_items.price * order_breakout.food_items) AS total_sales
@@ -390,10 +368,12 @@ def getSalesTrendsData(startDate, endDate):
         result = cursor.fetchall()
 
         # Convert query results into a list of dictionaries
-        trends_data = [{'date': row[0], 'total_sales': row[1]} for row in result]
-        return trends_data
+        dataReport = [{'date': row[0], 'total_sales': row[1]} for row in result]
 
-def getMonthlySalesData(startDate, endDate):
+        return dataReport
+    
+
+def getMonthlySalesData(request, startDate, endDate):
     with connection.cursor() as cursor:
         sqlCommand = """
         SELECT DATE_TRUNC('month', orders.order_time) AS order_month, SUM(menu_items.price * order_breakout.food_items) AS monthly_sales
@@ -428,8 +408,41 @@ def getMonthlySalesData(startDate, endDate):
         
         return monthly_growth_rates
 
+
 def orderManagement(request):
     return render(request, 'manager/ordermanagement.html')
+
+
+# Sort function for tables
+def sortTable(request):
+    sortField = request.GET.get('sortField', 'id')
+    tableName = request.GET.get('tableName', 'sales')
+
+    # Handles tracking previous search fields and tables
+    previousField = ""
+    if 'currentField' in request.session:
+        previousField = request.session.get('currentField')
+    request.session['currentField'] = sortField
+
+    previousTable = ""
+    if 'currentTable' in request.session:
+        previousTable = request.session.get('currentTable')
+    request.session['currentTable'] = tableName
+    
+    # Sorts the data in the table and checks for order reversal
+    currentReport = request.session.get('currentReport')
+    if sortField == previousField and tableName == previousTable:
+        currentReport.reverse()
+    else:
+        currentReport = sorted(currentReport, key=lambda x: x[sortField])
+    request.session['currentReport'] = currentReport
+
+    context = {
+        'report': currentReport
+    }
+
+    return render(request, f'manager/{tableName}.html', context)
+    
     
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
