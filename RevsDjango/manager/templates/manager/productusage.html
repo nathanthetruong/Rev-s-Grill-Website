@@ -51,15 +51,13 @@
             <input type="hidden" id="tableName" name="tableName" value="productusage">
             <thead>
                 <tr>
-                    <th onclick="setSort('id')">ID</th>
-                    <th onclick="setSort('description')">Description</th>
-                    <th onclick="setSort('quantity')">Times Ordered</th>
+                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('quantity')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                 </tr>
             </thead>
             <body>
                 {% for item in report %}
                 <tr>
-                    <td>{{ item.id }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.quantity }}</td>
                 </tr>

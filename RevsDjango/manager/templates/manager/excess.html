@@ -51,18 +51,16 @@
             <input type="hidden" id="tableName" name="tableName" value="excess">
             <thead>
                 <tr>
-                    <th onclick="setSort('id')">ID</th>
-                    <th onclick="setSort('description')">Description</th>
-                    <th onclick="setSort('target_quantity')">Target Quantity</th>
-                    <th onclick="setSort('quantity_consumed')">Quantity Consumed</th>
-                    <th onclick="setSort('ten_percent_target')">10% of Target</th>
+                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Target Quantity <img src="{% static 'sort.png' %}" onclick="setSort('target_quantity')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Quantity Consumed <img src="{% static 'sort.png' %}" onclick="setSort('quantity_consumed')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>10% of Target <img src="{% static 'sort.png' %}" onclick="setSort('ten_percent_target')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                 </tr>
             </thead>
     
             <tbody>
                 {% for item in report  %}
                 <tr>
-                    <td>{{ item.id }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.target_quantity }}</td>
                     <td>{{ item.quantity_consumed }}</td>
