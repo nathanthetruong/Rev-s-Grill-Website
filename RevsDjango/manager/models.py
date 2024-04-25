@@ -169,6 +169,7 @@ class Employees(models.Model):
     name = models.TextField(blank=True, null=True)
     is_manager = models.BooleanField(blank=True, null=True)
     email = models.TextField(blank=True, null=True)
+    is_admin = models.BooleanField(blank=True, null=True)
 
     class Meta:
         managed = False
