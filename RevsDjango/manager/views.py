@@ -196,13 +196,11 @@ def sales(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
-        if "submit_button" in request.POST:
-            startingDateForm = request.POST.get('start_date')
-            endingDateForm = request.POST.get('end_date')
+        startingDate = request.POST.get('start_date')
+        endingDate = request.POST.get('end_date')
 
     salesReport = getSalesReport(request, startingDate, endingDate)
 
-    # Default option
     context = {'report': salesReport}
 
     return render(request, 'manager/sales.html', context)
@@ -307,11 +305,16 @@ def getProductUsageReport(request, startDate, endDate):
 def getSalesReport(request, startDate, endDate=timezone.now()):
     with connection.cursor() as cursor:
         # Queries for all items within the year
-        sqlCommand = ("SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, " +
-                        "menu_items.times_ordered, SUM(order_breakout.food_items) AS total_quantity_ordered " +
-                        "FROM orders JOIN order_breakout ON orders.id = order_breakout.order_id JOIN menu_items " +
-                        "ON order_breakout.food_items = menu_items.id WHERE orders.order_time BETWEEN %s AND %s " +
-                        "GROUP BY menu_items.id, menu_items.description, menu_items.times_ordered, menu_items.price;")
+        sqlCommand = ("""
+                    SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, menu_items.times_ordered, 
+                    SUM(order_breakout.food_items) AS total_quantity_ordered,
+                    menu_items.price * SUM(order_breakout.food_items) AS revenue
+                    FROM orders 
+                    JOIN order_breakout ON orders.id = order_breakout.order_id 
+                    JOIN menu_items ON order_breakout.food_items = menu_items.id 
+                    WHERE orders.order_time BETWEEN %s AND %s
+                    GROUP BY menu_items.id, menu_items.description, menu_items.times_ordered, menu_items.price;                      
+                      """)
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
 
@@ -319,7 +322,7 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
-                       'totalQuantityOrdered': currentItem[5]}
+                       'totalQuantityOrdered': currentItem[5], 'revenue': currentItem[6]}
                        for currentItem in dataSorted]
         request.session['currentReport'] = dataReport
 

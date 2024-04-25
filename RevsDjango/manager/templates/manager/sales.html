@@ -55,15 +55,17 @@
                     <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     <th>Category <img src="{% static 'sort.png' %}" onclick="setSort('category')" alt="Category sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('totalQuantityOrdered')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Revenue <img src="{% static 'sort.png' %}" onclick="setSort('revenue')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                 </tr>
             </thead>
             <body>
                 {% for item in report %}
                 <tr>
-                    <td>{{ item.price }}</td>
+                    <td>${{ item.price }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.category }}</td>
                     <td>{{ item.totalQuantityOrdered }}</td>
+                    <td>${{ item.revenue }}</td>
                 </tr>
                 {% endfor %}
             </body>
