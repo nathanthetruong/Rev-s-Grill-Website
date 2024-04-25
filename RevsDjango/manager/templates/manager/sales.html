@@ -55,7 +55,7 @@
                     <th>Price <img src="{% static 'sort.png' %}" onclick="setSort('price')" alt="Price sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     <th>Category <img src="{% static 'sort.png' %}" onclick="setSort('category')" alt="Category sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('total_quantity_ordered')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('totalQuantityOrdered')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     <th>Revenue <img src="{% static 'sort.png' %}" onclick="setSort('revenue')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                 </tr>
             </thead>
@@ -65,7 +65,7 @@
                     <td>${{ item.price|floatformat:2 }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.category }}</td>
-                    <td>{{ item.total_quantity_ordered }}</td>
+                    <td>{{ item.totalQuantityOrdered }}</td>
                     <td>${{ item.revenue|floatformat:2 }}</td>
                 </tr>
                 {% endfor %}
