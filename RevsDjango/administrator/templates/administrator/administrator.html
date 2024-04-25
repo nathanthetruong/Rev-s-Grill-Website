@@ -60,10 +60,10 @@
                 <form action="{% url 'Revs-modify-staff' %}" method="post">
                     {% csrf_token %}
                     <td><input type="text" class="form-control" name="id" value="{{ employee.id }}" readonly></td>
-                    <td><input type="text" class="form-control" name="name" value="{{ employee.name }}"></td>
-                    <td><input type="email" class="form-control" name="email" value="{{ employee.email }}"></td>
-                    <td><input type="checkbox" class="form-control" name="manager[]" value="on" {% if employee.is_manager %}checked="checked"{% endif %}></td>
-                    <td><input type="checkbox" class="form-control" name="admin[]" value="on" {% if employee.is_admin %}checked="checked"{% endif %}></td>
+                    <td><input type="text" class="form-control" name="name" value="{{ employee.name }}" required></td>
+                    <td><input type="email" class="form-control" name="email" value="{{ employee.email }}" required></td>
+                    <td><input type="checkbox" class="form-control" name="manager[]" value="on" {% if employee.is_manager %}checked="checked"{% endif %} required></td>
+                    <td><input type="checkbox" class="form-control" name="admin[]" value="on" {% if employee.is_admin %}checked="checked"{% endif %} required></td>
                     <td><button type="submit" class="btn btn-success">Save Changes</button></td>
                 </form>
                 <td>

@@ -40,9 +40,9 @@
     <!-- Display the Date Forms -->
     <form action='{% url "Revs-popularity-Screen" %}' method="post">
         {% csrf_token %}
-        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}">
-        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}">
-        <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1">
+        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+        <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1" required>
         <button type="submit" class="btn btn-success">Submit</button>
     </form>
 
