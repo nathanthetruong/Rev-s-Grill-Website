@@ -1,29 +1,29 @@
-employee_id,Name,is_manager,email
-1111,Philip Ritchey,TRUE,alexthanhdo2003@tamu.edu
-2222,David Jones,FALSE,alexthanhdo2003@gmail.com
-3333,Susan Brown,FALSE,c@gmail.com
-4444,Michael Gonzalez,FALSE,d@gmail.com
-5555,Linda Williams,FALSE,e@gmail.com
-6666,Mary Smith,FALSE,f@gmail.com
-7777,Karen Smith,FALSE,g@gmail.com
-8888,Jessica Wilson,FALSE,h@gmail.com
-9999,John Williams,FALSE,i@gmail.com
-1000,James,TRUE,j@gmail.com
-2000,Barbara Miller,FALSE,k@gmail.com
-3000,Karen Jackson,FALSE,l@gmail.com
-4000,Karen Anderson,FALSE,m@gmail.com
-5000,James Garcia,FALSE,n@gmail.com
-6000,Susan Jackson,FALSE,o@gmail.com
-7000,Barbara Davis,FALSE,p@gmail.com
-8000,David Martinez,FALSE,q@gmail.com
-9000,Charles Smith,FALSE,r@gmail.com
-1001,TheOtherTA,TRUE,s@gmail.com
-2002,Sarah Smith,FALSE,t@gmail.com
-3003,John Garcia,FALSE,u@gmail.com
-4004,Robert Gonzalez,FALSE,v@gmail.com
-5005,Linda Anderson,FALSE,w@gmail.com
-6006,Charles Hernandez,FALSE,x@gmail.com
-7007,David Moore,FALSE,y@gmail.com
-8008,Karen Thomas,FALSE,z@gmail.com
-9009,Thomas Smith,FALSE,a@gmail.com
-0,Deleted Employee,FALSE,aa@gmail.com
+employee_id,Name,is_manager,email,is_admin
+1111,Philip Ritchey,TRUE,alexthanhdo2003@tamu.edu,TRUE
+2222,David Jones,FALSE,alexthanhdo2003@gmail.com,FALSE
+3333,Susan Brown,FALSE,c@gmail.com,FALSE
+4444,Michael Gonzalez,FALSE,d@gmail.com,FALSE
+5555,Linda Williams,FALSE,e@gmail.com,FALSE
+6666,Mary Smith,FALSE,f@gmail.com,FALSE
+7777,Karen Smith,FALSE,g@gmail.com,FALSE
+8888,Jessica Wilson,FALSE,h@gmail.com,FALSE
+9999,John Williams,FALSE,i@gmail.com,FALSE
+1000,James,TRUE,j@gmail.com,FALSE
+2000,Barbara Miller,FALSE,k@gmail.com,FALSE
+3000,Karen Jackson,FALSE,l@gmail.com,FALSE
+4000,Karen Anderson,FALSE,m@gmail.com,FALSE
+5000,James Garcia,FALSE,n@gmail.com,FALSE
+6000,Susan Jackson,FALSE,o@gmail.com,FALSE
+7000,Barbara Davis,FALSE,p@gmail.com,FALSE
+8000,David Martinez,FALSE,q@gmail.com,FALSE
+9000,Charles Smith,FALSE,r@gmail.com,FALSE
+1001,TheOtherTA,TRUE,s@gmail.com,FALSE
+2002,Sarah Smith,FALSE,t@gmail.com,FALSE
+3003,John Garcia,FALSE,u@gmail.com,FALSE
+4004,Robert Gonzalez,FALSE,v@gmail.com,FALSE
+5005,Linda Anderson,FALSE,w@gmail.com,FALSE
+6006,Charles Hernandez,FALSE,x@gmail.com,FALSE
+7007,David Moore,FALSE,y@gmail.com,FALSE
+8008,Karen Thomas,FALSE,z@gmail.com,FALSE
+9009,Thomas Smith,FALSE,a@gmail.com,FALSE
+0,Deleted Employee,FALSE,aa@gmail.com,FALSE

@@ -27,4 +27,5 @@ urlpatterns = [
     path('cashier/', include('cashier.urls')),
     path('accounts/', include('allauth.urls')),
     path('social/', include('allauth.socialaccount.urls')),
+    path('administrator/', include('administrator.urls')),
 ]
