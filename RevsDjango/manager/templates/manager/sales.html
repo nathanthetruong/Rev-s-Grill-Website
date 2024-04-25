@@ -40,30 +40,38 @@
     <!-- Display the Date Forms -->
     <form action='{% url "Revs-sales-Screen" %}' method="post">
         {% csrf_token %}
-        {{StartDateForm}}
-        {{EndDateForm}}
-        <button name="submit_button">Submit the Dates</button>
+        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}">
+        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}">
+        <button type="submit" class="btn btn-success">Submit the Dates</button>
     </form>
 
     <!-- Display the sales report -->
-    <table class="table table-bordered">
-        <tr>
-            <th>ID</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Times Ordered</th>
-        </tr>
-        {% for item in sales_report %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.total_quantity_ordered }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+        <table class="table table-bordered">
+            <input type="hidden" id="sortField" name="sortField" value="">
+            <input type="hidden" id="tableName" name="tableName" value="sales">
+            <thead>
+                <tr>
+                    <th onclick="setSort('id')">ID</th>
+                    <th onclick="setSort('price')">Price</th>
+                    <th onclick="setSort('description')">Description</th>
+                    <th onclick="setSort('category')">Category</th>
+                    <th onclick="setSort('totalQuantityOrdered')">Times Ordered</th>
+                </tr>
+            </thead>
+            <body>
+                {% for item in report %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>{{ item.totalQuantityOrdered }}</td>
+                </tr>
+                {% endfor %}
+            </body>
+        </table>
+    </form>
 
     <!-- Foooter Section -->
     <footer>
@@ -96,6 +104,14 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Sends information for sorting to the backend -->
+    <script>
+        function setSort(sortField, tableName) {
+            document.getElementById("sortField").value = sortField;
+            document.getElementById("sortForm").submit();
+        }
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

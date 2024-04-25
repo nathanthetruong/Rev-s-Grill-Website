@@ -252,25 +252,15 @@ def productusage(request):
 def sales(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
         if "submit_button" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+            startingDateForm = request.POST.get('start_date')
+            endingDateForm = request.POST.get('end_date')
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-
-    sales_report = getSalesReport(request, startingDate, endingDate)
+    salesReport = getSalesReport(request, startingDate, endingDate)
 
     # Default option
-    context = {'sales_report': sales_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+    context = {'report': salesReport}
 
     return render(request, 'manager/sales.html', context)
 
@@ -300,8 +290,8 @@ def trends(request):
             endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
 
     # Fetch real sales trends data
-    sales_trends_data = getSalesTrendsData(startingDate, endingDate)
-    monthly_growth_rates = getMonthlySalesData(startingDate, endingDate)
+    sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
+    monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
 
     trends = getTrends(request, startingDate, endingDate)
 
@@ -318,7 +308,6 @@ def trends(request):
 
 def getExcessReport(request, startDate, endDate):
     with connection.cursor() as cursor:
-        print(startDate, endDate)
         # Queries for available inventory items still below their quantity target between two dates
         sqlCommand = ("""
                         SELECT inv.id AS inventory_id, inv.description AS inventory_description,
@@ -387,7 +376,7 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
-                       'total_quantity_ordered': currentItem[5]}
+                       'totalQuantityOrdered': currentItem[5]}
                        for currentItem in dataSorted]
         request.session['currentReport'] = dataReport
 
@@ -417,7 +406,6 @@ def getTrends(request, startDate, endDate):
                       'item2': currentItem[1],
                       'frequency': currentItem[2]}
                        for currentItem in dataSorted]
-        request.session['currentReport'] = dataReport
 
         return dataReport
 
@@ -438,7 +426,6 @@ def getSalesTrendsData(request, startDate, endDate):
 
         # Convert query results into a list of dictionaries
         dataReport = [{'date': row[0], 'total_sales': row[1]} for row in result]
-        request.session['currentReport'] = dataReport
 
         return dataReport
     
@@ -475,8 +462,6 @@ def getMonthlySalesData(request, startDate, endDate):
             else:
                 growth_rate = 0
             monthly_growth_rates.append((months_sorted[i], growth_rate))
-
-        request.session['currentReport'] = monthly_growth_rates
         
         return monthly_growth_rates
 
