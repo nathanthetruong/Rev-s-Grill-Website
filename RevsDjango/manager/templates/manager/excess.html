@@ -40,34 +40,39 @@
     <!-- Display the Date Forms -->
     <form action='{% url "Revs-excess-Screen" %}' method="post">
         {% csrf_token %}
-        {{ StartDateForm }}
-        {{ EndDateForm }}
-        <button name="submit">Generate Report</button>
+        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}">
+        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}">
+        <button type="submit" class="btn btn-success">Submit the Dates</button>
     </form>
     
     <!-- Display the excess report -->
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Inventory ID</th>
-                <th>Description</th>
-                <th>Target Quantity</th>
-                <th>Quantity Consumed</th>
-                <th>10% of Target</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in excess_report  %}
-            <tr>
-                <td>{{ item.inventory_id }}</td>
-                <td>{{ item.inventory_description }}</td>
-                <td>{{ item.quantity_target }}</td>
-                <td>{{ item.quantity_consumed }}</td>
-                <td>{{ item.ten_percent_target }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+        <table class="table">
+            <input type="hidden" id="sortField" name="sortField" value="">
+            <input type="hidden" id="tableName" name="tableName" value="excess">
+            <thead>
+                <tr>
+                    <th onclick="setSort('id')">ID</th>
+                    <th onclick="setSort('description')">Description</th>
+                    <th onclick="setSort('target_quantity')">Target Quantity</th>
+                    <th onclick="setSort('quantity_consumed')">Quantity Consumed</th>
+                    <th onclick="setSort('ten_percent_target')">10% of Target</th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                {% for item in report  %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.target_quantity }}</td>
+                    <td>{{ item.quantity_consumed }}</td>
+                    <td>{{ item.ten_percent_target }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
 
     <!-- Foooter Section -->
     <footer>
@@ -100,6 +105,14 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Sends information for sorting to the backend -->
+    <script>
+        function setSort(sortField, tableName) {
+            document.getElementById("sortField").value = sortField;
+            document.getElementById("sortForm").submit();
+        }
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

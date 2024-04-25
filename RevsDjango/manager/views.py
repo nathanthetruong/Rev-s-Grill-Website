@@ -222,25 +222,12 @@ def restock(request):
 def excess(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
-        if "submit" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+        startingDate = request.POST.get('start_date')
+        endingDate = request.POST.get('end_date')
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-
-    excess_report = getExcessReport(request, startingDate, endingDate)
-
-    # Default option
-    context = {'excess_report': excess_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+    excessReport = getExcessReport(request, startingDate, endingDate)
+    context = {'report': excessReport}
 
     return render(request, 'manager/excess.html', context)
 
@@ -331,9 +318,12 @@ def trends(request):
 
 def getExcessReport(request, startDate, endDate):
     with connection.cursor() as cursor:
+        print(startDate, endDate)
         # Queries for available inventory items still below their quantity target between two dates
         sqlCommand = ("""
-                        SELECT inv.id AS inventory_id, inv.description AS inventory_description, inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed, inv.quantity_target * 0.1 AS ten_percent_target
+                        SELECT inv.id AS inventory_id, inv.description AS inventory_description,
+                        inv.quantity_target, COALESCE(SUM(fti.quantity), 0) AS quantity_consumed,
+                        CAST(inv.quantity_target AS FLOAT) * 0.1 AS ten_percent_target
                         FROM inventory inv
                         LEFT JOIN food_to_inventory fti ON inv.id = fti.inventory_id
                         LEFT JOIN menu_items mi ON fti.food_item_id = mi.id
@@ -348,11 +338,11 @@ def getExcessReport(request, startDate, endDate):
 
         # Sorts and places all the items into the context
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
-        dataReport =[{'inventory_id': currentItem[0], 
-                      'inventory_description': currentItem[1],
-                      'quantity_target': currentItem[2],
+        dataReport =[{'id': currentItem[0], 
+                      'description': currentItem[1],
+                      'target_quantity': currentItem[2],
                       'quantity_consumed': currentItem[3],
-                      'ten_percent_target': currentItem[4]}
+                      'ten_percent_target': float(currentItem[4])}
                        for currentItem in dataSorted]
         request.session['currentReport'] = dataReport
         
@@ -500,26 +490,27 @@ def sortTable(request):
     sortField = request.GET.get('sortField', 'id')
     tableName = request.GET.get('tableName', 'sales')
 
-    # Sorts the data in the table
-    currentReport = request.session.get('currentReport')
-    currentReportSorted = sorted(currentReport, key=lambda x: x[sortField])
-
-    # Handles flipping the data
-    if 'currentField' not in request.session:
-        request.session['currentField'] = sortField
-    if 'currentTable' not in request.session:
-        request.session['currentTable'] = tableName
-
-    currentField = request.session.get('currentField')
-    currentTable = request.session.get('currentTable')
-    if sortField == currentField and tableName == currentTable:
-        currentReportSorted.reverse()
-
+    # Handles tracking previous search fields and tables
+    previousField = ""
+    if 'currentField' in request.session:
+        previousField = request.session.get('currentField')
     request.session['currentField'] = sortField
+
+    previousTable = ""
+    if 'currentTable' in request.session:
+        previousTable = request.session.get('currentTable')
     request.session['currentTable'] = tableName
+    
+    # Sorts the data in the table and checks for order reversal
+    currentReport = request.session.get('currentReport')
+    if sortField == previousField and tableName == previousTable:
+        currentReport.reverse()
+    else:
+        currentReport = sorted(currentReport, key=lambda x: x[sortField])
+    request.session['currentReport'] = currentReport
 
     context = {
-        'report': currentReportSorted
+        'report': currentReport
     }
 
     return render(request, f'manager/{tableName}.html', context)
