@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     
     <!--  Stylesheet for the page -->
-    <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
+    <link rel="stylesheet" href="{% static 'administrator.css' %}">
 
     <title>Staff Management</title>
     <style>
@@ -36,14 +36,8 @@
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
-            <a href="{% url 'Revs-Login-Screen' %}">Logout</a>
-            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
-            <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
-            <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
-            <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
-            <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
-            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Administrator-Screen' %}">Administrator Page</a>
         </div>
     </header>
 
@@ -52,7 +46,9 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Email</th>
             <th>Manager</th>
+            <th>Admin</th>
             <th>Options</th>
             <th></th>
         </tr>
@@ -65,7 +61,9 @@
                     {% csrf_token %}
                     <td><input type="text" class="form-control" name="id" value="{{ employee.id }}" readonly></td>
                     <td><input type="text" class="form-control" name="name" value="{{ employee.name }}"></td>
+                    <td><input type="email" class="form-control" name="email" value="{{ employee.email }}"></td>
                     <td><input type="checkbox" class="form-control" name="manager[]" value="on" {% if employee.is_manager %}checked="checked"{% endif %}></td>
+                    <td><input type="checkbox" class="form-control" name="admin[]" value="on" {% if employee.is_admin %}checked="checked"{% endif %}></td>
                     <td><button type="submit" class="btn btn-success">Save Changes</button></td>
                 </form>
                 <td>
@@ -76,7 +74,7 @@
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
                 </td>
-            </tr>     
+            </tr>
             {% endif %}   
         {% endfor %}
     </table>
@@ -93,6 +91,10 @@
                     <td>
                         <input type="checkbox" class="form-check-input" name="new_manager[]" value="on" id="new_manager_check">
                         <label class="form-check-label" for="new_manager_check">Is Manager?</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" class="form-check-input" name="new_admin[]" value="on" id="new_admin_check">
+                        <label class="form-check-label" for="new_admin_check">Is Admin?</label>
                     </td>
                     <td><button type="submit" class="btn btn-primary">Add Employee</button></td>
                 </tr>
@@ -162,7 +164,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
