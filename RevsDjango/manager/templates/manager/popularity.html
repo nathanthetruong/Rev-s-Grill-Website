@@ -42,18 +42,17 @@
         {% csrf_token %}
         <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}">
         <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}">
-        <button type="submit" class="btn btn-success">Submit the Dates</button>
+        <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1">
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
 
     <!-- Display the popularity report -->
     <form id="sortForm" method="get" action="{% url 'sortTable' %}">
         <table class="table table-bordered">
-            <input type="hidden" id="sortField" name="sortField" value="">
-            <input type="hidden" id="tableName" name="tableName" value="popularity">
             <thead>
                 <tr>
-                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('times_ordered')" alt="times_ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Description</th>
+                    <th>Times Ordered</th>
                 </tr>
             </thead>
             <body>
@@ -99,14 +98,6 @@
         </div>
     </footer>
 
-    <!-- Sends information for sorting to the backend -->
-    <script>
-        function setSort(sortField, tableName) {
-            document.getElementById("sortField").value = sortField;
-            document.getElementById("sortForm").submit();
-        }
-    </script>
-
     <!-- Google Translate API -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
@@ -123,7 +114,7 @@
             <h5 class="modal-title" id="exampleModalLabel">Product Usage Report</h5>
             </div>
             <div class="modal-body">
-                Given a time window, display a statistic based on the popularity of a given number of menu items.
+                Given a time window, this page will display a statistic based on the popularity of a given number of menu items.
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -415,20 +415,25 @@ def orderManagement(request):
     return render(request, 'manager/ordermanagement.html')
 
 def popularity(request):
-
-    startingDate = timezone.now().date()-timedelta(days=365)
+    startingDate = timezone.now().date() - timedelta(days=365)
     endingDate = timezone.now().date()
+    item_limit = 10 
+
     if request.method == "POST":
         startingDate = request.POST.get('start_date')
         endingDate = request.POST.get('end_date')
+        item_limit = request.POST.get('item_limit', '10')
 
-    popularityReport = getPopularityData(request, startingDate, endingDate)
-
-    context = {'report': popularityReport}
+    popularityReport = getPopularityData(request, startingDate, endingDate, item_limit)
+    context = {
+        'report': popularityReport,
+        'start_date': startingDate,
+        'end_date': endingDate
+    }
 
     return render(request, 'manager/popularity.html', context)
 
-def getPopularityData(request, startDate, endDate):
+def getPopularityData(request, startDate, endDate, limit):
     with connection.cursor() as cursor:
         sqlCommand = """
                     SELECT mi.id, mi.description, COUNT(ob.order_id) AS times_ordered
@@ -437,16 +442,15 @@ def getPopularityData(request, startDate, endDate):
                     JOIN orders o ON ob.order_id = o.id
                     WHERE o.order_time BETWEEN %s AND %s
                     GROUP BY mi.id, mi.description
-                    ORDER BY times_ordered DESC;
+                    ORDER BY times_ordered DESC
+                    LIMIT %s;
                     """
-        cursor.execute(sqlCommand, [startDate, endDate])
+        cursor.execute(sqlCommand, [startDate, endDate, limit])
         cursorOutput = cursor.fetchall()
 
         # Sorts and places all the items into the context
-        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
-        dataReport =[{'id': currentItem[0], 'description': currentItem[1],
-                       'times_ordered': currentItem[2]}
-                       for currentItem in dataSorted]
+        dataReport = [{'id': item[0], 'description': item[1], 'times_ordered': item[2]} for item in cursorOutput]
+
         request.session['currentReport'] = dataReport
 
         return dataReport
