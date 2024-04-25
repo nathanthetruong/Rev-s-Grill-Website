@@ -306,14 +306,13 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("""
-                    SELECT menu_items.id, menu_items.price, menu_items.description, menu_items.category, menu_items.times_ordered, 
-                    SUM(order_breakout.food_items) AS total_quantity_ordered,
-                    menu_items.price * SUM(order_breakout.food_items) AS revenue
-                    FROM orders 
-                    JOIN order_breakout ON orders.id = order_breakout.order_id 
-                    JOIN menu_items ON order_breakout.food_items = menu_items.id 
-                    WHERE orders.order_time BETWEEN %s AND %s
-                    GROUP BY menu_items.id, menu_items.description, menu_items.times_ordered, menu_items.price;                      
+                        SELECT mi.id, mi.price, mi.description, mi.category, COUNT(ob.food_items) AS total_quantity_ordered, mi.price * COUNT(ob.food_items) AS revenue
+                        FROM orders o
+                        JOIN order_breakout ob ON o.id = ob.order_id
+                        JOIN menu_items mi ON ob.food_items = mi.id
+                        WHERE o.order_time BETWEEN %s AND %s
+                        GROUP BY mi.id, mi.price, mi.description, mi.category
+                        ORDER BY revenue DESC;
                       """)
         cursor.execute(sqlCommand, [startDate, endDate])
         cursorOutput = cursor.fetchall()
@@ -322,7 +321,7 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
-                       'totalQuantityOrdered': currentItem[5], 'revenue': currentItem[6]}
+                       'total_quantity_ordered': currentItem[4], 'revenue': currentItem[5]}
                        for currentItem in dataSorted]
         request.session['currentReport'] = dataReport
 
@@ -415,6 +414,42 @@ def getMonthlySalesData(request, startDate, endDate):
 def orderManagement(request):
     return render(request, 'manager/ordermanagement.html')
 
+def popularity(request):
+
+    startingDate = timezone.now().date()-timedelta(days=365)
+    endingDate = timezone.now().date()
+    if request.method == "POST":
+        startingDate = request.POST.get('start_date')
+        endingDate = request.POST.get('end_date')
+
+    popularityReport = getPopularityData(request, startingDate, endingDate)
+
+    context = {'report': popularityReport}
+
+    return render(request, 'manager/popularity.html', context)
+
+def getPopularityData(request, startDate, endDate):
+    with connection.cursor() as cursor:
+        sqlCommand = """
+                    SELECT mi.id, mi.description, COUNT(ob.order_id) AS times_ordered
+                    FROM menu_items mi
+                    JOIN order_breakout ob ON mi.id = ob.food_items
+                    JOIN orders o ON ob.order_id = o.id
+                    WHERE o.order_time BETWEEN %s AND %s
+                    GROUP BY mi.id, mi.description
+                    ORDER BY times_ordered DESC;
+                    """
+        cursor.execute(sqlCommand, [startDate, endDate])
+        cursorOutput = cursor.fetchall()
+
+        # Sorts and places all the items into the context
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 'description': currentItem[1],
+                       'times_ordered': currentItem[2]}
+                       for currentItem in dataSorted]
+        request.session['currentReport'] = dataReport
+
+        return dataReport
 
 # Sort function for tables
 def sortTable(request):
@@ -446,7 +481,7 @@ def sortTable(request):
 
     return render(request, f'manager/{tableName}.html', context)
     
-    
+
 # Creates classes for date submissions
 class StartDateForm(forms.Form):
     startDate = forms.DateField()

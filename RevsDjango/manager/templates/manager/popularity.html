@@ -12,12 +12,12 @@
     <!--  Stylesheet for the page -->
     <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
 
-    <title>Sales Report</title>
+    <title>Product Usage</title>
     <style>
     </style>
 </head>
 <body>
-    <h1>Sales Report
+    <h1>Popularity Trends
         <!-- Modal to explain the current page -->
         <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
     </h1>
@@ -38,35 +38,29 @@
     </header>
 
     <!-- Display the Date Forms -->
-    <form action='{% url "Revs-sales-Screen" %}' method="post">
+    <form action='{% url "Revs-popularity-Screen" %}' method="post">
         {% csrf_token %}
         <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}">
         <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}">
         <button type="submit" class="btn btn-success">Submit the Dates</button>
     </form>
 
-    <!-- Display the sales report -->
+    <!-- Display the popularity report -->
     <form id="sortForm" method="get" action="{% url 'sortTable' %}">
         <table class="table table-bordered">
             <input type="hidden" id="sortField" name="sortField" value="">
-            <input type="hidden" id="tableName" name="tableName" value="sales">
+            <input type="hidden" id="tableName" name="tableName" value="popularity">
             <thead>
                 <tr>
-                    <th>Price <img src="{% static 'sort.png' %}" onclick="setSort('price')" alt="Price sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Category <img src="{% static 'sort.png' %}" onclick="setSort('category')" alt="Category sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('total_quantity_ordered')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Revenue <img src="{% static 'sort.png' %}" onclick="setSort('revenue')" alt="Times ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('times_ordered')" alt="times_ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                 </tr>
             </thead>
             <body>
                 {% for item in report %}
                 <tr>
-                    <td>${{ item.price|floatformat:2 }}</td>
                     <td>{{ item.description }}</td>
-                    <td>{{ item.category }}</td>
-                    <td>{{ item.total_quantity_ordered }}</td>
-                    <td>${{ item.revenue|floatformat:2 }}</td>
+                    <td>{{ item.times_ordered }}</td>
                 </tr>
                 {% endfor %}
             </body>
@@ -126,10 +120,10 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Sales Report</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Product Usage Report</h5>
             </div>
             <div class="modal-body">
-                Given a time window, this page will display the sales by menu item from the order history.
+                Given a time window, display a statistic based on the popularity of a given number of menu items.
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

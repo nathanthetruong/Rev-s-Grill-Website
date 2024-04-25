@@ -27,11 +27,12 @@
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
-            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
@@ -44,7 +45,7 @@
         <button type="submit" class="btn btn-success">Submit the Dates</button>
     </form>
 
-    <!-- Display the sales report -->
+    <!-- Display the product usage report -->
     <form id="sortForm" method="get" action="{% url 'sortTable' %}">
         <table class="table table-bordered">
             <input type="hidden" id="sortField" name="sortField" value="">
