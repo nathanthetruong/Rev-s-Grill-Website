@@ -22,4 +22,5 @@ urlpatterns = [
     path('addinventory/', views.addInventory, name='Revs-add-inventory'),
     path('deleteinventory/', views.deleteInventory, name='Revs-delete-inventory'),
     path('modifyinventory/', views.modifyInventory, name='Revs-modify-inventory'),
+    path('sortTable/', views.sortTable, name='sortTable')
 ]
