@@ -170,6 +170,9 @@ def excess(request):
         endingDate = request.POST.get('end_date')
 
     excessReport = getExcessReport(request, startingDate, endingDate)
+    if 'currentField' in request.session:
+        del request.session['currentField']
+
     context = {'report': excessReport}
 
     return render(request, 'manager/excess.html', context)
@@ -184,6 +187,8 @@ def productusage(request):
         endingDate = request.POST.get('end_date')
 
     productUsageReport = getProductUsageReport(request, startingDate, endingDate)
+    if 'currentField' in request.session:
+        del request.session['currentField']
 
     # Default option
     context = {'report': productUsageReport}
@@ -200,6 +205,8 @@ def sales(request):
         endingDate = request.POST.get('end_date')
 
     salesReport = getSalesReport(request, startingDate, endingDate)
+    if 'currentField' in request.session:
+        del request.session['currentField']
 
     context = {'report': salesReport}
 
@@ -321,7 +328,7 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
         dataSorted = sorted(cursorOutput, key=lambda x: x[0])
         dataReport =[{'id': currentItem[0], 'price': currentItem[1],
                        'description': currentItem[2], 'category': currentItem[3],
-                       'total_quantity_ordered': currentItem[4], 'revenue': currentItem[5]}
+                       'totalQuantityOrdered': currentItem[4], 'revenue': currentItem[5]}
                        for currentItem in dataSorted]
         request.session['currentReport'] = dataReport
 
@@ -457,7 +464,7 @@ def getPopularityData(request, startDate, endDate, limit):
 
 # Sort function for tables
 def sortTable(request):
-    sortField = request.GET.get('sortField', 'id')
+    sortField = request.GET.get('sortField', 'description')
     tableName = request.GET.get('tableName', 'sales')
 
     # Handles tracking previous search fields and tables
