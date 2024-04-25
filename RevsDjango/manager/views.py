@@ -10,6 +10,8 @@ from django.db import transaction
 from django.contrib import messages
 
 
+
+
 '''
 This function will display the menu_items on the main manager page
 It will also handle the ability to insert new menu items
@@ -166,29 +168,42 @@ def restock(request):
 
         return render(request, 'manager/restock.html', context)
 
+
+class StartDateForm(forms.Form):
+    startDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
+class EndDateForm(forms.Form):
+    endDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+
 def excess(request):
-    startingDate = timezone.now().date()-timedelta(days=365)
-    endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
-    if request.method == "POST":
-        if "submit" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
+    # Initialize with default dates if not POST
+    default_start_date = timezone.now().date() - timedelta(days=365)
+    default_end_date = timezone.now().date()
 
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
+    # Initialize forms with default data
+    start_form = StartDateForm(initial={'startDate': default_start_date})
+    end_form = EndDateForm(initial={'endDate': default_end_date})
 
-    excess_report = getExcessReport(startingDate, endingDate)
+    if request.method == "POST" and "submit" in request.POST:
+        start_form = StartDateForm(request.POST)
+        end_form = EndDateForm(request.POST)
 
-    # Default option
-    context = {'excess_report': excess_report,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm}
+        if start_form.is_valid() and end_form.is_valid():
+            startingDate = start_form.cleaned_data['startDate']
+            endingDate = end_form.cleaned_data['endDate']
+            excess_report = getExcessReport(startingDate, endingDate)
+        else:
+            # Handle form errors, perhaps logging them or providing user feedback
+            excess_report = []
+    else:
+        # Get report with default dates if not POST
+        excess_report = getExcessReport(default_start_date, default_end_date)
 
+    context = {
+        'excess_report': excess_report,
+        'StartDateForm': start_form,
+        'EndDateForm': end_form
+    }
     return render(request, 'manager/excess.html', context)
 
 

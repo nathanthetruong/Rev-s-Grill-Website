@@ -4,6 +4,10 @@ from .models import MenuItems, Employees, Orders
 from django.contrib.auth.models import User
 from django.db import models
 from django.test import override_settings
+from .views import StartDateForm, EndDateForm
+from .views import getExcessReport
+from django.utils import timezone
+from datetime import timedelta
 
 #pytest
 #coverage run -m pytest
@@ -109,3 +113,64 @@ class ContentDisplayTest(TestCase):
 #         item = MenuItem.objects.get(name="Burger")
 #         item.delete()
 #         self.assertEqual(MenuItem.objects.count(), 0)
+
+
+class ExcessPageTests(TestCase):
+    """
+    Tests for the Excess page in the management system.
+    """
+
+    def setUp(self):
+        # Set up data if necessary
+        self.url = reverse('Revs-excess-Screen')
+
+    def test_excess_form_display(self):
+        """
+        Tests if the Excess page displays the date forms correctly.
+        """
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'name="startDate"')
+        self.assertContains(response, 'name="endDate"')
+        self.assertIsInstance(response.context['StartDateForm'], StartDateForm)
+        self.assertIsInstance(response.context['EndDateForm'], EndDateForm)
+
+    def test_excess_report_generation(self):
+        """
+        Tests submission of the form and the display of the excess report.
+        """
+        data = {
+            'startDate': (timezone.now().date() - timedelta(days=365)).strftime('%Y-%m-%d'),
+            'endDate': timezone.now().date().strftime('%Y-%m-%d'),
+            'submit': 'Generate Report'
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 200)
+        # Check if the response contains table data that might come from a valid report
+        self.assertContains(response, 'Inventory ID')
+        self.assertContains(response, 'Description')
+        # Assuming getExcessReport function and querying is correctly set up to return expected results
+        expected_report = getExcessReport(data['startDate'], data['endDate'])
+        # Check that the context data contains the correct report data
+        self.assertEqual(response.context['excess_report'], expected_report)
+
+    def test_excess_report_content(self):
+        """
+        Tests the content of the excess report after form submission using a specific known date range.
+        """
+        data = {
+            'startDate': '2023-01-01',
+            'endDate': '2023-12-31',
+            'submit': 'Generate Report'
+        }
+        response = self.client.post(self.url, data)
+        self.assertEqual(response.status_code, 200)
+        print("hello")
+        # Checking for specific expected output in the response
+        for item in response.context['excess_report']:
+            self.assertInHTML(f'<td>{item["inventory_id"]}</td>', response.content.decode())
+            print(["inventory_id"])
+            self.assertInHTML(f'<td>{item["inventory_description"]}</td>', response.content.decode())
+            self.assertInHTML(f'<td>{item["quantity_target"]}</td>', response.content.decode())
+            self.assertInHTML(f'<td>{item["quantity_consumed"]}</td>', response.content.decode())
+            self.assertInHTML(f'<td>{item["ten_percent_target"]}</td>', response.content.decode())
