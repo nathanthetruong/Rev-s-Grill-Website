@@ -1,4 +1,7 @@
 body {
+    /* background-color: white;
+    margin: 0; 
+    font-family: Arial, sans-serif;   */
     background-image: url('bg.png');
     /* background-size: 100% 100%; */
     background-size: cover;
@@ -6,56 +9,72 @@ body {
     margin: 0; 
     font-family: Arial, sans-serif; 
 }
+
+/* Header styling */
 .header {
+    /* background-color: #f8f9fa;  */
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(133, 129, 129, 0.5)), url('bg.png');
     color: rgb(19, 14, 14);
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    gap: 10px;
-    transition: all 0.3s ease; 
-}
-
-.fixed-header {
-    position: fixed;
-    top: 0;
-    width: 100%; 
-    z-index: 1000;
-    background-color: #5e1f1f;
-    color: white;
-    padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Header content container */
-.header-content {
+    padding: 10px 20px; 
     display: flex;
     justify-content: center; 
-    align-items: center;
-    color: rgb(53, 38, 38);
+    align-items: center; 
     gap: 20px;
-    font-size: 18px;
+    font-size: 22px;
+    position: relative; 
+    z-index: 1; 
 }
 
-/* CSS for logo1 */
-.logo1 {
-    margin-left:0; 
-    margin-right: 0;
+/* Style for the "Order Now" link */
+.header #orderNow {
+    color: #000000; 
+    text-decoration: none; 
+    font-weight: bold;
 }
 
+.header #orderNow:hover {
+    color: #702626; 
+    text-decoration: underline; 
+}
+
+.header #help {
+    color: #000000; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.header #help:hover {
+    color: #702626; 
+    text-decoration: underline; 
+}
+
+/* Style for the logo */
 .logo1 img {
-    width: 80px; 
+    width: 100px; 
     height: auto; 
+    margin-right: 10px; 
 }
+
+/* Board styling */
+/* .board {
+    background-image: url('bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: 100px; 
+    font-family: Arial, sans-serif;
+    position: relative; 
+    z-index: 0; 
+} */
 
 
 /* logo styling  */
-.logo {
+.logo_new {
     
     margin-left: 10px;
     margin-top: -100px;
   }
   
-.logo img {
+.logo_new img {
     width: 30%; 
     height: auto; 
     display: block; 
@@ -132,7 +151,7 @@ body {
 #tag1 img {
     width: 60%; /* Set the width of the tag image to 100% */
     height: auto;
-    margin-top: -540px;
+    margin-top: -510px;
     margin-right: 100px;
     margin-left: 390px; /* Specify the margin-left */
     margin-right: 390px;
@@ -182,7 +201,7 @@ body {
 
 .price {
     float: right; 
-    margin-top: -15px;
+    margin-top: -35px;
 }
 
 
@@ -232,7 +251,7 @@ body {
     position: absolute; 
     transform: translateX(-50%); 
     color: rgb(238, 238, 238); 
-    margin-top: -270px;
+    margin-top: -276px;
     margin-left: 230px;
 }
 
@@ -256,7 +275,7 @@ body {
 #tag4 img {
     width: 500px; 
     height: auto;
-    margin-top: -360px;
+    margin-top: -270px;
     margin-left: 920px;
     display: block; 
 }
@@ -265,7 +284,7 @@ body {
     position: absolute; 
     transform: translateX(-50%); 
     color: rgb(246, 243, 243); 
-    margin-top: -270px;
+    margin-top: -278px;
     margin-left: 1180px;
 }
 
@@ -289,7 +308,7 @@ body {
 #tag5 img {
     width: 500px; 
     height: auto;
-    margin-top: -500px;
+    margin-top: -470px;
     margin-left: 400px;
     
 }
@@ -298,7 +317,7 @@ body {
     position: absolute; 
     transform: translateX(-50%); 
     color: rgb(247, 247, 247); 
-    margin-top: -270px;
+    margin-top: -278px;
     margin-left: 650px;
 }
 
@@ -321,7 +340,7 @@ body {
 #tag6 img {
     width: 500px; 
     height: auto;
-    margin-top: -580px;
+    margin-top: -620px;
     margin-left: -20px;
     display: block; 
 }
@@ -330,7 +349,7 @@ body {
     position: absolute; 
     transform: translateX(-50%); 
     color: rgb(238, 238, 238); 
-    margin-top: -270px;
+    margin-top: -275px;
     margin-left: 230px;
 }
 

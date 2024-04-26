@@ -54,15 +54,10 @@ def menu_board(request):
         return render(request, 'menuboard/menuboard.html', context)
 
 
-
-# def login(request):
-#     # Your logic for the login page
-#     return render(request, 'login.html')
-
-# def orders(request):
-#     # Your logic for the login page
-#     return render(request, 'orders.html')
-
+# def order_view(request):
+#     # Your logic for the help page
+#     print("requesting orders page")
+#     return render(request, 'orders/orders.html')
 
 def help(request):
     # Your logic for the help page

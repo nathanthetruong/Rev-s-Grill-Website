@@ -2,29 +2,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">    
 
     <!-- Imports Django Button Interaction -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <title>Menu Board</title>
     <link rel="stylesheet" href="{% static 'menustyle.css' %}">
+    <title>Menu Board</title>  
 </head>
+
 <body>
 
-    <header id="header" class="header">
-        <div class="header-content" id="google_translate_element">
-            <a href="{% url 'Revs-Order-Screen' %}"><span id="order">Order Now</span></a>
-            <a href="{% url 'Revs-Login-Screen' %}" class="logo1"><img src="{% static 'rev.png' %}" alt="logo1" id="logo"></a>
-            <a href="{% url 'help' %}" id="help-link"><span id="help">Help</span></a>
-        </div>
+    <header class="header">
+            <a href="{% url 'Revs-Order-Screen' %}" id="orderNow">Order Now</a>
+            <a href="{% url 'Revs-Login-Screen' %}" class="logo1"><img src="{% static 'rev.png' %}" alt="logo1" id="logo""></a>
+            <a href="#"  id="help">Help</a>
     </header>
     
-    <div class="logo">
-        <div class="logo"><img src="{% static 'logobw.png' %}" alt="logo"></div>
+    <!-- <div class="board"> -->
+    <div class="logo_new">
+        <div class="logo_new"><img src="{% static 'logobw.png' %}" alt="logo_new"></div>
     </div>
+    
     <div class="section" id="burger_section">
         <div class="tag">
             <div id="tag1">
@@ -42,8 +46,9 @@
                 </div>
             </div>            
             {% endfor %}
+            </div>
         </div>
-    </div>
+    
 
     <div class="section" id="baskets_section">
         <div id="tag2">
@@ -138,19 +143,21 @@
             </div>
             {% endfor %}
         </div>
-    </div>
-    <script>
-        //  for makng the header fixed
-        // window.addEventListener('scroll', function() {
-        //     var header = document.getElementById('header');
-        //     if (window.scrollY > 0) {
-        //         header.classList.add('fixed-header');
-        //     } else {
-        //         header.classList.remove('fixed-header');
-        //     }
-        // });
+    </div> 
+<!-- </div>  -->
+    <!-- <script>
+         for makng the header fixed
+        window.addEventListener('scroll', function() {
+            var header = document.getElementById('header');
+            if (window.scrollY > 0) {
+                header.classList.add('fixed-header');
+            } else {
+                header.classList.remove('fixed-header');
+            }
+        });
 
-    </script>
+    </script> -->
+
 </body>
 </html>
 
