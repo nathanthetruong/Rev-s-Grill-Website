@@ -1,11 +1,156 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <!-- Imports Django Button Interaction -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <title>Menu Board</title>
+    <link rel="stylesheet" href="{% static 'menustyle.css' %}">
 </head>
 <body>
-    <h1> Menu Board </h1>
+
+    <header id="header" class="header">
+        <div class="header-content" id="google_translate_element">
+            <a href="{% url 'Revs-Order-Screen' %}"><span id="order">Order Now</span></a>
+            <a href="{% url 'Revs-Login-Screen' %}" class="logo1"><img src="{% static 'rev.png' %}" alt="logo1" id="logo"></a>
+            <a href="{% url 'help' %}" id="help-link"><span id="help">Help</span></a>
+        </div>
+    </header>
+    
+    <div class="logo">
+        <div class="logo"><img src="{% static 'logobw.png' %}" alt="logo"></div>
+    </div>
+    <div class="section" id="burger_section">
+        <div class="tag">
+            <div id="tag1">
+                <img src="{% static 'tag.png' %}" alt="logo">
+                <h2>Burgers</h2>
+            </div>
+        </div>
+        <div class="burger-container">
+            {% for button in categorizedButtons.Burgers %}
+            <div class="box1">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>            
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section" id="baskets_section">
+        <div id="tag2">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Baskets</h2>
+        </div>
+        <div class="basket-container">
+            {% for button in categorizedButtons.Baskets %}
+            <div class="box2">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section" id="sandwiches_section">
+        <div id="tag3">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Sandwiches</h2>
+        </div>
+        <div class="sandwich-container">
+            {% for button in categorizedButtons.Sandwiches %}
+            <div class="box3">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section" id="shakes_section">
+        <div id="tag4">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Shakes</h2>
+        </div>
+        <div class="shakes-container">
+            {% for button in categorizedButtons.Shakes %}
+            <div class="box4">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="image1"><img src="{% static 'img2.png' %}" alt="img1"></div>
+    <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
+    <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
+    <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
+
+    <div class="section" id="beverages_section">
+        <div id="tag5">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Beverages</h2>
+        </div>
+        <div class="bev-container">
+            {% for button in categorizedButtons.Beverages %}
+            <div class="box5">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section" id="sides_section">
+        <div id="tag6">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Sides</h2>
+        </div>
+        <div class="sides-container">
+            {% for button in categorizedButtons.Sides %}
+            <div class="box6">
+                <div class="details-section">
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <script>
+        //  for makng the header fixed
+        window.addEventListener('scroll', function() {
+            var header = document.getElementById('header');
+            if (window.scrollY > 0) {
+                header.classList.add('fixed-header');
+            } else {
+                header.classList.remove('fixed-header');
+            }
+        });
+
+    </script>
 </body>
 </html>
+
