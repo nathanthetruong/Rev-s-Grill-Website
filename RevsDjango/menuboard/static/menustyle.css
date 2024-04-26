@@ -66,7 +66,7 @@ body {
 #image1 {
     
     margin-left: 280px;
-    margin-top: -410px;
+    margin-top: -380px;
   }
   
 #image1 img {
@@ -172,15 +172,16 @@ body {
 
 .menuLabel {
     display: block;
-    color: #333333; /* Dark text color */
+    color: #333333; 
     font-weight: bold;
     font-size: 16px;
     margin-top: 5px;
     cursor: pointer;
+    margin-right: 50px;
 }
 
 .price {
-    float: right; /* Align the price to the right */
+    float: right; 
     margin-top: -15px;
 }
 
@@ -222,7 +223,7 @@ body {
 #tag3 img {
     width: 500px; 
     height: auto;
-    margin-top: -320px;
+    margin-top: -340px;
     margin-left: -20px;
     display: block; 
 }
@@ -255,8 +256,8 @@ body {
 #tag4 img {
     width: 500px; 
     height: auto;
-    margin-top: -330px;
-    margin-left: 885px;
+    margin-top: -360px;
+    margin-left: 920px;
     display: block; 
 }
 
@@ -265,7 +266,7 @@ body {
     transform: translateX(-50%); 
     color: rgb(246, 243, 243); 
     margin-top: -270px;
-    margin-left: 1130px;
+    margin-left: 1180px;
 }
 
 .shakes-container {
@@ -280,7 +281,7 @@ body {
     padding: 1px;
     border-radius: 10px;
     text-align: left;
-    margin-left: 990px;
+    margin-left: 1040px;
    
 }
 
