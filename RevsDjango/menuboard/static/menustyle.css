@@ -1,0 +1,384 @@
+body {
+    /* background-color: white;
+    margin: 0; 
+    font-family: Arial, sans-serif;   */
+    background-image: url('bg.png');
+    /* background-size: 100% 100%; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0; 
+    font-family: Arial, sans-serif;
+    
+}
+
+/* Header styling */
+.header {
+    /* background-color: #f8f9fa;  */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(133, 129, 129, 0.5)), url('bg.png');
+    color: rgb(19, 14, 14);
+    padding: 10px 20px; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px;
+    font-size: 22px;
+    position: relative; 
+    z-index: 1; 
+    font-family: "Times New Roman", serif;
+    
+}
+
+/* Style for the "Order Now" link */
+.header #orderNow {
+    color: #000000; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.header #orderNow:hover {
+    color: #702626; 
+    text-decoration: underline; 
+}
+
+.header #help {
+    color: #000000; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.header #help:hover {
+    color: #702626; 
+    text-decoration: underline; 
+}
+
+/* Style for the logo */
+.logo1 img {
+    width: 100px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+
+#id169a841ab6fc2 {
+    padding: 10px; 
+    font-size: 16px; 
+    margin-bottom: 20px; 
+    width: 150px;
+    height: 50px;
+    margin-left: auto;
+}
+
+/* Board styling */
+/* .board {
+    background-image: url('bg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    margin-top: 100px; 
+    font-family: Arial, sans-serif;
+    position: relative; 
+    z-index: 0; 
+} */
+
+
+/* logo styling  */
+.logo_new {
+    
+    margin-left: 10px;
+    margin-top: -100px;
+  }
+  
+.logo_new img {
+    width: 30%; 
+    height: auto; 
+    display: block; 
+    margin-right: 20px; 
+}
+
+/* image 1 */
+#image1 {
+    
+    margin-left: 280px;
+    margin-top: -380px;
+  }
+  
+#image1 img {
+    width: 35%; 
+    height: auto; 
+    display: block; 
+}
+
+
+/* image 2 */
+#image2 {
+    
+    margin-left: 550px;
+    margin-top: -270px;
+  }
+  
+#image2 img {
+    width: 45%; 
+    height: auto; 
+    display: block; 
+}
+
+/* image 3 */
+#image3 {
+    
+    margin-left: 750px;
+    margin-top: -370px;
+  }
+  
+#image3 img {
+    width: 60%; 
+    height: auto; 
+    display: block; 
+}
+
+
+#image4 {
+    
+    margin-left: 650px;
+    margin-top: -50px;
+  }
+  
+#image4 img {
+    width: 50%; 
+    height: auto;   
+}
+
+
+/* section styling */
+.section {
+    position: relative; 
+}
+
+/* tag */
+.tag {
+    position: absolute;
+    top: 0;
+    width: 60%; 
+    
+    
+}
+
+#tag1 img {
+    width: 60%; /* Set the width of the tag image to 100% */
+    height: auto;
+    margin-top: -510px;
+    margin-right: 100px;
+    margin-left: 390px; /* Specify the margin-left */
+    margin-right: 390px;
+    
+    
+}
+
+#tag1 h2 {
+    position: absolute; 
+    top: 0; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+    margin-top: -265px;
+    margin-left: 210px;
+}
+
+
+/* burgers */
+.burger-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 0;
+    width: 20%;
+    margin-top: -210px;
+}
+
+.burger-container .box1 {
+    width: 100%; /* Adjust width as needed */
+    padding: 1px;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: -650px;
+   
+}
+
+.menuLabel {
+    display: block;
+    color: #333333; 
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 5px;
+    cursor: pointer;
+    margin-right: 50px;
+    font-family: Georgia, serif;
+}
+
+.price {
+    float: right; 
+    margin-top: -35px;
+}
+
+
+/* baskets */
+#tag2 img {
+    width: 500px; 
+    height: auto;
+    margin-top: -500px;
+    margin-left: 900px;
+    display: block; 
+}
+
+#tag2 h2 {
+    position: absolute; 
+    transform: translateX(-50%); 
+    color: rgb(246, 243, 243); 
+    margin-top: -270px;
+    margin-left: 1160px;
+    
+}
+
+.basket-container {
+    position: absolute;
+    z-index: 0;
+    width: 20%;
+    margin-top: -210px;
+}
+
+.basket-container .box2 {
+    width: 100%; 
+    padding: 1px;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: 1015px;
+   
+}
+
+/* sanwiches */
+#tag3 img {
+    width: 500px; 
+    height: auto;
+    margin-top: -340px;
+    margin-left: -20px;
+    display: block; 
+}
+
+#tag3 h2 {
+    position: absolute; 
+    transform: translateX(-50%); 
+    color: rgb(238, 238, 238); 
+    margin-top: -276px;
+    margin-left: 230px;
+}
+
+.sandwich-container {
+    position: absolute;
+    z-index: 0;
+    width: 20%;
+    margin-top: -210px;
+}
+
+.sandwich-container .box3 {
+    width: 100%; 
+    padding: 1px;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: 90px;
+   
+}
+
+/* shakes */
+#tag4 img {
+    width: 500px; 
+    height: auto;
+    margin-top: -270px;
+    margin-left: 920px;
+    display: block; 
+}
+
+#tag4 h2 {
+    position: absolute; 
+    transform: translateX(-50%); 
+    color: rgb(246, 243, 243); 
+    margin-top: -278px;
+    margin-left: 1180px;
+}
+
+.shakes-container {
+    position: absolute;
+    z-index: 0;
+    width: 20%;
+    margin-top: -210px;
+}
+
+.shakes-container .box4 {
+    width: 100%; 
+    padding: 1px;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: 1040px;
+   
+}
+
+/* beverages */
+#tag5 img {
+    width: 500px; 
+    height: auto;
+    margin-top: -470px;
+    margin-left: 400px;
+    
+}
+
+#tag5 h2 {
+    position: absolute; 
+    transform: translateX(-50%); 
+    color: rgb(247, 247, 247); 
+    margin-top: -278px;
+    margin-left: 650px;
+}
+
+.bev-container {
+    position: absolute;
+    z-index: 0;
+    width: 20%;
+    margin-top: -200px;
+}
+
+.bev-container .box5 {
+    width: 100%; 
+    padding: 1px;
+    text-align: left;
+    margin-left: 500px;
+   
+}
+
+/* sides */
+#tag6 img {
+    width: 500px; 
+    height: auto;
+    margin-top: -620px;
+    margin-left: -20px;
+    display: block; 
+}
+
+#tag6 h2 {
+    position: absolute; 
+    transform: translateX(-50%); 
+    color: rgb(238, 238, 238); 
+    margin-top: -275px;
+    margin-left: 230px;
+}
+
+.sides-container {
+    position: absolute;
+    z-index: 0;
+    width: 20%;
+    margin-top: -210px;
+}
+
+.sides-container .box6 {
+    width: 100%; 
+    padding: 1px;
+    border-radius: 10px;
+    text-align: left;
+    margin-left: 90px;
+   
+}

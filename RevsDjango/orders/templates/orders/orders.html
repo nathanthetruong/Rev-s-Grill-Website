@@ -28,8 +28,10 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <header>
-        <div class="header-content" id="google_translate_element">
-            <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
+        <div class="header-content" id="google_translate_element">   
+            <a href="{% url 'Revs-Login-Screen' %}" class="logo">
+                <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
+            </a>
             <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a>
             <span id="help">Help</span>
             <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
@@ -224,8 +226,8 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="orders.html">
-                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
+                <a href="">
+                    <a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo"></a>
                 </a>
             </div>
             
