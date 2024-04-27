@@ -13,4 +13,5 @@ urlpatterns = [
     path('orders/', views.transactionView, name='orders'),
     path('getCartItems/', views.getCartItems, name='getCartItems'),
     path('login/', views.loginView, name='login'),
+    path('textToSpeech/', views.textToSpeech, name='textToSpeech'),
 ]
