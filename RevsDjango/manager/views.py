@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 import calendar
 from django import forms
 from django.contrib import messages
-
+import os
+from django.conf import settings
 
 '''
 This function will display the menu_items on the main manager page
@@ -22,6 +23,7 @@ def manager(request):
         times_ordered = request.POST.get('times_ordered')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
+        image = request.FILES.get('image')
 
         # validates the dates when adding menu items
         if end_date < start_date:
@@ -41,6 +43,16 @@ def manager(request):
         with connection.cursor() as cursor:
             sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql, [next_id, price, description, category, times_ordered, start_date, end_date])
+
+        if image:
+            # Write to the orders static images in orders
+            save_path = os.path.join(settings.BASE_DIR, 'orders/static', description + ".jpeg")
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            
+            with open(save_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+
 
         return redirect('Revs-Manager-Screen')
 
