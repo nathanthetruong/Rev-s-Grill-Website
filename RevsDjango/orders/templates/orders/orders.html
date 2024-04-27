@@ -339,7 +339,7 @@
                                         '<button class="decrease-quantity">-</button>' +
                                         '<span class="quantity">1</span>' +
                                         '<button class="increase-quantity">+</button>' +
-                                        '<span class="price">$' + price.toFixed(2) + '</span>' +
+                                        '<span class="price">$' + Number(price).toFixed(2) + '</span>' +
                                         '<button class="remove-item">Remove</button>' +
                                 '</div>';
                 $('.sidebar').append(menuItemHtml);
