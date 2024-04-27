@@ -172,7 +172,6 @@ def excess(request):
     excessReport = getExcessReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
-    
     context = {'report': excessReport}
 
     return render(request, 'manager/excess.html', context)

@@ -24,6 +24,7 @@
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
@@ -121,7 +122,7 @@
             </div>
             <div class="logo-column">
                 <a href="">
-                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
+                    <a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo"></a>
                 </a>
             </div>
             

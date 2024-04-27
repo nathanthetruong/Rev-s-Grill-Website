@@ -11,8 +11,11 @@
 
     <!-- HEADER Section -->
     <header>
-        <a href="{% url 'orders' %}" id="return">Return</a>
-        <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
+        <a href="{% url 'Revs-Order-Screen' %}" id="return">Back to Orders</a>
+        <!-- <a href="{% url 'orders' %}" id="return">Return</a> -->
+        <a href="{% url 'Revs-Login-Screen' %}" class="logo">
+            <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
+        </a>
         <span id="help">Help</span>
     </header>
 
