@@ -8,7 +8,7 @@ from django.contrib import messages
 from .models import CartItem
 from collections import defaultdict
 import time
-from .models import MenuItems, Inventory, Employees, Orders, Inventory
+from .models import MenuItems, Inventory, Employees, Orders, Inventory, OrderBreakout
 
 # Initializes all the menu items buttons
 def orders(request):
@@ -196,6 +196,7 @@ def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
         sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time) " +
                     "VALUES (%s, %s, %s, %s, %s)")
         cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime])
+        
 # Gets a list of all inventory items needed to be updated
 def getUsedInventoryItems(orderId, currentId):
     # Handles insertion into Order Breakout
@@ -251,13 +252,51 @@ def CompleteOrder(request):
     return JsonResponse({'success': True})
 
 def orderManagement(request):
+    context = {}
     if request.method == 'POST':
-        start_date = request.POST.get('startDate')
-        end_date = request.POST.get('endDate')
-
-        # Filter orders between the start date and end date
-        orders = Orders.objects.filter(order_time__date__range=[start_date, end_date])
+        if 'submit_date' in request.POST:
+            start_date = request.POST.get('startDate')
+            end_date = request.POST.get('endDate')
+            orders = Orders.objects.filter(order_time__date__range=[start_date, end_date])
+        elif 'submit_id' in request.POST:
+            order_id = request.POST.get('orderID')
+            orders = [Orders.objects.get(id=order_id)]
+        elif 'complete_order' in request.POST:
+            order_id = request.POST.get('complete_order')
+            order = Orders.objects.get(id=order_id)
+            order.status = 'Complete'
+            order.save()
+            return redirect('Revs-ordermanagement')
+        elif 'cancel_order' in request.POST:
+            order_id = request.POST.get('cancel_order')
+            order = Orders.objects.get(id=order_id)
+            order.status = 'Cancelled'
+            order.save()
+            return redirect('Revs-ordermanagement')
+        # Get menu items associated with each order
+        context['orders'] = orders
+        for order in orders:
+            order.items = getOrderItems(order.id)
     else:
         orders = Orders.objects.filter(status='In Progress')
+         # Get menu items associated with each order
+        context['orders'] = orders
+        for order in orders:
+            order.items = getOrderItems(order.id)
 
-    return render(request, 'cashier/ordermanagement.html', {'orders': orders})
+    return render(request, 'cashier/ordermanagement.html', context)
+
+'''
+This function will get all the menu items associated with a specific order id
+'''
+def getOrderItems(order_id):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT mi.description
+            FROM orders o
+            JOIN order_breakout ob ON o.id = ob.order_id
+            JOIN menu_items mi ON ob.food_items = mi.id
+            WHERE o.id = %s
+        """, [order_id])
+        items = cursor.fetchall()
+    return [item[0] for item in items]
