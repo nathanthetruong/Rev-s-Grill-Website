@@ -18,18 +18,12 @@
 </head>
 <body>
     <header>
-        <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
-            <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
-            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
-            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
-            <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
-            <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
-            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
-            <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
+            <a href="{% url 'Revs-Employee-Screen' %}" style="text-decoration: none;">Logout</a>
+            <a id="menu" href="{% url 'Revs-Menuboard-Screen' %}" style="text-decoration: none;">Menu</a>
+            <a id="menu" href="{% url 'Revs-Cashier-Screen' %}" style="text-decoration: none;">Cashier Page</a>
+            <a id="ordermanagement" href="{% url 'Revs-ordermanagement' %}" style="text-decoration: none;">Order Management</a>
         </div>
     </header>
 
@@ -146,8 +140,8 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="">
-                    <a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo"></a>
+                <a href="orders.html">
+                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
                 </a>
             </div>
             
@@ -166,6 +160,14 @@
         </div>
     </footer>
 
+    <!-- Google Translate API -->
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <!-- Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -182,14 +184,6 @@
         </div>
         </div>
     </div>
-
-    <!-- Google Translate API -->
-    <script type="text/javascript">
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-        }
-    </script>
-    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS, then Google Translate -->

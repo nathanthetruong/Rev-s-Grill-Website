@@ -13,4 +13,5 @@ urlpatterns = [
     path('orders/', views.transaction_view, name='orders'),
     path('getCartItems/', views.get_cart_items, name='getCartItems'),
     path('login/', views.login_view, name='login'),
+    path('ordermanagement/', views.orderManagement, name='Revs-ordermanagement'),
 ]
