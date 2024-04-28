@@ -222,3 +222,30 @@ def updateInventory(ingredientIds):
         with connection.cursor() as cursor:
             sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
             cursor.execute(sqlCommand, [currentIngredientID])
+
+##Kitchen functions
+def orderStatus(request):
+    with connection.cursor() as cursor:
+        sqlCommand = "SELECT * FROM orders WHERE status IN ('in_progress', 'cancelled')"
+        cursor.execute(sqlCommand)
+        cursorOutput = cursor.fetchall()
+        dataSorted = sorted(cursorOutput, key=lambda x: x[0])
+        dataReport =[{'id': currentItem[0], 'total_price': currentItem[3],
+                       'order_time': currentItem[4], 'status': currentItem[5]}
+                       for currentItem in dataSorted]
+    return render(request, 'cashier/kitchen.html', dataReport)
+
+def cancelOrder(request, orderId):
+    if request.method == 'POST':
+        orderId = request.POST.get('id')
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE orders SET status = %s WHERE id = %s", ['cancelled', orderId])
+    return JsonResponse({'success': True})
+
+
+def CompleteOrder(request):
+    if request.method == 'POST':
+        orderId = request.POST.get('id')
+    with connection.cursor() as cursor:
+        cursor.execute("UPDATE orders SET status = %s WHERE id = %s", ['completed', orderId])
+    return JsonResponse({'success': True})
