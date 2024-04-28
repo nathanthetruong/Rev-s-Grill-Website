@@ -16,6 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from login.views import CustomSignupView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +29,7 @@ urlpatterns = [
     path('cashier/', include('cashier.urls')),
     path('accounts/', include('allauth.urls')),
     path('social/', include('allauth.socialaccount.urls')),
+    path('administrator/', include('administrator.urls')),
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
