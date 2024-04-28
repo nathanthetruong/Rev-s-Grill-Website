@@ -41,7 +41,6 @@
             </div>
         {% endfor %}
     {% endif %}
-
     </header>
 
     <!-- Feedback for whenever we add a new menu item -->
@@ -63,7 +62,8 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Display the menu items from the model -->
-    <h1>Menu Items
+    <h1 class="text-center mb-4">
+        Menu Items
         <!-- Modal to explain the current page -->
         <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
     </h1>

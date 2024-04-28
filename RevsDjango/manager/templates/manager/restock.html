@@ -17,11 +17,6 @@
     </style>
 </head>
 <body>
-    <h1>Restock Report
-        <!-- Modal to explain the current page -->
-        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
-    </h1>
-
     <!-- Feedback for whenever we add a new inventory item -->
     {% if messages %}
         {% for message in messages %}
@@ -47,6 +42,12 @@
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
+
+    <h1 class="text-center mb-4">
+        Restock Report
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
 
     <!-- Display the inventory items from the model -->
     <table class="table table-bordered">

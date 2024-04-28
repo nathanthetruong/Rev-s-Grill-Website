@@ -249,9 +249,11 @@ def trends(request):
             startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
 
+    '''
     # Fetch real sales trends data
     sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
     monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
+    '''
 
     trends = getTrends(request, startingDate, endingDate)
 
@@ -259,8 +261,6 @@ def trends(request):
     context = {'trends': trends,
                 'StartDateForm': startingDateForm,
                 'EndDateForm': endingDateForm,
-                'sales_trends_data': sales_trends_data,
-                'monthly_growth_rates': monthly_growth_rates,
                 }
 
     return render(request, 'manager/trends.html', context)
@@ -373,7 +373,7 @@ def getTrends(request, startDate, endDate):
 
         return dataReport
 
-
+'''
 def getSalesTrendsData(request, startDate, endDate):
     with connection.cursor() as cursor:
         sqlCommand = """
@@ -392,7 +392,6 @@ def getSalesTrendsData(request, startDate, endDate):
         dataReport = [{'date': row[0], 'total_sales': row[1]} for row in result]
 
         return dataReport
-    
 
 def getMonthlySalesData(request, startDate, endDate):
     with connection.cursor() as cursor:
@@ -428,7 +427,7 @@ def getMonthlySalesData(request, startDate, endDate):
             monthly_growth_rates.append((months_sorted[i], growth_rate))
         
         return monthly_growth_rates
-
+'''
 
 def orderManagement(request):
     return render(request, 'manager/ordermanagement.html')

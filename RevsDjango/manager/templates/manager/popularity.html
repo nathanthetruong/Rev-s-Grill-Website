@@ -17,11 +17,6 @@
     </style>
 </head>
 <body>
-    <h1>Popularity Trends
-        <!-- Modal to explain the current page -->
-        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
-    </h1>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -38,34 +33,53 @@
         </div>
     </header>
 
-    <!-- Display the Date Forms -->
-    <form action='{% url "Revs-popularity-Screen" %}' method="post">
-        {% csrf_token %}
-        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
-        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
-        <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1" required>
-        <button type="submit" class="btn btn-success">Submit</button>
-    </form>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">
+            Popularity Trends
+            <!-- Modal to explain the current page -->
+            <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+        </h1>
 
-    <!-- Display the popularity report -->
-    <form id="sortForm" method="get" action="{% url 'sortTable' %}">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Times Ordered</th>
-                </tr>
-            </thead>
-            <body>
-                {% for item in report %}
-                <tr>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.times_ordered }}</td>
-                </tr>
-                {% endfor %}
-            </body>
-        </table>
-    </form>
+        <!-- Display the Date Forms -->
+        <form action='{% url "Revs-popularity-Screen" %}' method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+            </div>
+            <div class="form-group">
+                <label for="itemCount">Number of Menu Items to Display:</label>
+                <input type="number" class="form-control" name="item_limit" placeholder="Number of items to display" min="1" required>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+
+        <!-- Display the popularity report -->
+        <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Description</th>
+                        <th>Times Ordered</th>
+                    </tr>
+                </thead>
+                <body>
+                    {% for item in report %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.times_ordered }}</td>
+                    </tr>
+                    {% endfor %}
+                </body>
+            </table>
+        </form>
+    </div>
 
     <!-- Foooter Section -->
     <footer>

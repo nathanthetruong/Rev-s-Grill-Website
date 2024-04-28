@@ -17,11 +17,6 @@
     </style>
 </head>
 <body>
-    <h1>Excess Report
-        <!-- Modal to explain the current page -->
-        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
-    </h1>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -38,40 +33,54 @@
         </div>
     </header>
 
-    <!-- Display the Date Forms -->
-    <form action='{% url "Revs-excess-Screen" %}' method="post">
-        {% csrf_token %}
-        <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
-        <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
-        <button type="submit" class="btn btn-success">Submit the Dates</button>
-    </form>
-    
-    <!-- Display the excess report -->
-    <form id="sortForm" method="get" action="{% url 'sortTable' %}">
-        <table class="table">
-            <input type="hidden" id="sortField" name="sortField" value="">
-            <input type="hidden" id="tableName" name="tableName" value="excess">
-            <thead>
-                <tr>
-                    <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Target Quantity <img src="{% static 'sort.png' %}" onclick="setSort('target_quantity')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>Quantity Consumed <img src="{% static 'sort.png' %}" onclick="setSort('quantity_consumed')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                    <th>10% of Target <img src="{% static 'sort.png' %}" onclick="setSort('ten_percent_target')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
-                </tr>
-            </thead>
-    
-            <tbody>
-                {% for item in report  %}
-                <tr>
-                    <td>{{ item.description }}</td>
-                    <td>{{ item.target_quantity }}</td>
-                    <td>{{ item.quantity_consumed }}</td>
-                    <td>{{ item.ten_percent_target }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </form>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">
+            Excess Report
+            <!-- Modal to explain the current page -->
+            <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+        </h1>
+
+        <!-- Display the Date Forms -->
+        <form action='{% url "Revs-excess-Screen" %}' method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+        
+        <!-- Display the excess report -->
+        <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+            <table class="table">
+                <input type="hidden" id="sortField" name="sortField" value="">
+                <input type="hidden" id="tableName" name="tableName" value="excess">
+                <thead>
+                    <tr>
+                        <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Target Quantity <img src="{% static 'sort.png' %}" onclick="setSort('target_quantity')" alt="Target quantity sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Quantity Consumed <img src="{% static 'sort.png' %}" onclick="setSort('quantity_consumed')" alt="Quantity consumed sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>10% of Target <img src="{% static 'sort.png' %}" onclick="setSort('ten_percent_target')" alt="Ten percent target sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    </tr>
+                </thead>
+        
+                <tbody>
+                    {% for item in report  %}
+                    <tr>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.target_quantity }}</td>
+                        <td>{{ item.quantity_consumed }}</td>
+                        <td>{{ item.ten_percent_target }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </div>
 
     <!-- Foooter Section -->
     <footer>
