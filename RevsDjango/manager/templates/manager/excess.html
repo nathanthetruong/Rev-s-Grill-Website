@@ -41,7 +41,9 @@
     <!-- Display the Date Forms -->
     <form action='{% url "Revs-excess-Screen" %}' method="post">
         {% csrf_token %}
+        <label for="start_date">Start Date:</label>
         <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+        <label for="end_ate">End Date:</label>
         <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
         <button type="submit" class="btn btn-success">Submit the Dates</button>
     </form>
