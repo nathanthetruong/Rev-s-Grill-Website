@@ -8,6 +8,36 @@ from django.contrib import messages
 from .models import CartItem
 from collections import defaultdict
 import time
+from google.cloud import texttospeech
+import os
+import logging
+
+# Set up Google Cloud credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp_service_account.json"
+
+# Allows us to convert HTML text in the frontend to speech
+def textToSpeech(request):
+    client = texttospeech.TextToSpeechClient()
+    text = request.GET.get('text', 'Default text')
+
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+
+    # Build the voice request with the cheaper standard voice
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="en-US",
+        name='en-US-Standard-A'
+    )
+
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    response = client.synthesize_speech(
+        input=synthesis_input, voice=voice, audio_config=audio_config
+    )
+
+    # Return binary for html to process
+    return HttpResponse(response.audio_content, content_type='audio/mp3')
 
 
 # Initializes all the menu items buttons

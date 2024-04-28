@@ -11,8 +11,11 @@
 
     <!-- HEADER Section -->
     <header>
-        <a href="{% url 'orders' %}" id="return">Return</a>
-        <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
+        <a href="{% url 'Revs-Order-Screen' %}" id="return">Back to Orders</a>
+        <!-- <a href="{% url 'orders' %}" id="return">Return</a> -->
+        <a href="{% url 'Revs-Login-Screen' %}" class="logo">
+            <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
+        </a>
         <span id="help">Help</span>
     </header>
 
@@ -25,15 +28,15 @@
                 <ul>
                     <li>
                         <img src="{% static 'Cash.png' %}" alt="Cash" class="payment-image">
-                        <button id="btn">Cash</button>
+                        <button aria-label="Click to pay with cash" id="btn">Cash</button>
                     </li>
                     <li>
                         <img src="{% static 'Mobile_pay.png' %}" alt="Apple Pay" class="payment-image">
-                        <button id="btn">Apple Pay</button>
+                        <button aria-label="Click to pay with Apple Pay" id="btn">Apple Pay</button>
                     </li>
                     <li>
                         <img src="{% static 'Card.png' %}" alt="Card" class="payment-image">
-                        <button id="btn">Card</button>
+                        <button aria-label="Click to pay with Credit Card" id="btn">Card</button>
                     </li>
                 </ul>
             </div>
@@ -47,8 +50,9 @@
                         <!-- path to the image -->
                         <img src="{% static 'burger.png' %}" alt="{{ cartItem.description }}" class="item-image">
                         {{cartItem.description}}
-                        <span>${{cartItem.price}}</span>    
-                        <button class="remove-item">Remove</button>
+                        <span>${{cartItem.price}}</span>
+                        <button aria-label="Click to remove {{cartItem.description}} from the order"
+                            class="remove-item">Remove</button>
                     </div>
                     {% endfor %}
                 </ul>
@@ -68,7 +72,7 @@
                     <span class="total_label">Total</span>
                     <span>${{ total }}</span> 
                 </div>
-                <button id="place-order">Place Order</button>
+                <button aria-label="Click to place your order" id="place-order">Place Order</button>
             </div>
             
             

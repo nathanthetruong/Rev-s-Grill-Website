@@ -2,13 +2,14 @@
 body {
     background-color: rgb(214, 207, 207);
     margin: 0; 
-    font-family: Arial, sans-serif; 
+    font-family: serif;
 }
 
 header {
     background-color: #5e1f1f;
     color: white;
     padding: 30px;
+    font-family: serif;
 }
 .fixed-header {
     position: fixed;
@@ -26,6 +27,7 @@ header {
     justify-content: space-between;
     align-items: center;
     color: white;
+    font-family: serif;
 }
 
 /* Logo */
@@ -576,4 +578,16 @@ p {
 
 .hidden {
     display: none;
+}
+
+.tts-checkbox {
+    margin: 10px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.tts-checkbox label {
+    font-weight: bold;
+    color: #333;
 }
