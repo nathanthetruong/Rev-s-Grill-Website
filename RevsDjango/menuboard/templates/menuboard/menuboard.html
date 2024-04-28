@@ -46,85 +46,86 @@
                 <span class="price">${{ button.price|floatformat:"2" }}</span>          
             {% endfor %}
         </div>
-    </div> 
+    
     
 
-    <!-- <div class="section" id="baskets_section">
+        <!-- baskets section -->
         <div id="tag2">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Baskets</h2>
         </div>
         <div class="basket-container">
             {% for button in categorizedButtons.Baskets %}
-            <div class="box2">
-                <div class="details-section">
-                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
-                           id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
+            <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                    id="{{ button.description }}_label">{{ button.description }}</label>
+            <span class="price">${{ button.price|floatformat:"2" }}</span>
             {% endfor %}
         </div>
-    </div>
 
-    <div class="section" id="sandwiches_section">
+    
+
+        <!-- sandwhiches section -->
         <div id="tag3">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Sandwiches</h2>
         </div>
         <div class="sandwich-container">
             {% for button in categorizedButtons.Sandwiches %}
-            <div class="box3">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span> 
             {% endfor %}
         </div>
-    </div>
 
-    <div class="section" id="shakes_section">
+        <!-- shakes section -->    
         <div id="tag4">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Shakes</h2>
         </div>
         <div class="shakes-container">
             {% for button in categorizedButtons.Shakes %}
-            <div class="box4">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
                     <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
             {% endfor %}
         </div>
-    </div>
 
-    <div id="image1"><img src="{% static 'img2.png' %}" alt="img1"></div>
-    <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
-    <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
-    <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
-
-    <div class="section" id="beverages_section">
+        <!-- bevrages section -->    
         <div id="tag5">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Beverages</h2>
         </div>
         <div class="bev-container">
             {% for button in categorizedButtons.Beverages %}
-            <div class="box5">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
                     <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
             {% endfor %}
         </div>
+
+
+        <!-- sides section -->    
+        <div id="tag6">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Sides</h2>
+        </div>
+        <div class="sides-container">
+            {% for button in categorizedButtons.Sides %}
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+            {% endfor %}
+        </div>
+
     </div>
+
+    <!--
+    <div id="image1"><img src="{% static 'img2.png' %}" alt="img1"></div>
+    <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
+    <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
+    <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
+
+    
 
     <div class="section" id="sides_section">
         <div id="tag6">
