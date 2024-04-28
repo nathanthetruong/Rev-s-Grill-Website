@@ -223,7 +223,6 @@ def updateInventory(ingredientIds):
             sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
             cursor.execute(sqlCommand, [currentIngredientID])
 
-
 ##Kitchen functions
 def orderStatus(request):
     with connection.cursor() as cursor:

@@ -89,7 +89,7 @@ footer {
 }
 
 .logo {
-    max-width: 30%; /* Ensure the logo does not exceed its container's width */
+    max-width: 30%; 
 }
 .right-column {
     margin-left: 30px;
@@ -129,3 +129,10 @@ p {
     margin-top: 20px;
     text-align: center;
 }
+
+
+/* Change the color of links on hover */
+/* .navbar a:not(.logo) {
+    background-color: #ddd;
+    color: black;
+} */

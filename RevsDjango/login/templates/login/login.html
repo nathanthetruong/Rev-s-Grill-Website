@@ -26,8 +26,7 @@
 }
 </style>
 <body>
-    <header>
-        <!-- Weather Widget Container with added class -->
+    <section>
         <div class="weather-widget-container">
             <a class="weatherwidget-io" href="https://forecast7.com/en/30d63n96d33/college-station/" data-label_1="COLLEGE STATION" data-label_2="WEATHER" data-theme="original" >COLLEGE STATION WEATHER</a>
             <script>
@@ -36,8 +35,26 @@
             <!-- 
             <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
             <div class="elfsight-app-c090744f-9feb-4748-8c11-57759cf82b3d" data-elfsight-app-lazy></div>
-            -->
+            --> 
         </div>
+    </section>
+       
+    
+    <header id="google_translate_element">
+        <div class="logo">
+            <a href="{% url 'Revs-Login-Screen' %}" class="logo1">
+                <img src="{% static 'rev.png' %}" alt="logo1">
+            </a>
+        </div>
+        <!-- <div id="id169a841ab6fc2" a='{"t":"s","v":"1.2","lang":"en","locs":[1663],"ssot":"f","sics":"ds","cbkg":"#546E7A","cfnt":"#FFFFFF","slgp":"5","slbr":6}'>Weather Data Source: <a href="https://sharpweather.com/weather_college_station/30_days/">College Station 30 days weather</a></div>
+        <script async src="https://static1.sharpweather.com/widgetjs/?id=id169a841ab6fc2"></script>  -->
+        <nav>
+            <a href="{% url 'Revs-Order-Screen' %}">Order Now</a>
+            <a href="{% url 'Revs-Menuboard-Screen' %}">Menu Board</a>
+            <a href="{% provider_login_url 'google' %}">Login</a>
+            <a href="{% url 'Revs-About-Screen' %}">About</a>
+            <a href="#" id="help">Help</a>
+        </nav>
     </header>
     
     <!-- Redirection functionality for customer or employee -->
@@ -53,14 +70,14 @@
     </div>
     
     <!-- Temporary Navigation buttons -->
-    <div class="navigation" id="google_translate_element">
+    <div class="navigation" >
         <p>Temporary Navigation: </p>
         <a href="{% url 'Revs-About-Screen' %}" class="btn btn-info">About</a>
-        <a href="{% url 'Revs-Menu-Screen' %}" class="btn btn-primary">Menu</a>
         <a href="{% url 'Revs-Order-Screen' %}" class="btn btn-secondary">Orders</a>
         <a href="{% url 'Revs-Manager-Screen' %}" class="btn btn-success">Manager</a>
         <a href="{% url 'Revs-Menuboard-Screen' %}" class="btn btn-last btn-menuboard">Menu Board</a>
         <a href="{% url 'Revs-Cashier-Screen' %}" class="btn btn-info">Cashier</a>
+        <a href="{% url 'Revs-Administrator-Screen' %}" class="btn btn-info">Administrator</a>
     </div>
 
     <!-- Optional JavaScript -->
@@ -75,32 +92,6 @@
         function googleTranslateElementInit() {
           new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
-    </script>        
-
-    <!-- Employee Password Authentication -->
-    <script>
-        document.getElementById('submit_button').addEventListener('click', function() {
-            var userInput = document.getElementById('password_box').value;
-            fetch('{% url "authenticate-user" %}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-                body: JSON.stringify({ user_input: userInput })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.result[0]);
-                if(data.result[0] == 1) {
-                    window.location.href = "{% url 'Revs-Manager-Screen' %}";
-                }
-                else if(data.result[0] == 0) {
-                    window.location.href = "{% url 'Revs-Login-Screen' %}";
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        });
     </script>
 
 </body>

@@ -1,7 +1,9 @@
 CREATE TABLE employees (
     "id" int PRIMARY KEY,
     "name" text,
-    "is_manager" boolean
+    "is_manager" boolean,
+    "email" text,
+    "is_admin" boolean
 );
 
 CREATE TABLE customers (
