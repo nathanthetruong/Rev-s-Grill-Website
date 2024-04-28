@@ -73,12 +73,12 @@
         <form method="post" action="{% url 'checkout' %}">
             {% csrf_token %}
             <div class="checkout-btn-container readable">
-                <button type="submit" id="checkout-btn" class="readable">Checkout</button> 
+                <button type="submit" aria-label="Click to checkout the order to payment" id="checkout-btn" class="readable">Checkout</button> 
             </div>
             
             
         </form>   
-        <button id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
+        <button aria-label="Click to close Sidebar Button" id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
     </div>
     
 
@@ -115,8 +115,9 @@
                 </div>
                 <div class="details-section">
                     <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                    <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                            id="{{ button.description }}_button">{{ button.description }}</button>
+                    <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        data-price="{{button.price}}" data-id="{{button.id}}"
+                        id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
             </div>
             {% endfor %}
@@ -132,9 +133,10 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                                id="{{ button.description }}_button">{{ button.description }}</button>
+                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                            data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -152,9 +154,10 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                                id="{{ button.description }}_button">{{ button.description }}</button>
+                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                            data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -171,9 +174,10 @@
 
                     </div>
                     <div class="details-section">
-                        <div class="price readable">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                                id="{{ button.description }}_button">{{ button.description }}</button>
+                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                            data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -191,9 +195,10 @@
 
                     </div>
                     <div class="details-section">
-                        <div class="price readable">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                                id="{{ button.description }}_button">{{ button.description }}</button>
+                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                            data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -210,9 +215,10 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable">${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" data-price="{{button.price}}" data-id="{{button.id}}"
-                                id="{{ button.description }}_button">{{ button.description }}</button>
+                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                            data-price="{{button.price}}" data-id="{{button.id}}"
+                            id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -336,11 +342,14 @@
                 var menuItemHtml = '<div class="sidebar-item" data-description="' + description + '">' +
                                         '<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
                                         '<span>' + description + '</span>' +
-                                        '<button class="decrease-quantity">-</button>' +
+                                        '<button class="decrease-quantity" ' +
+                                        'aria-label="Click to decrease the ' + description + ' count by one">-</button>' +
                                         '<span class="quantity">1</span>' +
-                                        '<button class="increase-quantity">+</button>' +
+                                        '<button class="increase-quantity" ' +
+                                        'aria-label="Click to increase the ' + description + 'count by one">+</button>' +
                                         '<span class="price">$' + Number(price).toFixed(2) + '</span>' +
-                                        '<button class="remove-item">Remove</button>' +
+                                        '<button class="remove-item" '+
+                                        'aria-label="Click to remove the ' + description + ' from the order">Remove</button>' +
                                 '</div>';
                 $('.sidebar').append(menuItemHtml);
             }
