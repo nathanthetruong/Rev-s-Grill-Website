@@ -41,7 +41,6 @@
             </div>
         {% endfor %}
     {% endif %}
-
     </header>
 
     <!-- Feedback for whenever we add a new menu item -->
@@ -63,7 +62,8 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Display the menu items from the model -->
-    <h1>Menu Items
+    <h1 class="text-center mb-4">
+        Menu Items
         <!-- Modal to explain the current page -->
         <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
     </h1>
@@ -118,7 +118,7 @@
     <!-- Allow us to add a new menu item -->
     <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Add New Menu Item</button>
     <div id="demo" class="collapse">
-        <form action="{% url 'Revs-Manager-Screen' %}" method="post">
+        <form action="{% url 'Revs-Manager-Screen' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="price">Price</label>
@@ -151,6 +151,10 @@
             <div class="form-group">
                 <label for="end_date">End Date</label>
                 <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <div>
+                <label for="upload_image">Upload Image</label>
+                <input type="file" name="image" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Item</button>
         </form>

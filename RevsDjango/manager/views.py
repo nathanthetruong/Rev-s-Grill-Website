@@ -7,7 +7,8 @@ from datetime import datetime, timedelta
 import calendar
 from django import forms
 from django.contrib import messages
-
+import os
+from django.conf import settings
 
 '''
 This function will display the menu_items on the main manager page
@@ -22,6 +23,7 @@ def manager(request):
         times_ordered = request.POST.get('times_ordered')
         start_date = request.POST.get('start_date')
         end_date = request.POST.get('end_date')
+        image = request.FILES.get('image')
 
         # validates the dates when adding menu items
         if end_date < start_date:
@@ -41,6 +43,16 @@ def manager(request):
         with connection.cursor() as cursor:
             sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(sql, [next_id, price, description, category, times_ordered, start_date, end_date])
+
+        if image:
+            # Write to the orders static images in orders
+            save_path = os.path.join(settings.BASE_DIR, 'orders/static', description + ".jpeg")
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            
+            with open(save_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+
 
         return redirect('Revs-Manager-Screen')
 
@@ -235,9 +247,11 @@ def trends(request):
             startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
 
+    '''
     # Fetch real sales trends data
     sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
     monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
+    '''
 
     trends = getTrends(request, startingDate, endingDate)
 
@@ -245,8 +259,6 @@ def trends(request):
     context = {'trends': trends,
                 'StartDateForm': startingDateForm,
                 'EndDateForm': endingDateForm,
-                'sales_trends_data': sales_trends_data,
-                'monthly_growth_rates': monthly_growth_rates,
                 }
 
     return render(request, 'manager/trends.html', context)
@@ -359,7 +371,7 @@ def getTrends(request, startDate, endDate):
 
         return dataReport
 
-
+'''
 def getSalesTrendsData(request, startDate, endDate):
     with connection.cursor() as cursor:
         sqlCommand = """
@@ -378,7 +390,6 @@ def getSalesTrendsData(request, startDate, endDate):
         dataReport = [{'date': row[0], 'total_sales': row[1]} for row in result]
 
         return dataReport
-    
 
 def getMonthlySalesData(request, startDate, endDate):
     with connection.cursor() as cursor:
@@ -414,7 +425,7 @@ def getMonthlySalesData(request, startDate, endDate):
             monthly_growth_rates.append((months_sorted[i], growth_rate))
         
         return monthly_growth_rates
-
+'''
 
 def orderManagement(request):
     return render(request, 'manager/ordermanagement.html')

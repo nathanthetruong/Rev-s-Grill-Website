@@ -26,108 +26,106 @@
             <script async src="https://static1.sharpweather.com/widgetjs/?id=id169a841ab6fc2"></script>  -->
     </header>
     
-    <!-- <div class="board"> -->
-    <div class="logo_new">
-        <div class="logo_new"><img src="{% static 'logobw.png' %}" alt="logo_new"></div>
-    </div>
+    <div class="board">
+        <div class="logo_new">
+            <img src="{% static 'logobw.png' %}" alt="logo_new">
+        </div>
     
-    <div class="section" id="burger_section">
+        <!-- burger section -->
         <div class="tag">
             <div id="tag1">
                 <img src="{% static 'tag.png' %}" alt="logo">
                 <h2>Burgers</h2>
             </div>
         </div>
+            
         <div class="burger-container">
             {% for button in categorizedButtons.Burgers %}
-            <div class="box1">
-                <div class="details-section">
-                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
-                           id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>            
+                <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                        id="{{ button.description }}_label">{{ button.description }}</label>
+                <span class="price">${{ button.price|floatformat:"2" }}</span>          
             {% endfor %}
-            </div>
         </div>
     
+    
 
-    <div class="section" id="baskets_section">
+        <!-- baskets section -->
         <div id="tag2">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Baskets</h2>
         </div>
         <div class="basket-container">
             {% for button in categorizedButtons.Baskets %}
-            <div class="box2">
-                <div class="details-section">
-                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
-                           id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
+            <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                    id="{{ button.description }}_label">{{ button.description }}</label>
+            <span class="price">${{ button.price|floatformat:"2" }}</span>
             {% endfor %}
         </div>
-    </div>
 
-    <div class="section" id="sandwiches_section">
+    
+
+        <!-- sandwhiches section -->
         <div id="tag3">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Sandwiches</h2>
         </div>
         <div class="sandwich-container">
             {% for button in categorizedButtons.Sandwiches %}
-            <div class="box3">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span> 
             {% endfor %}
         </div>
-    </div>
 
-    <div class="section" id="shakes_section">
+        <!-- shakes section -->    
         <div id="tag4">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Shakes</h2>
         </div>
         <div class="shakes-container">
             {% for button in categorizedButtons.Shakes %}
-            <div class="box4">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
                     <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
             {% endfor %}
         </div>
-    </div>
 
-    <div id="image1"><img src="{% static 'img2.png' %}" alt="img1"></div>
-    <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
-    <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
-    <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
-
-    <div class="section" id="beverages_section">
+        <!-- bevrages section -->    
         <div id="tag5">
             <img src="{% static 'tag.png' %}" alt="logo">
             <h2>Beverages</h2>
         </div>
         <div class="bev-container">
             {% for button in categorizedButtons.Beverages %}
-            <div class="box5">
-                <div class="details-section">
                     <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
                            id="{{ button.description }}_label">{{ button.description }}</label>
                     <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
             {% endfor %}
         </div>
+
+
+        <!-- sides section -->    
+        <div id="tag6">
+            <img src="{% static 'tag.png' %}" alt="logo">
+            <h2>Sides</h2>
+        </div>
+        <div class="sides-container">
+            {% for button in categorizedButtons.Sides %}
+                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
+                           id="{{ button.description }}_label">{{ button.description }}</label>
+                    <span class="price">${{ button.price|floatformat:"2" }}</span>
+            {% endfor %}
+        </div>
+
     </div>
+
+    <!--
+    <div id="image1"><img src="{% static 'img2.png' %}" alt="img1"></div>
+    <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
+    <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
+    <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
+
+    
 
     <div class="section" id="sides_section">
         <div id="tag6">
@@ -145,8 +143,8 @@
             </div>
             {% endfor %}
         </div>
-    </div> 
-<!-- </div>  -->
+    </div>  -->
+
     <!-- <script>
          for makng the header fixed
         window.addEventListener('scroll', function() {
@@ -160,6 +158,9 @@
 
     </script> -->
 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
 
