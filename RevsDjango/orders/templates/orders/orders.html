@@ -40,7 +40,9 @@
                 <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
                 <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
             </div>
+            <div class="tts-checkbox">
             <div id="google_translate_element"></div>
+            </div>
             <!-- Text to speech enabler -->
             <div class="tts-checkbox">
                 <label>
@@ -50,38 +52,7 @@
             </div>
         </div>
     </header>
-
-    <div class="sidebar">
-        <h2>Cart</h2>
-        <div class="ordered-items">
-            <p>Your Ordered Items are below.</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Product</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Remove</th>
-                    </tr>
-                </thead>
-               
-            </table>
-        </div>
-        <div class="menu-items readable">
-        </div>
-        <form method="post" action="{% url 'checkout' %}">
-            {% csrf_token %}
-            <div class="checkout-btn-container readable">
-                <button type="submit" aria-label="Click to checkout the order to payment" id="checkout-btn" class="readable">Checkout</button> 
-            </div>
-            
-            
-        </form>   
-        <button aria-label="Click to close Sidebar Button" id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
-    </div>
     
-
     <!-- Second Header -->
     <section class="scrollable-section">
         <div class="header2-content">
@@ -95,13 +66,11 @@
             <span class="item readable" onclick="scrollToSection('shakes_section')">Shakes</span>
             <span class="item readable" onclick="scrollToSection('beverages_section')">Beverages</span>
             <span class="item readable" onclick="scrollToSection('sides_section')">Sides</span>
-            
-            
         </div>
         <div class="scroll-arrow"></div>
     </section>
     
-    <h2> Available Menu Items to Order </h2>
+    <h1 style="text-align: center;"> Available Menu Items to Order </h1>
     <div class="menu_sections">
         <h2>Burgers</h2>
         <div class="box-container">
@@ -121,6 +90,33 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+
+        <div class="sidebar">
+            <h2>Cart</h2>
+            <div class="ordered-items">
+                <p>Your Ordered Items are below.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="menu-items readable">
+            </div>
+            <form method="post" action="{% url 'checkout' %}">
+                {% csrf_token %}
+                <div class="checkout-btn-container readable">
+                    <button type="submit" aria-label="Click to checkout the order to payment" id="checkout-btn" class="readable">Checkout</button> 
+                </div>
+            </form>   
+            <button aria-label="Click to close Sidebar Button" id="close-sidebar-btn"><i class="fa-solid fa-xmark"></i></button>
         </div>
 
         <div class="section" id="baskets_section">
@@ -240,15 +236,14 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="">
                     <a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo"></a>
                 </a>
             </div>
             
             <div class="right-column">
-                <h4>Restaurant Open Hours:</h4>
-                <h5>Monday to Saturday: 11:00 AM - 10:00 PM</h5> 
-                <h5>Sunday: 12:00 PM - 9:00 PM</h5>
+                <h3>Restaurant Open Hours:</h3>
+                <h3>Monday to Saturday: 11:00 AM - 10:00 PM</h3> 
+                <h3>Sunday: 12:00 PM - 9:00 PM</h3>
             </div>
         </div>
         <div>

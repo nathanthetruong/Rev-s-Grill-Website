@@ -194,11 +194,15 @@ header {
 #checkout-btn {
     width: calc(100% - 40px);
     padding: 20px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: #33691E;
+    color: #FFFFFF;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+#checkout-btn:hover {
+    background-color: #1B5E20;
 }
 
 /* Adjustments for label and price */
@@ -462,8 +466,6 @@ section {
     flex-wrap: wrap;
     width: 100%;
 }
-
-
 
 h2 {
     width: 100%;
