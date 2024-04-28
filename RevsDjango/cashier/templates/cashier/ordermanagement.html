@@ -73,30 +73,6 @@
             </tr>
         </thead>
         <tbody>
-            {% if specific_order %}
-            <tr>
-                <td>{{ specific_order.id }}</td>
-                <td>{{ specific_order.customer_id }}</td>
-                <td>{{ specific_order.employee_id }}</td>
-                <td>${{ specific_order.total_price }}</td>
-                <td>{{ specific_order.order_time }}</td>
-                <td>{{ specific_order.status }}</td>
-                <td>
-                    <!-- Set Complete -->
-                    <form action="{% url 'Revs-delete-item' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-success">Complete</button>
-                    </form>
-                </td>
-                <td>
-                    <!-- Set Cancelled -->
-                    <form action="{% url 'Revs-delete-item' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% else %}
             {% for order in orders %}
             <tr>
                 <td>{{ order.id }}</td>
@@ -149,7 +125,6 @@
                 </td>    
             </tr>
             {% endfor %}
-            {% endif %}
         </tbody>
     </table>
 
