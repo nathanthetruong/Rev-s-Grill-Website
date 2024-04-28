@@ -8,7 +8,7 @@ from django.contrib import messages
 from .models import CartItem
 from collections import defaultdict
 import time
-
+from .models import MenuItems, Inventory, Employees, Orders, Inventory
 
 # Initializes all the menu items buttons
 def orders(request):
@@ -249,3 +249,15 @@ def CompleteOrder(request):
     with connection.cursor() as cursor:
         cursor.execute("UPDATE orders SET status = %s WHERE id = %s", ['completed', orderId])
     return JsonResponse({'success': True})
+
+def orderManagement(request):
+    if request.method == 'POST':
+        start_date = request.POST.get('startDate')
+        end_date = request.POST.get('endDate')
+
+        # Filter orders between the start date and end date
+        orders = Orders.objects.filter(order_time__date__range=[start_date, end_date])
+    else:
+        orders = Orders.objects.filter(status='In Progress')
+
+    return render(request, 'cashier/ordermanagement.html', {'orders': orders})

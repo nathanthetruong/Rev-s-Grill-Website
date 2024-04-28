@@ -30,11 +30,10 @@
     <header>
         <div class="header-content" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
+            <a href="{% url 'Revs-Employee-Screen' %}" style="text-decoration: none;">Logout</a>
             <a id="menu" href="{% url 'Revs-Menuboard-Screen' %}" style="text-decoration: none;">Menu</a>
             <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a>
-            <span id="help">Help</span>
-            <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
-            <!-- Add the count span below -->
+            <a id="ordermanagement" href="{% url 'Revs-ordermanagement' %}" style="text-decoration: none;">Order Management</a>
             <div class="cart-icon-container">
                 <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
                 <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
