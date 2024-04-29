@@ -90,6 +90,8 @@
 
     <!-- Javascript logic -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+        
     <script>
         $(document).ready(function() {
             // Remove item from order summary
@@ -127,7 +129,7 @@
                             // Redirect to login page after 2 seconds
                             setTimeout(function() {
                                 redirectToLoginPage();
-                            }, 2000); // 2000 milliseconds = 2 seconds
+                            }, 2000); 
                         }
                     },
                     error: function(xhr, status, error) {

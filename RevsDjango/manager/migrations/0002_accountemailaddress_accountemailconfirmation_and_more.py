@@ -317,5 +317,6 @@ class Migration(migrations.Migration):
                 'db_table': 'socialaccount_socialtoken',
                 'managed': False,
             },
+
         ),
     ]

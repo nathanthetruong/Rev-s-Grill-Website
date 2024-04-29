@@ -124,26 +124,7 @@
     <div id="image2"><img src="{% static 'img3.png' %}" alt="img2"></div>
     <div id="image3"><img src="{% static 'img4.png' %}" alt="img3"></div>
     <div id="image4"><img src="{% static 'img11.png' %}" alt="img4"></div>
-
-    
-
-    <div class="section" id="sides_section">
-        <div id="tag6">
-            <img src="{% static 'tag.png' %}" alt="logo">
-            <h2>Sides</h2>
-        </div>
-        <div class="sides-container">
-            {% for button in categorizedButtons.Sides %}
-            <div class="box6">
-                <div class="details-section">
-                    <label class="menuLabel" data-price="{{button.price}}" data-id="{{button.id}}"
-                           id="{{ button.description }}_label">{{ button.description }}</label>
-                    <span class="price">${{ button.price|floatformat:"2" }}</span>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>  -->
+ -->
 
     <!-- <script>
          for makng the header fixed
