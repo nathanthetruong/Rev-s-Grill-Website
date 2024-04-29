@@ -9,7 +9,7 @@ urlpatterns = [
     path('manager/', views.manager, name='Revs-Manager-Screen'),
     path('excess/', views.excess, name='Revs-excess-Screen'),
     path('productusage/', views.productusage, name='Revs-productusage-Screen'),
-    path('restock/', views.restock, name='Revs-restock-Screen'),
+    path('inventory/', views.inventory, name='Revs-inventory-Screen'),
     path('sales/', views.sales, name='Revs-sales-Screen'),
     path('trends/', views.trends, name='Revs-trends-Screen'),
     path('ordermanagement/', views.orderManagement, name='Revs-ordermanagement-screen'),
@@ -20,4 +20,5 @@ urlpatterns = [
     path('modifyinventory/', views.modifyInventory, name='Revs-modify-inventory'),
     path('sortTable/', views.sortTable, name='sortTable'),
     path('popularity/', views.popularity, name='Revs-popularity-Screen'),
+    path('restocking/', views.restocking, name='Revs-restocking-Screen'),
 ]

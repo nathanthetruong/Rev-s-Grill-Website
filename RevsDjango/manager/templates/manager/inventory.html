@@ -12,7 +12,7 @@
     <!--  Stylesheet for the page -->
     <link rel="stylesheet" href="{% static 'managerstyle.css' %}">
 
-    <title>Restock Report</title>
+    <title>Inventory Management</title>
     <style>
     </style>
 </head>
@@ -37,7 +37,8 @@
             </div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
-            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
+            <a href="{% url 'Revs-inventory-Screen' %}">Inventory Management</a>
+            <a href="{% url 'Revs-restocking-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
@@ -48,7 +49,7 @@
     </header>
 
     <h1 class="text-center mb-4">
-        Restock Report
+        Inventory Management
         <!-- Modal to explain the current page -->
         <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
     </h1>

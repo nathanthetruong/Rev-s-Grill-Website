@@ -117,7 +117,7 @@ def addInventory(request):
             cursor.execute(sql, [new_id, new_description, new_quantity_remaining, new_quantity_target])
 
         messages.success(request, 'New inventory item added successfully.')
-        return redirect('Revs-restock-Screen')
+        return redirect('Revs-inventory-Screen')
     
 '''
 This function will give us the ability to remove inventory items
@@ -128,7 +128,7 @@ def deleteInventory(request):
         item = Inventory.objects.get(id=item_id)
         item.delete()
         messages.success(request, 'Inventory item successfully deleted.')
-        return redirect('Revs-restock-Screen')
+        return redirect('Revs-inventory-Screen')
     
 '''
 This function will give us the ability to modify inventory items
@@ -147,10 +147,10 @@ def modifyInventory(request):
         item.save()
         messages.success(request, 'Inventory item successfully modified.')
 
-        return redirect('Revs-restock-Screen')
+        return redirect('Revs-inventory-Screen')
 
 
-def restock(request):
+def inventory(request):
     with connection.cursor() as cursor:
         sqlCommand = ("""
                         SELECT id, description, quantity_remaining, quantity_target
@@ -166,7 +166,25 @@ def restock(request):
             'inventory_items': inventory_items,
         }
 
-        return render(request, 'manager/restock.html', context)
+        return render(request, 'manager/inventory.html', context)
+
+def restocking(request):
+    with connection.cursor() as cursor:
+        sqlCommand = ("""
+                        SELECT id, description, quantity_remaining, quantity_target
+                        FROM inventory WHERE quantity_remaining < quantity_target
+                      """)
+        cursor.execute(sqlCommand)
+        rows = cursor.fetchall()
+        inventory_items = [
+            {'id': row[0], 'description': row[1], 'quantity_remaining': row[2], 'quantity_target': row[3]}
+            for row in rows
+        ]
+        context = {
+            'inventory_items': inventory_items,
+        }
+
+        return render(request, 'manager/restocking.html', context)
 
 def excess(request):
     startingDate = timezone.now().date()-timedelta(days=365)
