@@ -94,8 +94,8 @@ def modifyItem(request):
         menu_item.description = description
         menu_item.category = category
         menu_item.times_ordered = times_ordered
-        menu_item.startDate = startDate
-        menu_item.endDate = endDate
+        menu_item.start_date = startDate
+        menu_item.end_date = endDate
         menu_item.save()
     return redirect('Revs-Manager-Screen')
 
@@ -453,7 +453,7 @@ def orderManagement(request):
         for order in orders:
             order.items = getOrderItems(order.id)
 
-    return render(request, 'cashier/ordermanagement.html', context)
+    return render(request, 'manager/ordermanagement.html', context)
 
 '''
 This function will get all the menu items associated with a specific order id
