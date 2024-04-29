@@ -15,6 +15,6 @@ urlpatterns = [
     path('login/', views.loginView, name='login'),
     path('removeItem/', views.removeItem, name='removeItem'),
     path('updateQuantity/', views.updateQuantity, name='updateQuantity'),
-    
+    path('removeAllIems/', views.removeAllIems, name='removeAllItems'),
 
 ]

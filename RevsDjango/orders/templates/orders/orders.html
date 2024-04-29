@@ -321,14 +321,17 @@
                 } else {
                 // If item doesn't exist, append it to the sidebar
                 var menuItemHtml = '<div class="sidebar-item" data-description="' + description + '">' +
-                                    '<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
-                                    '<span>' + description + '</span>' +
-                                    '<button class="decrease-quantity">-</button>' +
-                                    '<span class="quantity">1</span>' +
-                                    '<button class="increase-quantity">+</button>' +
-                                    '<span class="price" data-original-price="' + price + '">$' + price.toFixed(2) + '</span>' +
-                                    '<button class="remove-item">Remove</button>' +
-                                    '</div>';
+                                        '<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
+                                        '<span>' + description + '</span>' +
+                                        '<button data-id="' + id + '" data-price="' + price + '" class="decrease-quantity" ' +
+                                        'aria-label="Click to decrease the ' + description + ' count by one">-</button>' +
+                                        '<span class="quantity">1</span>' +
+                                        '<button data-id="' + id + '" data-price="' + price + '" class="increase-quantity" ' +
+                                        'aria-label="Click to increase the ' + description + 'count by one">+</button>' +
+                                        '<span class="price">$' + Number(price).toFixed(2) + '</span>' +
+                                        '<button data-id="' + id + '" data-price="' + price + '" class="remove-item" '+
+                                        'aria-label="Click to remove the ' + description + ' from the order">Remove</button>' +
+                                '</div>';
                 $('.sidebar').append(menuItemHtml);
                 }
 
@@ -409,13 +412,15 @@
                 $('#cart-count').text(currentCount - 1);
 
                 // Send an AJAX request to remove the item from the backend
-                var description = $(this).closest('.sidebar-item').data('description');
+                var price = $(this).data('price'); 
+                var id = $(this).data('id');
                 var csrfToken = '{{ csrf_token }}';
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'removeItem' %}", // URL for removing from cart
+                    url: "{% url 'removeAllItems' %}", // URL for removing from cart
                     data: {
-                        'description': description,
+                        'id': id,
+                        'price': price,
                         'csrfmiddlewaretoken': csrfToken
                     },
                     success: function(response) {
