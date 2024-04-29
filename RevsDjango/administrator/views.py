@@ -10,14 +10,24 @@ from django.contrib import messages
 
 
 def administrator(request):
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_admin:
+            employees = Employees.objects.all()
+            context = {
+                'employees': employees,
+            }
+            return render(request, 'administrator/administrator.html', context)
 
-    employees = Employees.objects.all()
-    context = {
-        'employees': employees,
-    }
-
-    return render(request, 'administrator/administrator.html', context)
-
+        else:
+            return redirect('admin-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+    
 '''
 This function will give us the ability to modify the staff's properties
 '''
