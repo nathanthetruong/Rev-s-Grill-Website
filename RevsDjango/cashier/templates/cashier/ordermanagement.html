@@ -19,7 +19,11 @@
 <body>
     <header>
         <div class="navbar" id="google_translate_element">
-            <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
+            <div class="logo">
+                <a href="{% url 'Revs-Login-Screen' %}">
+                <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
+                </a>
+            </div>
             <a href="{% url 'Revs-Employee-Screen' %}" style="text-decoration: none;">Logout</a>
             <a id="menu" href="{% url 'Revs-Menuboard-Screen' %}" style="text-decoration: none;">Menu</a>
             <a id="menu" href="{% url 'Revs-Cashier-Screen' %}" style="text-decoration: none;">Cashier Page</a>
@@ -140,7 +144,7 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="orders.html">
+                <a href="{% url 'Revs-Login-Screen' %}">
                     <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
                 </a>
             </div>
