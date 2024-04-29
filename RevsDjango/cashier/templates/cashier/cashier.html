@@ -314,7 +314,7 @@
                 } else {
                 // If item doesn't exist, append it to the sidebar
                 var menuItemHtml = '<div class="sidebar-item" data-description="' + description + '">' +
-                                        '<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
+                                        //'<img src="' + imageUrl + '" alt="' + description + '" class="sidebar-icon">' +
                                         '<span>' + description + '</span>' +
                                         '<button data-id="' + id + '" data-price="' + price + '" class="decrease-quantity" ' +
                                         'aria-label="Click to decrease the ' + description + ' count by one">-</button>' +
@@ -350,59 +350,44 @@
                 });
             });
 
-            // Function to handle increasing quantity and price when "+" button is clicked
+
+        
+                
+                // Function to handle increasing quantity and price when "+" button is clicked
+                // $(document).on('click', '.increase-quantity', function() {
+                //     var existingItem = $(this).closest('.sidebar-item');
+                //     var currentQuantity = parseInt(existingItem.find('.quantity').text());
+                //     var originalPrice = parseFloat(existingItem.find('.price').data('original-price')); 
+    
+                //     // Increase quantity by one
+                //     existingItem.find('.quantity').text(currentQuantity + 1);
+    
+                //     // Calculate new total price by adding the original price to the existing total price
+                //     var totalPrice = (currentQuantity + 1) * originalPrice; 
+                //     existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+    
+                //     //send an AJAX request to update the item quantity on the server
+    
+                //     // Update cart count
+                //     var currentCount = parseInt($('#cart-count').text());
+                //     $('#cart-count').text(currentCount + 1);
+                // });
+            
+                // Function to handle increasing quantity and price when "+" button is clicked
             $(document).on('click', '.increase-quantity', function() {
-                var existingItem = $(this).closest('.sidebar-item');
-                var currentQuantity = parseInt(existingItem.find('.quantity').text());
-                var originalPrice = parseFloat(existingItem.find('.price').data('original-price')); 
+                var sidebarItem = $(this).closest('.sidebar-item');
+                var currentQuantity = parseInt(sidebarItem.find('.quantity').text());
+                var price = parseFloat($(this).data('price'));
 
-                // Increase quantity by one
-                existingItem.find('.quantity').text(currentQuantity + 1);
-
-                // Calculate new total price by adding the original price to the existing total price
-                var totalPrice = (currentQuantity + 1) * originalPrice; 
-                existingItem.find('.price').text('$' + totalPrice.toFixed(2));
-
-                //send an AJAX request to update the item quantity on the server
+                // Increment quantity and update price
+                var newQuantity = currentQuantity + 1;
+                var newPrice = newQuantity * price;
+                sidebarItem.find('.quantity').text(newQuantity);
+                sidebarItem.find('.price').text('$' + newPrice.toFixed(2));
 
                 // Update cart count
                 var currentCount = parseInt($('#cart-count').text());
                 $('#cart-count').text(currentCount + 1);
-            });
-
-            // Function to handle decreasing quantity and price when "-" button is clicked
-            $(document).on('click', '.decrease-quantity', function() {
-                var existingItem = $(this).closest('.sidebar-item');
-                var currentQuantity = parseInt(existingItem.find('.quantity').text());
-                var originalPrice = parseFloat(existingItem.find('.price').data('original-price')); 
-
-                if (currentQuantity > 1) {
-                // Decrease quantity by one
-                existingItem.find('.quantity').text(currentQuantity - 1);
-
-                // Calculate new total price by subtracting the original price from the existing total price
-                var totalPrice = (currentQuantity - 1) * originalPrice; 
-                existingItem.find('.price').text('$' + totalPrice.toFixed(2));
-                } else {
-                // If quantity is 1, remove the item from the cart
-                existingItem.remove();
-                }
-
-                // send an AJAX request to update the item quantity on the server
-
-                // Update cart count
-                var currentCount = parseInt($('#cart-count').text());
-                $('#cart-count').text(currentCount - 1);
-            });
-
-
-            $(document).on('click', '.increase-quantity', function() {
-                // Remove the entire sidebar item from the cart
-                $(this).closest('.sidebar-item').remove(); // TODO: Make it increment element
-
-                // Update cart count
-                var currentCount = parseInt($('#cart-count').text());
-                $('#cart-count').text(currentCount - 1);
 
                 // Send an AJAX request to remove the item from the backend
                 var price = $(this).data('price'); 
@@ -426,36 +411,139 @@
                 });
             });
 
-
             $(document).on('click', '.decrease-quantity', function() {
-                // Remove the entire sidebar item from the cart
-                $(this).closest('.sidebar-item').remove(); // TODO: Make it decrement element
+               var sidebarItem = $(this).closest('.sidebar-item');
+               var currentQuantity = parseInt(sidebarItem.find('.quantity').text());
+               var price = parseFloat($(this).data('price'));
 
-                // Update cart count
-                var currentCount = parseInt($('#cart-count').text());
-                $('#cart-count').text(currentCount - 1);
 
-                // Send an AJAX request to remove the item from the backend
-                var price = $(this).data('price'); 
-                var id = $(this).data('id');
-                var csrfToken = '{{ csrf_token }}';
-                $.ajax({
-                    type: "POST",
-                    url: "{% url 'removeItem' %}", // URL for removing from cart
-                    data: {
-                        'id': id,
-                        'price': price,
-                        'csrfmiddlewaretoken': csrfToken
-                    },
-                    success: function(response) {
-                        // Update total price and other relevant information if needed
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle errors if any
-                        console.error(xhr.responseText);
-                    }
-                });
-            });
+               // Decrease quantity and update price
+               var newQuantity = currentQuantity - 1;
+               if (newQuantity < 1) {
+                   // If quantity becomes less than 1, remove the item from the sidebar
+                   sidebarItem.remove();
+               } else {
+                   var newPrice = newQuantity * price;
+                   sidebarItem.find('.quantity').text(newQuantity);
+                   sidebarItem.find('.price').text('$' + newPrice.toFixed(2));
+               }
+
+
+               // Update cart count
+               var currentCount = parseInt($('#cart-count').text());
+               $('#cart-count').text(currentCount - 1);
+
+
+               // Send an AJAX request to update the item quantity on the backend
+               var price = $(this).data('price');
+               var id = $(this).data('id');
+               var csrfToken = '{{ csrf_token }}';
+               $.ajax({
+                   type: "POST",
+                   url: "{% url 'removeItem' %}", // URL for removing from cart
+                   data: {
+                       'id': id,
+                       'price': price,
+                       'csrfmiddlewaretoken': csrfToken
+                   },
+                   success: function(response) {
+                       // Update total price and other relevant information if needed
+                   },
+                   error: function(xhr, status, error) {
+                       // Handle errors if any
+                       console.error(xhr.responseText);
+                   }
+               });
+           });
+
+
+
+            // Function to handle decreasing quantity and price when "-" button is clicked
+            // $(document).on('click', '.decrease-quantity', function() {
+            //     var existingItem = $(this).closest('.sidebar-item');
+            //     var currentQuantity = parseInt(existingItem.find('.quantity').text());
+            //     var originalPrice = parseFloat(existingItem.find('.price').data('original-price')); 
+
+            //     if (currentQuantity > 1) {
+            //     // Decrease quantity by one
+            //     existingItem.find('.quantity').text(currentQuantity - 1);
+
+            //     // Calculate new total price by subtracting the original price from the existing total price
+            //     var totalPrice = (currentQuantity - 1) * originalPrice; 
+            //     existingItem.find('.price').text('$' + totalPrice.toFixed(2));
+            //     } else {
+            //     // If quantity is 1, remove the item from the cart
+            //     existingItem.remove();
+            //     }
+
+            //     // send an AJAX request to update the item quantity on the server
+
+            //     // Update cart count
+            //     var currentCount = parseInt($('#cart-count').text());
+            //     $('#cart-count').text(currentCount - 1);
+            // });
+
+
+            // $(document).on('click', '.increase-quantity', function() {
+            //     // Remove the entire sidebar item from the cart
+            //     $(this).closest('.sidebar-item').remove(); // TODO: Make it increment element
+
+            //     // Update cart count
+            //     var currentCount = parseInt($('#cart-count').text());
+            //     $('#cart-count').text(currentCount - 1);
+
+            //     // Send an AJAX request to remove the item from the backend
+            //     var price = $(this).data('price'); 
+            //     var id = $(this).data('id');
+            //     var csrfToken = '{{ csrf_token }}';
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "{% url 'addItem' %}", // URL for removing from cart
+            //         data: {
+            //             'id': id,
+            //             'price': price,
+            //             'csrfmiddlewaretoken': csrfToken
+            //         },
+            //         success: function(response) {
+            //             // Update total price and other relevant information if needed
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Handle errors if any
+            //             console.error(xhr.responseText);
+            //         }
+            //     });
+            // });
+
+
+            // $(document).on('click', '.decrease-quantity', function() {
+            //     // Remove the entire sidebar item from the cart
+            //     $(this).closest('.sidebar-item').remove(); // TODO: Make it decrement element
+
+            //     // Update cart count
+            //     var currentCount = parseInt($('#cart-count').text());
+            //     $('#cart-count').text(currentCount - 1);
+
+            //     // Send an AJAX request to remove the item from the backend
+            //     var price = $(this).data('price'); 
+            //     var id = $(this).data('id');
+            //     var csrfToken = '{{ csrf_token }}';
+            //     $.ajax({
+            //         type: "POST",
+            //         url: "{% url 'removeItem' %}", // URL for removing from cart
+            //         data: {
+            //             'id': id,
+            //             'price': price,
+            //             'csrfmiddlewaretoken': csrfToken
+            //         },
+            //         success: function(response) {
+            //             // Update total price and other relevant information if needed
+            //         },
+            //         error: function(xhr, status, error) {
+            //             // Handle errors if any
+            //             console.error(xhr.responseText);
+            //         }
+            //     });
+            // });
 
 
             $(document).on('click', '.remove-item', function() {
