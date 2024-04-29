@@ -1,11 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import JsonResponse
 from .models import MenuItems, Inventory, Employees, Orders, Inventory
 from django.db import connection
 from django.utils import timezone
-from datetime import datetime, timedelta
-import calendar
-from django import forms
+from datetime import datetime, timedelta, date
 from django.contrib import messages
 import os
 from django.conf import settings
@@ -21,12 +19,12 @@ def manager(request):
         description = request.POST.get('description')
         category = request.POST.get('category')
         times_ordered = request.POST.get('times_ordered')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
+        startDate = request.POST.get('startDate')
+        endDate = request.POST.get('endDate')
         image = request.FILES.get('image')
-        
-        # Validates the  order of the dates
-        if end_date < start_date:
+
+        # validates the dates when adding menu items
+        if endDate < startDate:
             messages.error(request, "End date must be after start date")
             return redirect('Revs-Manager-Screen')
 
@@ -40,8 +38,8 @@ def manager(request):
 
         # Insert into the database
         with connection.cursor() as cursor:
-            sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, start_date, end_date) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            cursor.execute(sql, [next_id, price, description, category, times_ordered, start_date, end_date])
+            sql = "INSERT INTO menu_items (id, price, description, category, times_ordered, startDate, endDate) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            cursor.execute(sql, [next_id, price, description, category, times_ordered, startDate, endDate])
 
         if image:
             # Write to the orders static images in orders
@@ -88,16 +86,16 @@ def modifyItem(request):
         description = request.POST.get('description')
         category = request.POST.get('category')
         times_ordered = request.POST.get('times_ordered')
-        start_date = request.POST.get('start_date')
-        end_date = request.POST.get('end_date')
+        startDate = request.POST.get('startDate')
+        endDate = request.POST.get('endDate')
 
         menu_item = MenuItems.objects.get(id=item_id)
         menu_item.price = price
         menu_item.description = description
         menu_item.category = category
         menu_item.times_ordered = times_ordered
-        menu_item.start_date = start_date
-        menu_item.end_date = end_date
+        menu_item.startDate = startDate
+        menu_item.endDate = endDate
         menu_item.save()
     return redirect('Revs-Manager-Screen')
 
@@ -177,13 +175,12 @@ def excess(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
-        startingDate = request.POST.get('start_date')
-        endingDate = request.POST.get('end_date')
+        startingDate = request.POST.get('startDate')
+        endingDate = request.POST.get('endDate')
 
     excessReport = getExcessReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
-
     context = {'report': excessReport}
 
     return render(request, 'manager/excess.html', context)
@@ -194,14 +191,13 @@ def productusage(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
-        startingDate = request.POST.get('start_date')
-        endingDate = request.POST.get('end_date')
+        startingDate = request.POST.get('startDate')
+        endingDate = request.POST.get('endDate')
 
     productUsageReport = getProductUsageReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
 
-    # Default option
     context = {'report': productUsageReport}
 
     return render(request, 'manager/productusage.html', context)
@@ -212,8 +208,8 @@ def sales(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
-        startingDate = request.POST.get('start_date')
-        endingDate = request.POST.get('end_date')
+        startingDate = request.POST.get('startDate')
+        endingDate = request.POST.get('endDate')
 
     salesReport = getSalesReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
@@ -227,26 +223,9 @@ def sales(request):
 def trends(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
-        if "submit" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
-
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-        elif "submit2" in request.POST:
-            # Get dates from POST request
-            start_date_str = request.POST.get('startDate')
-            end_date_str = request.POST.get('endDate')
-
-            # Convert string dates to date objects
-            startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-            endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        startingDate = request.POST.get('startDate')
+        endingDate = request.POST.get('endDate')
 
     '''
     # Fetch real sales trends data
@@ -255,14 +234,26 @@ def trends(request):
     '''
 
     trends = getTrends(request, startingDate, endingDate)
+    if 'currentField' in request.session:
+        del request.session['currentField']
 
     # Default option
-    context = {'trends': trends,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm,
-                }
+    context = {'report': trends}
 
     return render(request, 'manager/trends.html', context)
+
+
+# Validates date inputs
+def validateDate(startDate, endDate):
+    minimumDate = date(2023, 1, 1)
+    maximumDate = date(2030, 1, 1)
+    if startDate >= endDate:
+        return False, "End Date should be after the Start Date"
+    if startDate < minimumDate or endDate < minimumDate:
+        return False, "Don't input anything lower than 01/01/2023"
+    if startDate > maximumDate or endDate > maximumDate:
+        return False, "Don't input anything higher than 01/01/2030"
+    return True, "No error"
 
 
 def getExcessReport(request, startDate, endDate):
@@ -369,6 +360,7 @@ def getTrends(request, startDate, endDate):
                       'item2': currentItem[1],
                       'frequency': currentItem[2]}
                        for currentItem in dataSorted]
+        request.session['currentReport'] = dataReport
 
         return dataReport
 
@@ -432,9 +424,9 @@ def orderManagement(request):
     context = {}
     if request.method == 'POST':
         if 'submit_date' in request.POST:
-            start_date = request.POST.get('startDate')
-            end_date = request.POST.get('endDate')
-            orders = Orders.objects.filter(order_time__date__range=[start_date, end_date])
+            startDate = request.POST.get('startDate')
+            endDate = request.POST.get('endDate')
+            orders = Orders.objects.filter(order_time__date__range=[startDate, endDate])
         elif 'submit_id' in request.POST:
             order_id = request.POST.get('orderID')
             orders = [Orders.objects.get(id=order_id)]
@@ -484,15 +476,15 @@ def popularity(request):
     item_limit = 10 
 
     if request.method == "POST":
-        startingDate = request.POST.get('start_date')
-        endingDate = request.POST.get('end_date')
+        startingDate = request.POST.get('startDate')
+        endingDate = request.POST.get('endDate')
         item_limit = request.POST.get('item_limit', '10')
 
     popularityReport = getPopularityData(request, startingDate, endingDate, item_limit)
     context = {
         'report': popularityReport,
-        'start_date': startingDate,
-        'end_date': endingDate
+        'startDate': startingDate,
+        'endDate': endingDate
     }
 
     return render(request, 'manager/popularity.html', context)
@@ -534,7 +526,7 @@ def sortTable(request):
     if 'currentTable' in request.session:
         previousTable = request.session.get('currentTable')
     request.session['currentTable'] = tableName
-    
+
     # Sorts the data in the table and checks for order reversal
     currentReport = request.session.get('currentReport')
     if sortField == previousField and tableName == previousTable:
@@ -548,11 +540,3 @@ def sortTable(request):
     }
 
     return render(request, f'manager/{tableName}.html', context)
-    
-
-# Creates classes for date submissions
-class StartDateForm(forms.Form):
-    startDate = forms.DateField()
-
-class EndDateForm(forms.Form):
-    endDate = forms.DateField()

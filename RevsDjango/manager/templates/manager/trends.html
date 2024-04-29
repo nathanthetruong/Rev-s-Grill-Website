@@ -42,7 +42,7 @@
         </h1>
         
         <!-- Display the Date Forms -->
-        <form method="post" action="">
+        <form id="dateForm" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -52,29 +52,34 @@
                 <label for="endDate">End Date:</label>
                 <input type="date" id="endDate" name="endDate" class="form-control" required>
             </div>
-            <button name="submit2" class="btn btn-success">Submit</button>
+            <button name="submit" class="btn btn-success">Submit</button>
         </form>
 
         <!-- Display the trends report -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Item 1</th>
-                    <th>Item 2</th>
-                    <th>Frequency</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in trends  %}
-                <tr>
-                    <td>{{ item.item1 }}</td>
-                    <td>{{ item.item2 }}</td>
-                    <td>{{ item.frequency }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>  
-
+        <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+            <table class="table table-bordered">
+                <thead>
+                    <input type="hidden" id="sortField" name="sortField" value="">
+                    <input type="hidden" id="tableName" name="tableName" value="trends">
+                    <thead>
+                        <tr>
+                            <th>Item 1<img src="{% static 'sort.png' %}" onclick="setSort('item1')" alt="Price sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                            <th>Item 2<img src="{% static 'sort.png' %}" onclick="setSort('item2')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                            <th>Frequency<img src="{% static 'sort.png' %}" onclick="setSort('frequency')" alt="Category sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        </tr>
+                    </thead>
+                </thead>
+                <tbody>
+                    {% for item in report %}
+                    <tr>
+                        <td>{{ item.item1 }}</td>
+                        <td>{{ item.item2 }}</td>
+                        <td>{{ item.frequency }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
     </div>
 
 
@@ -109,6 +114,14 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Sends information for sorting to the backend -->
+    <script>
+        function setSort(sortField, tableName) {
+            document.getElementById("sortField").value = sortField;
+            document.getElementById("sortForm").submit();
+        }
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

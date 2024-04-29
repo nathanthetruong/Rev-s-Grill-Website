@@ -49,11 +49,11 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
-                <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+                <input type="date" class="form-control" name="startDate" value="{{ item.startDate|date:"Y-m-d" }}" required>
             </div>
             <div class="form-group">
                 <label for="endDate">End Date:</label>
-                <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+                <input type="date" class="form-control" name="endDate" value="{{ item.endDate|date:"Y-m-d" }}" required>
             </div>
             <div class="form-group">
                 <label for="itemCount">Number of Menu Items to Display:</label>
@@ -65,13 +65,16 @@
         <!-- Display the popularity report -->
         <form id="sortForm" method="get" action="{% url 'sortTable' %}">
             <table class="table table-bordered">
+                <input type="hidden" id="sortField" name="sortField" value="">
+                <input type="hidden" id="tableName" name="tableName" value="popularity">
                 <thead>
                     <tr>
                         <th>Rank</th>
-                        <th>Description</th>
-                        <th>Times Ordered</th>
+                        <th>Description<img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Times Ordered<img src="{% static 'sort.png' %}" onclick="setSort('times_ordered')" alt="ID sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
                     </tr>
                 </thead>
+
                 <body>
                     {% for item in report %}
                     <tr>
@@ -116,6 +119,14 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Sends information for sorting to the backend -->
+    <script>
+        function setSort(sortField, tableName) {
+            document.getElementById("sortField").value = sortField;
+            document.getElementById("sortForm").submit();
+        }
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

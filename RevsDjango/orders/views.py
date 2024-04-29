@@ -174,6 +174,7 @@ def checkout(request):
     if request.method == 'POST':
         return redirect('transaction') 
 
+
 def transactionView(request):
     cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     totalPrice = cart['totalPrice']
@@ -219,6 +220,7 @@ def transactionView(request):
 def order_return(request):
     return render(request, 'orders/orders.html')
 
+
 def getCartItems(request):
     # Retrieve cart items from the session
     cartItems = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
@@ -227,9 +229,11 @@ def getCartItems(request):
     # Return the cart items as JSON response
     return JsonResponse(context, safe=False)
 
+
 def loginView(request):
     # Your login logic here
     return render(request, 'login/login.html')
+
 
 # Handles getting a new order ID
 def getNewOrderID():
