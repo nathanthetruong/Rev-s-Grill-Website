@@ -15,6 +15,6 @@ urlpatterns = [
     path('getCartItems/', views.getCartItems, name='getCartItems'),
     path('login/', views.loginView, name='login'),
     path('removeItem/', views.removeItem, name='removeItem'),
-    path('updateQuantity/', views.updateQuantity, name='updateQuantity'),
+    path('removeAllIems/', views.removeAllIems, name='removeAllItems'),
     path('textToSpeech/', views.textToSpeech, name='textToSpeech'),
 ]
