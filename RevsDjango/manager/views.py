@@ -453,7 +453,7 @@ def orderManagement(request):
         for order in orders:
             order.items = getOrderItems(order.id)
 
-    return render(request, 'cashier/ordermanagement.html', context)
+    return render(request, 'manager/ordermanagement.html', context)
 
 '''
 This function will get all the menu items associated with a specific order id
