@@ -26,7 +26,6 @@ def manager(request):
         # validates the dates when adding menu items
         if endDate < startDate:
             messages.error(request, "End date must be after start date")
-
             return redirect('Revs-Manager-Screen')
 
         # Get an available ID for a new menu_item
