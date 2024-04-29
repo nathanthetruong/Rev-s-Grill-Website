@@ -17,11 +17,6 @@
     </style>
 </head>
 <body>
-    <h1>Restock Report
-        <!-- Modal to explain the current page -->
-        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
-    </h1>
-
     <!-- Feedback for whenever we add a new inventory item -->
     {% if messages %}
         {% for message in messages %}
@@ -38,13 +33,21 @@
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
+
+    <h1 class="text-center mb-4">
+        Restock Report
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
 
     <!-- Display the inventory items from the model -->
     <table class="table table-bordered">
@@ -62,9 +65,9 @@
             <form action="{% url 'Revs-modify-inventory' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="item_id" value="{{ item.id }}">
-                <td><input type="text" class="form-control" name="description" value="{{ item.description }}"></td>
-                <td><input type="number" min="0" class="form-control" name="quantity_remaining" value="{{ item.quantity_remaining }}"></td>
-                <td><input type="number" min="0" class="form-control" name="quantity_target" value="{{ item.quantity_target }}"></td>
+                <td><input type="text" class="form-control" name="description" value="{{ item.description }}" required></td>
+                <td><input type="number" min="0" class="form-control" name="quantity_remaining" value="{{ item.quantity_remaining }}" required></td>
+                <td><input type="number" min="0" class="form-control" name="quantity_target" value="{{ item.quantity_target }}" required></td>
                 <td><button type="submit" class="btn btn-success">Save Changes</button></td>
             </form>
 

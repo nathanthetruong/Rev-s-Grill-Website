@@ -17,52 +17,72 @@
     </style>
 </head>
 <body>
-    <h1>Sales Report
-        <!-- Modal to explain the current page -->
-        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
-    </h1>
 
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
-            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
+            <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
 
-    <!-- Display the Date Forms -->
-    <form action='{% url "Revs-sales-Screen" %}' method="post">
-        {% csrf_token %}
-        {{StartDateForm}}
-        {{EndDateForm}}
-        <button name="submit_button">Submit the Dates</button>
-    </form>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">
+            Sales Report
+            <!-- Modal to explain the current page -->
+            <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+        </h1>
 
-    <!-- Display the sales report -->
-    <table class="table table-bordered">
-        <tr>
-            <th>ID</th>
-            <th>Price</th>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Times Ordered</th>
-        </tr>
-        {% for item in sales_report %}
-        <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.category }}</td>
-            <td>{{ item.total_quantity_ordered }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+        <!-- Display the Date Forms -->
+        <form action='{% url "Revs-sales-Screen" %}' method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+
+        <!-- Display the sales report -->
+        <form id="sortForm" method="get" action="{% url 'sortTable' %}">
+            <table class="table table-bordered">
+                <input type="hidden" id="sortField" name="sortField" value="">
+                <input type="hidden" id="tableName" name="tableName" value="sales">
+                <thead>
+                    <tr>
+                        <th>Price <img src="{% static 'sort.png' %}" onclick="setSort('price')" alt="Price sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Description <img src="{% static 'sort.png' %}" onclick="setSort('description')" alt="Description sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Category <img src="{% static 'sort.png' %}" onclick="setSort('category')" alt="Category sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Times Ordered <img src="{% static 'sort.png' %}" onclick="setSort('totalQuantityOrdered')" alt="Total quantity ordered sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                        <th>Revenue <img src="{% static 'sort.png' %}" onclick="setSort('revenue')" alt="Revenue sort button" style="width: 30px; height: 30px; cursor: pointer;"></th>
+                    </tr>
+                </thead>
+                <body>
+                    {% for item in report %}
+                    <tr>
+                        <td>${{ item.price|floatformat:2 }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.totalQuantityOrdered }}</td>
+                        <td>${{ item.revenue|floatformat:2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </body>
+            </table>
+        </form>
+    </div>
 
     <!-- Foooter Section -->
     <footer>
@@ -95,6 +115,14 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Sends information for sorting to the backend -->
+    <script>
+        function setSort(sortField, tableName) {
+            document.getElementById("sortField").value = sortField;
+            document.getElementById("sortForm").submit();
+        }
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

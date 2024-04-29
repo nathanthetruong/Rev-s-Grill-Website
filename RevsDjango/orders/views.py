@@ -11,7 +11,36 @@ import time
 from django.http import JsonResponse
 
 
+from google.cloud import texttospeech
+import os
+import logging
 
+# Set up Google Cloud credentials
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp_service_account.json"
+
+# Allows us to convert HTML text in the frontend to speech
+def textToSpeech(request):
+    client = texttospeech.TextToSpeechClient()
+    text = request.GET.get('text', 'Default text')
+
+    synthesis_input = texttospeech.SynthesisInput(text=text)
+
+    # Build the voice request with the cheaper standard voice
+    voice = texttospeech.VoiceSelectionParams(
+        language_code="en-US",
+        name='en-US-Standard-A'
+    )
+
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    response = client.synthesize_speech(
+        input=synthesis_input, voice=voice, audio_config=audio_config
+    )
+
+    # Return binary for html to process
+    return HttpResponse(response.audio_content, content_type='audio/mp3')
 
 # Initializes all the menu items buttons
 def orders(request):
@@ -134,7 +163,7 @@ def removeAllIems(request):
         totalPrice = cart['totalPrice']
 
         cartCount = len(cart['menuItems'])
-        
+
         return JsonResponse({'cartItems': cart['menuItems'], 'cartCount': cartCount,
                              'totalPrice': totalPrice})
     
@@ -253,31 +282,3 @@ def getMenuItem(request, menuItemId):
     for menuItem in menuItems:
         if menuItem['id'] == int(menuItemId):
             return menuItem
-
-
-# not sure if this works either
-def updateQuantity(request):
-    if request.method == 'POST':
-        # Parse the item ID, new quantity, and other necessary data from the request
-        item_id = request.POST.get('id')
-        new_quantity = int(request.POST.get('quantity'))
-
-        try:
-            # Fetch the CartItem object for the given item ID
-            cart_item = CartItem.objects.get(id=item_id)
-            cart_item.quantity = new_quantity
-            cart_item.save()
-
-            # Success response with updated cart data (optional)
-            cart_items = CartItem.objects.filter(user=request.user)
-            cart_data = [{'id': item.id, 'description': item.menu_item.description, 'price': item.menu_item.price, 'quantity': item.quantity} for item in cart_items]
-            return JsonResponse({'success': True, 'cart_data': cart_data})
-        except CartItem.DoesNotExist:
-            # Error response if item not found in cart
-            return JsonResponse({'success': False, 'message': 'Item not found in cart'})
-        except Exception as e:
-            # Handle other potential errors
-            print(f"Error updating cart item: {e}")
-            return JsonResponse({'success': False, 'message': 'An error occurred'})
-
-    return JsonResponse({'success': False, 'message': 'Invalid request method'})
