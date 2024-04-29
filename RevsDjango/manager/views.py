@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import MenuItems, Inventory, Employees, Orders, Inventory
 from django.db import connection
 from django.utils import timezone
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import calendar
 from django import forms
 from django.contrib import messages
@@ -226,42 +226,41 @@ def sales(request):
 def trends(request):
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
-    startingDateForm = StartDateForm()
-    endingDateForm = EndDateForm()
     if request.method == "POST":
-        if "submit" in request.POST:
-            startingDateForm = StartDateForm(request.POST)
-            endingDateForm = EndDateForm(request.POST)
-
-            # If the date is valid, extracts the selected date
-            if startingDateForm.is_valid():
-                startingDate = startingDateForm.cleaned_data['startDate']
-            if endingDateForm.is_valid():
-                endingDate = endingDateForm.cleaned_data['endDate']
-        elif "submit2" in request.POST:
-            # Get dates from POST request
-            start_date_str = request.POST.get('startDate')
-            end_date_str = request.POST.get('endDate')
-
-            # Convert string dates to date objects
-            startingDate = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-            endingDate = datetime.strptime(end_date_str, '%Y-%m-%d').date()
+        startingDate = datetime.strptime(request.POST.get('startDate'), '%Y-%m-%d').date()
+        endingDate = datetime.strptime(request.POST.get('endDate'), '%Y-%m-%d').date()
 
     '''
     # Fetch real sales trends data
     sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
     monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
     '''
+    
+    isValid, error = validateDate(startingDate, endingDate)
+    if not isValid:
+        return JsonResponse({'error': error}, status=400)
 
     trends = getTrends(request, startingDate, endingDate)
+    if 'currentField' in request.session:
+        del request.session['currentField']
 
     # Default option
-    context = {'trends': trends,
-                'StartDateForm': startingDateForm,
-                'EndDateForm': endingDateForm,
-                }
+    context = {'report': trends}
 
     return render(request, 'manager/trends.html', context)
+
+
+# Validates date inputs
+def validateDate(startDate, endDate):
+    minimumDate = date(2023, 1, 1)
+    maximumDate = date(2030, 1, 1)
+    if startDate >= endDate:
+        return False, "End Date should be after the Start Date"
+    if startDate < minimumDate or endDate < minimumDate:
+        return False, "Don't input anything lower than 01/01/2023"
+    if startDate > maximumDate or endDate > maximumDate:
+        return False, "Don't input anything higher than 01/01/2030"
+    return True, "No error"
 
 
 def getExcessReport(request, startDate, endDate):

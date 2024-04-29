@@ -38,7 +38,7 @@
         </h1>
         
         <!-- Display the Date Forms -->
-        <form method="post" action="">
+        <form id="dateForm" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
@@ -48,7 +48,7 @@
                 <label for="endDate">End Date:</label>
                 <input type="date" id="endDate" name="endDate" class="form-control" required>
             </div>
-            <button name="submit2" class="btn btn-success">Submit</button>
+            <button name="submit" class="btn btn-success">Submit</button>
         </form>
 
         <!-- Display the trends report -->
@@ -61,7 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in trends  %}
+                {% for item in report %}
                 <tr>
                     <td>{{ item.item1 }}</td>
                     <td>{{ item.item2 }}</td>
@@ -105,6 +105,26 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Handles form submission and any errors in the dates -->
+    <script>
+        $(document).ready(function() {
+            $('#dateForm').submit(function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'Revs-trends-Screen' %}",
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        'start_date': 
+                    },
+                    error: function(xhr, status, error) {
+                        alert("Invalid Input: " + error);
+                    }
+                })
+            })
+        })
+    </script>
 
     <!-- Google Translate API -->
     <script type="text/javascript">
