@@ -13,4 +13,8 @@ urlpatterns = [
     path('orders/', views.transactionView, name='orders'),
     path('getCartItems/', views.getCartItems, name='getCartItems'),
     path('login/', views.loginView, name='login'),
+    path('removeItem/', views.removeItem, name='removeItem'),
+    path('updateQuantity/', views.updateQuantity, name='updateQuantity'),
+    
+
 ]
