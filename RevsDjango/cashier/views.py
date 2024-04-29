@@ -53,7 +53,7 @@ def orders(request):
 
         context = {'categorizedButtons': categorizedButtons}
 
-        return render(request, 'orders/orders.html', context)
+        return render(request, 'cashier/cashier.html', context)
 
 
 # Adds items to the cart
@@ -181,11 +181,11 @@ def transactionView(request):
 
     context = {'cartItems': cart['menuItems'], 'totalPrice': totalPriceRounded, 'tax': tax, 'total': total}
 
-    return render(request, 'orders/transaction.html', context)
+    return render(request, 'cashier/transaction.html', context)
 
 
 def order_return(request):
-    return render(request, 'orders/orders.html')
+    return render(request, 'cashier/cashier.html')
 
 def getCartItems(request):
     # Retrieve cart items from the session
