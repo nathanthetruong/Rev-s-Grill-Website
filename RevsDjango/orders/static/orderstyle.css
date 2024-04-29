@@ -258,7 +258,7 @@ th, td {
 
 /* menu item bar */
 section {
-    background-color: #efe8e8;
+    background-color: #cdc1c1;
     padding-top: 20px;
     padding-bottom: 20px;
 
@@ -444,14 +444,14 @@ section {
 .menuButton {
     margin: 5px;
     padding: 10px 20px;
-    background-color: #ffffff;  
+    background-color: #cdadad;  
     border: 1px solid #000000;
     border-radius: 5px;
     cursor: pointer;
 }
 
 .menuButton:hover {
-    background-color: #fff5f5; 
+    background-color: #b28383; 
 }
 
 /* Menu items */
