@@ -19,10 +19,13 @@
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
-            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
-            <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
+            <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
+            <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
+            <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
@@ -45,7 +48,7 @@
                 <label for="endDate">End Date:</label>
                 <input type="date" id="endDate" name="endDate" class="form-control" required>
             </div>
-            <button name="submit2" class="btn btn-primary">Update Trends</button>
+            <button name="submit2" class="btn btn-success">Submit</button>
         </form>
 
         <!-- Display the trends report -->
@@ -66,42 +69,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
-        </table>
-
-        <body>
-            <div class="container mt-5">
-                <h1>Sales Trends</h1>
-        
-                <table class="table mt-4">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Total Sales</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in sales_trends_data %}
-                        <tr>
-                            <td>{{ item.date }}</td>
-                            <td>${{ item.total_sales|stringformat:".2f" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </body>
-
-        <div>
-            <h2>Monthly Sales Growth Rates</h2>
-            <body>Percent growth compared to the month before 
-            </body>
-            <ul>
-                {% for month, growth in monthly_growth_rates %}
-                <li>{{ month }}: {{ growth|floatformat:2 }}%</li>
-                {% endfor %}
-            </ul>
-        </div>
-        
+        </table>  
 
     </div>
 

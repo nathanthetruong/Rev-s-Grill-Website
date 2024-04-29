@@ -7,6 +7,7 @@ This is the order page routing logic.
 
 urlpatterns = [
     path('', views.orders, name='Revs-Order-Screen'),
+    path('', views.orders, name='Revs-Menu-Screen'),
     path('checkout/', views.checkout, name='checkout'),
     path('add/', views.addItem, name='addItem'),
     path('transaction/', views.transactionView, name='transaction'),
@@ -15,6 +16,5 @@ urlpatterns = [
     path('login/', views.loginView, name='login'),
     path('removeItem/', views.removeItem, name='removeItem'),
     path('updateQuantity/', views.updateQuantity, name='updateQuantity'),
-    
-
+    path('textToSpeech/', views.textToSpeech, name='textToSpeech'),
 ]

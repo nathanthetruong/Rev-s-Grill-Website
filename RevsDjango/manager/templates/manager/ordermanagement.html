@@ -17,23 +17,122 @@
     </style>
 </head>
 <body>
-    <h1>Order Management</h1>
-
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
-            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
+            <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
 
-    
+    <h1 class="text-center mb-4">
+        Order Management
+        <!-- Modal to explain the current page -->
+        <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
+    </h1>
+
+    <!-- Display the Date Forms -->
+    <form method="post" action="{% url 'Revs-ordermanagement' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="startDate">Start Date:</label>
+            <input type="date" id="startDate" name="startDate" class="form-control" required>
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date:</label>
+            <input type="date" id="endDate" name="endDate" class="form-control" required>
+        </div>
+        <button type="submit" name="submit_date" class="btn btn-success">Submit</button>
+    </form>
+
+    <!-- Display Specific order form -->
+    <form method="post" action="{% url 'Revs-ordermanagement' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="orderID">Specific Order ID:</label>
+            <input type="text" id="orderID" name="orderID" class="form-control" required>
+        </div>
+        <button type="submit" name="submit_id" class="btn btn-success">Submit</button>
+    </form>
+
+    <!-- Display the orders -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer ID</th>
+                <th>Employee ID</th>
+                <th>Total Price</th>
+                <th>Order Time</th>
+                <th>Status</th>
+                <th>View Items</th>
+                <th>Complete Order</th>
+                <th>Cancel Order</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer_id }}</td>
+                <td>{{ order.employee_id }}</td>
+                <td>${{ order.total_price }}</td>
+                <td>{{ order.order_time }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <!-- Modal to show the items -->
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#viewItemsModal{{ order.id }}">View Items</button>
+                    <div class="modal fade" id="viewItemsModal{{ order.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Items in Order {{ order.id }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <ul>
+                                        {% for item in order.items %}
+                                        <li>{{ item }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>            
+                <td>
+                    <!-- Set Complete -->
+                    <form action="{% url 'Revs-ordermanagement' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="complete_order" value="{{ order.id }}">
+                        <button type="submit" class="btn btn-success">Complete</button>
+                    </form>
+                </td>
+                <td>
+                    <!-- Set Cancelled -->
+                    <form action="{% url 'Revs-ordermanagement' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="cancel_order" value="{{ order.id }}">
+                        <button type="submit" class="btn btn-danger">Cancel</button>
+                    </form>
+                </td>    
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
     <!-- Foooter Section -->
     <footer>
@@ -66,6 +165,23 @@
             <p>&copy; 2024 Rev's American Grill. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Excess Report</h5>
+            </div>
+            <div class="modal-body">
+                Given a timestamp, you can view orders all the orders between that date. You can also search for an individual order by specifying the order ID. Additionally, you can modify an order, and delete orders.
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
 
     <!-- Google Translate API -->
     <script type="text/javascript">

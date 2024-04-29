@@ -23,11 +23,13 @@
             <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
             <!-- <div class="logo"><a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></a></div> -->
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
             <a href="{% url 'Revs-sales-Screen' %}">Sales Report</a>
             <a href="{% url 'Revs-productusage-Screen' %}">Product Usage</a>
-            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
             <a href="{% url 'Revs-trends-Screen' %}">Trends</a>
+            <a href="{% url 'Revs-excess-Screen' %}">Excess Report</a>
+            <a href="{% url 'Revs-popularity-Screen' %}">Popularity Trends</a>
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     <!-- Feedback for whenever we add a new employee -->
@@ -39,7 +41,6 @@
             </div>
         {% endfor %}
     {% endif %}
-
     </header>
 
     <!-- Feedback for whenever we add a new menu item -->
@@ -61,7 +62,8 @@
     <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <!-- Display the menu items from the model -->
-    <h1>Menu Items
+    <h1 class="text-center mb-4">
+        Menu Items
         <!-- Modal to explain the current page -->
         <img src="{% static 'question.jpg' %}" style="width: 30px; height: 30px; cursor: pointer;" data-toggle="modal" data-target="#infoModal">
     </h1>
@@ -80,8 +82,8 @@
             <form action="{% url 'Revs-modify-item' %}" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="item_id" value="{{ item.id }}">
-                <td><input type="text" class="form-control" name="price" value="{{ item.price }}"></td>
-                <td><input type="text" class="form-control" name="description" value="{{ item.description }}"></td>
+                <td><input type="text" class="form-control" name="price" value="{{ item.price }}" required></td>
+                <td><input type="text" class="form-control" name="description" value="{{ item.description }}" required></td>
 
                 <!-- Allow us to select from specific categories -->
                 <td>
@@ -96,9 +98,9 @@
                     </select>
                 </td>
 
-                <td><input type="number" class="form-control" name="times_ordered" value="{{ item.times_ordered }}"></td>
-                <td><input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}"></td>
-                <td><input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}"></td>
+                <td><input type="number" class="form-control" name="times_ordered" value="{{ item.times_ordered }}" required></td>
+                <td><input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required></td>
+                <td><input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required></td>
                 <td><button type="submit" class="btn btn-success">Save Changes</button></td>
             </form>
             <td>
@@ -116,15 +118,15 @@
     <!-- Allow us to add a new menu item -->
     <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#demo">Add New Menu Item</button>
     <div id="demo" class="collapse">
-        <form action="{% url 'Revs-Manager-Screen' %}" method="post">
+        <form action="{% url 'Revs-Manager-Screen' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" placeholder="Enter a valid price">
+                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" placeholder="Enter a valid price" required>
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <input type="text" class="form-control" id="description" name="description" placeholder="Enter the name of the item">
+                <input type="text" class="form-control" id="description" name="description" placeholder="Enter the name of the item" required>
             </div>
             <div class="form-group">
                 <label for="category">Category</label>
@@ -140,15 +142,19 @@
             </div>
             <div class="form-group">
                 <label for="times_ordered">Times Ordered</label>
-                <input type="number" class="form-control" id="times_ordered" name="times_ordered" min="0">
+                <input type="number" class="form-control" id="times_ordered" name="times_ordered" min="0" required>
             </div>
             <div class="form-group">
                 <label for="start_date">Start Date</label>
-                <input type="date" class="form-control" id="start_date" name="start_date">
+                <input type="date" class="form-control" id="start_date" name="start_date" required>
             </div>
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input type="date" class="form-control" id="end_date" name="end_date">
+                <input type="date" class="form-control" id="end_date" name="end_date" required>
+            </div>
+            <div>
+                <label for="upload_image">Upload Image</label>
+                <input type="file" name="image" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Item</button>
         </form>
