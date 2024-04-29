@@ -51,15 +51,15 @@ body {
 }
 
 /* Board styling */
-
 .board {
     /* background-color: rgb(169, 126, 126); */
     background-image: url('bg.png');
+    top: 10px;
     width: 100vw; 
     height: 110vh; 
     font-family: Arial, sans-serif;
     position: relative;
-    z-index: 1000;
+    z-index: 0;
     padding: 5px; 
     box-sizing:content-box; 
 }

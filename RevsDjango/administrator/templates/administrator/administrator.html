@@ -35,7 +35,12 @@
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
-            <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
+            
+            <div class="logo">
+                <a href="{% url 'Revs-Login-Screen' %}">
+                <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
+                </a>
+            </div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
             <a href="{% url 'Revs-Administrator-Screen' %}">Administrator Page</a>
         </div>
@@ -115,7 +120,7 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="">
+                <a href="{% url 'Revs-Login-Screen' %}">
                     <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
                 </a>
             </div>

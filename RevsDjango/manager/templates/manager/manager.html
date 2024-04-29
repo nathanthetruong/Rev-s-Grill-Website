@@ -20,8 +20,11 @@
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
-            <div class="logo"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></div>
-            <!-- <div class="logo"><a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's Grill Logo"></a></div> -->
+            <div class="logo">
+                <a href="{% url 'Revs-Login-Screen' %}">
+                <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
+                </a>
+            </div>
             <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-restock-Screen' %}">Restock Report</a>
@@ -88,7 +91,7 @@
                 <!-- Allow us to select from specific categories -->
                 <td>
                     <select class="form-control" name="category">
-                        <option value="Burgers" {% if item.category == "Burgers" %}selected{% endif %}>Burgers</option>
+                        <option value="Burger" {% if item.category == "Burger" %}selected{% endif %}>Burger</option>
                         <option value="Sandwiches" {% if item.category == "Sandwiches" %}selected{% endif %}>Sandwiches</option>
                         <option value="Shakes/More" {% if item.category == "Shakes/More" %}selected{% endif %}>Shakes/More</option>
                         <option value="Drink" {% if item.category == "Drink" %}selected{% endif %}>Drink</option>
@@ -172,8 +175,8 @@
                 </p>
             </div>
             <div class="logo-column">
-                <a href="">
-                    <a href="{% url 'Revs-Login-Screen' %}"><img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo"></a>
+                <a href="{% url 'Revs-Login-Screen' %}">
+                    <img src="{% static 'rev.png' %}" alt="Rev's American Grill Logo" class="logo">
                 </a>
             </div>
             

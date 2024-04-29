@@ -1,0 +1,70 @@
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #eee;
+    font-family: serif;
+}
+
+/* CSS for header */
+header {
+    background-color: #4a1e1e; 
+    color: #8a7a7a; 
+    padding: 30px 10px; 
+    display: flex; 
+    justify-content: right; 
+    align-items: center; 
+    gap: 20px;
+    font-size: 22px;
+}
+
+
+header a {
+    color: #fff; 
+    text-decoration: none; 
+}
+
+header a:hover {
+    text-decoration: underline; 
+    color: #8a7a7a;
+}
+
+header nav a {
+    margin-right: 20px; /* Adjust this value to increase or decrease the space between links */
+}
+
+
+.logo1 img {
+    width: 100px; 
+    height: auto; 
+    display: block;
+    margin-left: -730px;
+}
+
+
+#id169a841ab6fc2 {
+    padding: 10px; 
+    font-size: 16px; 
+    margin-bottom: 20px; 
+    width: 150px;
+    height: 50px;
+}
+
+.touch-to-order-container {
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+}
+
+.touch-to-order-container a {
+    display: block; 
+    width: 100%; 
+    height: 100%; 
+}
+
+.touch-to-order-container img {
+    width: 100%; 
+    height: 100%; 
+    /* object-fit: cover;  */
+    object-fit: fill;
+}
