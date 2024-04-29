@@ -1,0 +1,138 @@
+/* Table will alternate colors to look nicer */
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Add a black background color to the top navigation */
+.navbar {
+    overflow: hidden;
+    background-color: #5e1f1f;
+    position: fixed; /* This lets it stick at the top */
+    top: 0;
+    width: 100%;
+}
+
+/* Style the links inside the navigation bar */
+.navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the color of links on hover */
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Padding between the navbar and body */
+body {
+    padding-top: 90px; 
+}
+
+/* Logo */
+.logo {
+    margin-right: auto; 
+}
+
+.logo img {
+    width: 90px; 
+    height: auto; 
+    display: block; 
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 15px;
+    background-color: #5e1f1f;
+    color: #fff; 
+    padding: 20px 0; 
+    text-align: center; 
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.left-column,
+.middle-column,
+.right-column {
+    flex-basis: calc(33.33% - 10px); /* 10px for the space between columns */
+}
+
+.left-column p {
+    font-size: 20px; /* Adjust font size as needed */
+    margin-top: 40px;
+    color: #dddddd; /* Adjust color as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.left-column p:last-of-type {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #fbfbfb; /* Adjust color as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.logo-column {
+    flex-basis: calc(33.33% - 10px); /* Adjust the width of the logo column */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px;
+    margin-top: 30px;
+}
+
+.logo {
+    max-width: 30%; 
+}
+.right-column {
+    margin-left: 30px;
+    margin-right: -10px;
+}
+.right-column h4 {
+    font-size: 30px; /* Adjust font size as needed */
+    color: #dddddd; /* Adjust color as needed */
+    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.right-column h5 {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #fbfbfb; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    margin-bottom: 5px; /* Adjust margin bottom as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+p {
+    font-size: 20px; /* Adjust font size as needed */
+    color: #cdc9c9; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    font-family: Times, Times New Roman, serif;
+}
+
+.quote {
+    font-style: italic; /* Make text italic */
+    font-size: 18px; /* Adjust font size as needed */
+    color: #c8baba; /* Adjust color as needed */
+    margin-top: 10px; /* Adjust margin top as needed */
+    font-family: OCR A Std, monospace;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+/* Change the color of links on hover */
+/* .navbar a:not(.logo) {
+    background-color: #ddd;
+    color: black;
+} */

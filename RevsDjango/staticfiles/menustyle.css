@@ -1,0 +1,228 @@
+/* Reset default margin and padding */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* Header styling */
+.header {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(133, 129, 129, 0.5)), url('bg.png');
+    color: white;
+    padding: 10px 20px; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px;
+    font-size: 22px;
+    position: relative; 
+    z-index: 1; 
+    font-family: "Times New Roman", serif;
+}
+
+/* Style for the "Order Now" link */
+.header #orderNow,
+.header #help {
+    color: #000000; 
+    text-decoration: none; 
+    font-weight: bold;
+}
+
+.header #orderNow:hover,
+.header #help:hover {
+    color: #702626; 
+    text-decoration: underline; 
+}
+
+/* Style for the logo */
+.logo1 img {
+    width: 100px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+
+#id169a841ab6fc2 {
+    padding: 10px; 
+    font-size: 16px; 
+    margin-bottom: 20px; 
+    width: 150px;
+    height: 50px;
+    margin-left: auto;
+}
+
+/* Board styling */
+
+.board {
+    /* background-color: rgb(169, 126, 126); */
+    background-image: url('bg.png');
+    width: 100vw; 
+    height: 110vh; 
+    font-family: Arial, sans-serif;
+    position: relative;
+    z-index: 1000;
+    padding: 5px; 
+    box-sizing:content-box; 
+}
+.board .logo_new {
+    position: absolute;
+    width: 10%; 
+    height: auto; 
+    top: -130px; 
+    left: -85px;
+}
+
+/* Style for the tag class within the board */
+.board .tag {
+    position: absolute;
+}
+
+.menuLabel {
+    display: block;
+    color: #333333; 
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 5px;
+    cursor: pointer;
+    margin-right: 50px;
+    font-family: Georgia, serif;
+}
+
+.price {
+    float: right; 
+    margin-top: -35px;
+}
+
+
+/* Burger styling here */
+.board #tag1 {
+    margin-top: -180px;
+    margin-left: 350px;   
+}
+
+#tag1 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .burger-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 110px;
+    margin-left: 460px;
+}
+
+/* Baskets styling here */
+
+.board #tag2 {
+    position: absolute; 
+    margin-top: -180px;
+    margin-left: 850px;   
+}
+
+#tag2 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .basket-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 110px;
+    margin-left: 960px;
+}
+
+
+/* Sandwiches styling here */
+.board #tag3 {
+    position: absolute; 
+    margin-top: 15px;
+    left: -55px;   
+}
+
+#tag3 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .sandwich-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 300px;
+    left: 50px;
+}
+
+/* Shakes styling here */
+.board #tag4 {
+    position: absolute; 
+    margin-top: 180px;
+    margin-left: 350px;   
+}
+
+#tag4 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .shakes-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 480px;
+    margin-left: 460px;
+}
+
+/* Beverages styling here */
+.board #tag5 {
+    position: absolute; 
+    margin-top: 270px;
+    margin-left: -60px;   
+}
+
+#tag5 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .bev-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 565px;
+    margin-left: 60px;
+}
+
+
+/* Sides styling here */
+.board #tag6 {
+    position: absolute; 
+    margin-top: 120px;
+    margin-left: 850px;   
+}
+
+#tag6 h2 {
+    position: absolute; 
+    margin-top: -275px;
+    margin-left: 250px;
+    transform: translateX(-50%); 
+    color: rgb(255, 255, 255); 
+}
+
+.board .sides-container {
+    position: absolute;
+    width: 20%;
+    margin-top: 410px;
+    margin-left: 960px;
+}

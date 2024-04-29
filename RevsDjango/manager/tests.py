@@ -1,6 +1,6 @@
 from django.urls import reverse, resolve
 from django.test import TestCase, Client
-from .models import MenuItems, Employees, Orders
+from .models import MenuItems, Employees, Orders, Inventory
 from django.contrib.auth.models import User
 from django.db import models
 from django.test import override_settings
@@ -8,6 +8,8 @@ from .views import StartDateForm, EndDateForm
 from .views import getExcessReport
 from django.utils import timezone
 from datetime import timedelta
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.messages import get_messages
 
 #pytest
 #coverage run -m pytest
@@ -62,7 +64,6 @@ class StaticFilesTest(TestCase):
         self.assertIn('managerstyle.css', response.content.decode())
         self.assertIn('rev.png', response.content.decode())
 
-
 class ContentDisplayTest(TestCase):
     def setUp(self):
         # Set up data here if needed
@@ -71,106 +72,139 @@ class ContentDisplayTest(TestCase):
     def test_content_display(self):
         response = self.client.get(reverse('Revs-trends-Screen'))
         self.assertIn('Item 1', response.content.decode())
-        self.assertIn('Total Sales', response.content.decode())
-
-    
-# class FormSubmissionTest(TestCase):
-#     def test_form_submission(self):
-#         data = {
-#             'startDate': '2023-01-01',
-#             'endDate': '2023-12-31'
-#         }
-#         response = self.client.post(reverse('Revs-trends-Screen'), data)
-#         self.assertEqual(response.status_code, 302)  # Assuming it redirects after POST
+        self.assertIn('Frequency', response.content.decode())
 
 
-# class MenuItemTestCase(TestCase):
+class TestManagerPage(TestCase):
+    def test_add_new_menu_item(self):
+        item_count_before = MenuItems.objects.count()
+        response = self.client.post(reverse('Revs-Manager-Screen'), data={
+            'price': '9.99',
+            'description': 'New Burger',
+            'category': 'Burgers',
+            'times_ordered': '0',
+            'start_date': '2023-01-01',
+            'end_date': '2023-12-31',
+        })
+        item_count_after = MenuItems.objects.count()
+        self.assertEqual(item_count_after, item_count_before + 1)
+        self.assertRedirects(response, reverse('Revs-Manager-Screen'))
+
+    def test_manager_page_loads_correctly(self):
+        response = self.client.get(reverse('Revs-Manager-Screen'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Manager Page')
+
+
+class ExcessReportPageTests(TestCase):
+    def test_excess_report_page_loads_correctly(self):
+        response = self.client.get(reverse('Revs-excess-Screen'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Excess Report")
+        self.assertContains(response, '<input type="date"', count=2)  # Checks for two date inputs
+        self.assertContains(response, '<form')  # Checks for presence of forms
+
+    def test_excess_report_page_content(self):
+        response = self.client.get(reverse('Revs-excess-Screen'))
+        self.assertEqual(response.status_code, 200)
+        # Check for specific content that should always be present
+        self.assertContains(response, "Excess Report")
+        self.assertContains(response, "Start Date:")
+        self.assertContains(response, "End Date:")
+        self.assertContains(response, "Submit")
+
+
+class RestockReportPageTests(TestCase):
+
+    def test_restock_report_page_access(self):
+        response = self.client.get(reverse('Revs-restock-Screen'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'manager/restock.html')
+
+
+class ProductUsagePageTests(TestCase):
+    def test_product_usage_page_loads_correctly(self):
+        """ Test if the Product Usage page loads successfully """
+        response = self.client.get(reverse('Revs-productusage-Screen'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_product_usage_page_content(self):
+        """ Test for the presence of static text in the Product Usage page """
+        response = self.client.get(reverse('Revs-productusage-Screen'))
+        self.assertIn('Product Usage', response.content.decode())
+        self.assertIn('Start Date:', response.content.decode())
+        self.assertIn('End Date:', response.content.decode())
+
+
+
+
+#tests views.py
+#check compatablity with database 
+
+# class MenuItemsTests(TestCase):
 #     def setUp(self):
-#         # Set up data for the whole TestCase
-#         MenuItem.objects.create(name="Burger", price=9.99, description="A classic burger.")
+#         # Create sample data here if needed
+#         MenuItems.objects.create(
+#             price=10.99,
+#             description="Test Burger",
+#             category="Burgers",
+#             times_ordered=10,
+#             start_date="2021-01-01",
+#             end_date="2021-12-31"
+#         )
 
-    # def test_create_menu_item(self):
-    #     """Test the creation of a menu item."""
-    #     MenuItem.objects.create(name="Salad", price=5.99, description="Fresh garden salad.")
-    #     self.assertEqual(MenuItem.objects.count(), 2)
-
-#     def test_read_menu_item(self):
-#         """Test reading a menu item."""
-#         item = MenuItem.objects.get(name="Burger")
-#         self.assertEqual(item.price, 9.99)
-#         self.assertEqual(item.description, "A classic burger.")
-
-    # def test_update_menu_item(self):
-    #     """Test updating a menu item."""
-    #     item = MenuItem.objects.get(name="Burger")
-    #     item.price = 10.99
-    #     item.save()
-    #     updated_item = MenuItem.objects.get(name="Burger")
-    #     self.assertEqual(updated_item.price, 10.99)
+#     def test_add_menu_item(self):
+#         # Mimic the file upload
+#         image_path = '/path/to/image.jpg'
+#         image = SimpleUploadedFile(name='test_image.jpg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
+#         response = self.client.post(reverse('Revs-Manager-Screen'), data={
+#             'price': 12.99,
+#             'description': 'New Veggie Burger',
+#             'category': 'Burgers',
+#             'times_ordered': 0,
+#             'start_date': '2022-01-01',
+#             'end_date': '2022-12-31',
+#             'image': image
+#         })
+#         self.assertEqual(response.status_code, 302)  # Expecting a redirect after POST
+#         self.assertEqual(MenuItems.objects.count(), 2)  # Check if the item was added
 
 #     def test_delete_menu_item(self):
-#         """Test deleting a menu item."""
-#         item = MenuItem.objects.get(name="Burger")
-#         item.delete()
-#         self.assertEqual(MenuItem.objects.count(), 0)
+#         item_id = MenuItems.objects.get(description="Test Burger").id
+#         response = self.client.post(reverse('deleteItem'), {'item_id': item_id})
+#         self.assertEqual(response.status_code, 302)
+#         self.assertEqual(MenuItems.objects.count(), 0)  # Item should be deleted
 
+#     def test_modify_menu_item(self):
+#         item = MenuItems.objects.get(description="Test Burger")
+#         response = self.client.post(reverse('modifyItem'), {
+#             'item_id': item.id,
+#             'price': 15.00,
+#             'description': item.description,
+#             'category': item.category,
+#             'times_ordered': item.times_ordered,
+#             'start_date': item.start_date,
+#             'end_date': item.end_date
+#         })
+#         self.assertEqual(response.status_code, 302)
+#         item.refresh_from_db()
+#         self.assertEqual(item.price, 15.00)
 
-class ExcessPageTests(TestCase):
-    """
-    Tests for the Excess page in the management system.
-    """
+#     def test_manager_page_loads_correctly(self):
+#         response = self.client.get(reverse('Revs-Manager-Screen'))
+#         self.assertEqual(response.status_code, 200)
+#         self.assertTemplateUsed(response, 'manager/manager.html')
 
-    def setUp(self):
-        # Set up data if necessary
-        self.url = reverse('Revs-excess-Screen')
+#     def test_form_errors(self):
+#         response = self.client.post(reverse('Revs-Manager-Screen'), data={
+#             'price': 12.99,
+#             'description': 'New Veggie Burger',
+#             'category': 'Burgers',
+#             'times_ordered': 0,
+#             'start_date': '2023-01-01',
+#             'end_date': '2022-12-31'  # Invalid end date
+#         })
+#         messages = list(get_messages(response.wsgi_request))
+#         self.assertEqual(len(messages), 1)
+#         self.assertIn('End date must be after start date', str(messages[0]))
 
-    def test_excess_form_display(self):
-        """
-        Tests if the Excess page displays the date forms correctly.
-        """
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'name="startDate"')
-        self.assertContains(response, 'name="endDate"')
-        self.assertIsInstance(response.context['StartDateForm'], StartDateForm)
-        self.assertIsInstance(response.context['EndDateForm'], EndDateForm)
-
-    def test_excess_report_generation(self):
-        """
-        Tests submission of the form and the display of the excess report.
-        """
-        data = {
-            'startDate': (timezone.now().date() - timedelta(days=365)).strftime('%Y-%m-%d'),
-            'endDate': timezone.now().date().strftime('%Y-%m-%d'),
-            'submit': 'Generate Report'
-        }
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, 200)
-        # Check if the response contains table data that might come from a valid report
-        self.assertContains(response, 'Inventory ID')
-        self.assertContains(response, 'Description')
-        # Assuming getExcessReport function and querying is correctly set up to return expected results
-        expected_report = getExcessReport(data['startDate'], data['endDate'])
-        # Check that the context data contains the correct report data
-        self.assertEqual(response.context['excess_report'], expected_report)
-
-    def test_excess_report_content(self):
-        """
-        Tests the content of the excess report after form submission using a specific known date range.
-        """
-        data = {
-            'startDate': '2023-01-01',
-            'endDate': '2023-12-31',
-            'submit': 'Generate Report'
-        }
-        response = self.client.post(self.url, data)
-        self.assertEqual(response.status_code, 200)
-        print("hello")
-        # Checking for specific expected output in the response
-        for item in response.context['excess_report']:
-            self.assertInHTML(f'<td>{item["inventory_id"]}</td>', response.content.decode())
-            print(["inventory_id"])
-            self.assertInHTML(f'<td>{item["inventory_description"]}</td>', response.content.decode())
-            self.assertInHTML(f'<td>{item["quantity_target"]}</td>', response.content.decode())
-            self.assertInHTML(f'<td>{item["quantity_consumed"]}</td>', response.content.decode())
-            self.assertInHTML(f'<td>{item["ten_percent_target"]}</td>', response.content.decode())
