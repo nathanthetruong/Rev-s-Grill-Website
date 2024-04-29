@@ -49,11 +49,11 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="startDate">Start Date:</label>
-                <input type="date" class="form-control" name="start_date" value="{{ item.start_date|date:"Y-m-d" }}" required>
+                <input type="date" class="form-control" name="startDate" value="{{ item.startDate|date:"Y-m-d" }}" required>
             </div>
             <div class="form-group">
                 <label for="endDate">End Date:</label>
-                <input type="date" class="form-control" name="end_date" value="{{ item.end_date|date:"Y-m-d" }}" required>
+                <input type="date" class="form-control" name="endDate" value="{{ item.endDate|date:"Y-m-d" }}" required>
             </div>
             <div class="form-group">
                 <label for="itemCount">Number of Menu Items to Display:</label>
