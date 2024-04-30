@@ -50,6 +50,11 @@
                     Enable Text-to-Speech
                 </label>
             </div>
+            <!-- Resize text -->
+            <div class="tts-checkbox">
+                <label for="textResize"> Resize text: </label>
+                <input type="range" id="text-size-slider" min="12" max="24" value="16" step="1">
+            </div>            
         </div>
     </header>
     
@@ -83,8 +88,8 @@
 
                 </div>
                 <div class="details-section">
-                    <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                    <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                    <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                    <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                         data-price="{{button.price}}" data-id="{{button.id}}"
                         id="{{ button.description }}_button">{{ button.description }}</button>
                 </div>
@@ -128,8 +133,8 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                             data-price="{{button.price}}" data-id="{{button.id}}"
                             id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
@@ -149,8 +154,8 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                             data-price="{{button.price}}" data-id="{{button.id}}"
                             id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
@@ -168,8 +173,8 @@
 
                     </div>
                     <div class="details-section">
-                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                             data-price="{{button.price}}" data-id="{{button.id}}"
                             id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
@@ -188,8 +193,8 @@
 
                     </div>
                     <div class="details-section">
-                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                             data-price="{{button.price}}" data-id="{{button.id}}"
                             id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
@@ -207,8 +212,8 @@
                         <img src="{% static button.description %}.jpeg" alt="{{ button.description }}" class="icon">
                     </div>
                     <div class="details-section">
-                        <div class="price readable" >${{ button.price|floatformat:"2" }}</div>
-                        <button class="menuButton readable" aria-label="Click to add a {{button.description}} to the order"
+                        <div class="price readable text-resizable" >${{ button.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{button.description}} to the order"
                             data-price="{{button.price}}" data-id="{{button.id}}"
                             id="{{ button.description }}_button">{{ button.description }}</button>
                     </div>
@@ -564,6 +569,17 @@
     });
 </script>
     
+<!-- Allows for text accessibility -->
+<script>
+    document.getElementById('text-size-slider').addEventListener('input', function() {
+        var size = this.value + 'px';
+        var elements = document.querySelectorAll('.text-resizable');
+        elements.forEach(function(element) {
+            element.style.fontSize = size;
+        });
+    });
+</script>
+
     
 </body>
 </html>
