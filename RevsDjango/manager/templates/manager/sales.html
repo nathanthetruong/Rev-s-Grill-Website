@@ -61,6 +61,7 @@
         </form>
 
         <!-- Display the sales report -->
+        <h2 id="salestable" class="text-center mb-4">Sales Report Table</h2>
         <form id="sortForm" method="get" action="{% url 'sortTable' %}">
             <table class="table table-bordered">
                 <input type="hidden" id="sortField" name="sortField" value="">
@@ -88,6 +89,29 @@
             </table>
         </form>
     </div>
+
+    <!-- Create a easily digestable pie chart to represent the data-->
+    <h2 id="saleschart" class="text-center mb-4">Sales Report Chart</h2>
+    <div style="width: 60%; margin: 20px auto;">
+        <canvas id="pie-chart"></canvas>
+    </div>  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var labels = [{% for item in report %}"{{ item.description }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+        var data = [{% for item in report %}{{ item.revenue|floatformat:2 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Revenue ($)",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: data
+                }]
+            },
+        });
+    </script>
 
     <!-- Foooter Section -->
     <footer>
