@@ -16,6 +16,14 @@ def about(request):
     return render(request, 'login/about.html')
 
 def employee(request):
+
+    # First check if an employee is accessing the page
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    if Employees.objects.filter(email=user_email).exists() == False:
+        return redirect('employee-noaccess')
+
     return render(request, 'login/employee.html')
 
 def noaccess(request):

@@ -9,6 +9,19 @@ import os
 from django.conf import settings
 
 def manager(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
+
     # If we're adding an item, update the database
     if request.method == 'POST':
         price = request.POST.get('price')
@@ -151,6 +164,18 @@ def modifyInventory(request):
 
 
 def inventory(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     with connection.cursor() as cursor:
         sqlCommand = ("""
                         SELECT id, description, quantity_remaining, quantity_target
@@ -187,6 +212,18 @@ def restocking(request):
         return render(request, 'manager/restocking.html', context)
 
 def excess(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
@@ -203,6 +240,18 @@ def excess(request):
 
 # Creates the Product Usage Page
 def productusage(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
@@ -220,6 +269,18 @@ def productusage(request):
 
 # Creates the Sales Report Page
 def sales(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
@@ -236,6 +297,18 @@ def sales(request):
 
 
 def trends(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     startingDate = timezone.now().date()-timedelta(days=365)
     endingDate = timezone.now().date()
     if request.method == "POST":
@@ -436,6 +509,18 @@ def getMonthlySalesData(request, startDate, endDate):
 '''
 
 def orderManagement(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     context = {}
     if request.method == 'POST':
         if 'submit_date' in request.POST:
@@ -486,6 +571,18 @@ def getOrderItems(order_id):
     return [item[0] for item in items]
 
 def popularity(request):
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     startingDate = timezone.now().date() - timedelta(days=365)
     endingDate = timezone.now().date()
     item_limit = 10 

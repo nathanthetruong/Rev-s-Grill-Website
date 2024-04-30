@@ -12,6 +12,15 @@ from .models import MenuItems, Inventory, Employees, Orders, Inventory, OrderBre
 
 # Initializes all the menu items buttons
 def orders(request):
+
+    # First check if an employee is accessing the page
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    if Employees.objects.filter(email=user_email).exists() == False:
+        return redirect('employee-noaccess')
+        
+
     with connection.cursor() as cursor:
         if 'cart' in request.session:
             del request.session['cart']
