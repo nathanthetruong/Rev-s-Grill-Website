@@ -64,6 +64,7 @@
         </form>
 
         <!-- Display the popularity report -->
+        <h2 id="popularitychart" class="text-center mb-4">Menu Item Popularity Table</h2>
         <form id="sortForm" method="get" action="{% url 'sortTable' %}">
             <table class="table table-bordered">
                 <input type="hidden" id="sortField" name="sortField" value="">
@@ -88,6 +89,29 @@
             </table>
         </form>
     </div>
+
+    <!-- Create a easily digestable pie chart to represent the data-->
+    <h2 id="popularitychart" class="text-center mb-4">Menu Item Popularity Chart</h2>
+    <div style="width: 60%; margin: 20px auto;">
+        <canvas id="pie-chart"></canvas>
+    </div>  
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var labels = [{% for item in report %}"{{ item.description }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+        var data = [{% for item in report %}{{ item.times_ordered }}{% if not forloop.last %},{% endif %}{% endfor %}];
+    
+        new Chart(document.getElementById("pie-chart"), {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Times ordered",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: data
+                }]
+            },
+        });
+    </script>
 
     <!-- Foooter Section -->
     <footer>
