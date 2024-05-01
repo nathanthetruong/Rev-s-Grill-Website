@@ -60,6 +60,7 @@
         </form>
         
         <!-- Display the excess report -->
+        <h2 id="restockTable" class="text-center mb-4">Excess Report Table</h2>
         <form id="sortForm" method="get" action="{% url 'sortTable' %}">
             <table class="table">
                 <input type="hidden" id="sortField" name="sortField" value="">
@@ -86,6 +87,46 @@
             </table>
         </form>
     </div>
+
+    <!-- Display the restock grouped bar chart -->
+    <h2 id="restockChart" class="text-center mb-4">Excess Report Chart</h2>
+
+    <div style="width: 100%; margin: 20px auto;">
+        <canvas id="bar-chart-grouped"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        var labels = [];
+        var quantityConsumed = [];
+        var quantityTenPercent = [];
+
+        {% for item in report %}
+        labels.push("{{ item.description }}");
+        quantityConsumed.push({{ item.quantity_consumed }});
+        quantityTenPercent.push({{ item.ten_percent_target }});
+        {% endfor %}
+
+        new Chart(document.getElementById("bar-chart-grouped"), {
+            type: 'bar',
+            data: {
+            labels: labels,
+            datasets: [
+                {
+                label: "Quantity Consumed",
+                backgroundColor: "#3e95cd",
+                data: quantityConsumed
+                }, {
+                label: "10% of Inventory",
+                backgroundColor: "#8e5ea2",
+                data: quantityTenPercent
+                }
+            ]
+            },
+        });
+    </script>
 
     <!-- Foooter Section -->
     <footer>

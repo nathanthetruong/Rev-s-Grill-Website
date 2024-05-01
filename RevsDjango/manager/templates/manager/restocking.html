@@ -56,6 +56,7 @@
         </h1>
 
         <!-- Display the inventory items from the model -->
+        <h2 id="restockTable" class="text-center mb-4">Restock Report Table</h2>
         <table class="table table-bordered">
             <tr>
                 <th>Description</th>
@@ -71,6 +72,46 @@
             {% endfor %}
         </table>
     </div>
+
+    <!-- Display the restock grouped bar chart -->
+    <h2 id="restockChart" class="text-center mb-4">Restock Report Chart</h2>
+
+    <div style="width: 100%; margin: 20px auto;">
+        <canvas id="bar-chart-grouped"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        var labels = [];
+        var quantityRemaining = [];
+        var quantityTarget = [];
+
+        {% for item in inventory_items %}
+        labels.push("{{ item.description }}");
+        quantityRemaining.push({{ item.quantity_remaining }});
+        quantityTarget.push({{ item.quantity_target }});
+        {% endfor %}
+
+        new Chart(document.getElementById("bar-chart-grouped"), {
+            type: 'bar',
+            data: {
+            labels: labels,
+            datasets: [
+                {
+                label: "Quantity Remaining",
+                backgroundColor: "#3e95cd",
+                data: quantityRemaining
+                }, {
+                label: "Quantity Target",
+                backgroundColor: "#8e5ea2",
+                data: quantityTarget
+                }
+            ]
+            },
+        });
+    </script>
 
     <!-- Foooter Section -->
     <footer>

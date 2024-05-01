@@ -57,6 +57,7 @@
         </form>
 
         <!-- Display the trends report -->
+        <h2 id="trendstable" class="text-center mb-4">Trends Report Table</h2>
         <form id="sortForm" method="get" action="{% url 'sortTable' %}">
             <table class="table table-bordered">
                 <thead>
@@ -83,6 +84,36 @@
         </form>
     </div>
 
+    <!-- Display the trends grouped bar chart -->
+    <h2 id="trendschart" class="text-center mb-4">Top 20 Trends Report Chart</h2>
+
+    <div style="width: 100%; margin: 20px auto;">
+        <canvas id="bar-chart-grouped"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        // Get the top 5 values
+        var labels = [];
+        var frequencies = [];
+        {% for trend in report|slice:":20" %}
+        labels.push("{{ trend.item1 }} & {{ trend.item2 }}");
+        frequencies.push({{ trend.frequency }});
+        {% endfor %}
+
+        new Chart(document.getElementById("bar-chart-grouped"), {
+            type: 'bar',
+            data: {
+            labels: labels,
+            datasets: [{
+                label: "Frequency",
+                backgroundColor: "#3e95cd",
+                data: frequencies
+                }]
+            },
+        });
+    </script>
 
     <!-- Foooter Section -->
     <footer>
