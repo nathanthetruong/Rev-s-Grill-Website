@@ -153,7 +153,7 @@ def removeAllIems(request):
 # Redirects to the transaction
 def checkout(request):
     if request.method == 'POST':
-        return redirect('transaction') 
+        return redirect('cashierTransaction') 
 
 def transactionView(request):
     cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})

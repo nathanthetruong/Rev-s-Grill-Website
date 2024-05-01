@@ -89,7 +89,7 @@
             </div>
             <div class="menu-items readable">
             </div>
-            <form method="post" action="{% url 'checkout' %}">
+            <form method="post" action="{% url 'cashierCheckout' %}">
                 {% csrf_token %}
                 <div class="checkout-btn-container readable">
                     <button type="submit" aria-label="Click to checkout the order to payment" id="checkout-btn" class="readable">Checkout</button> 
@@ -333,7 +333,7 @@
                 // Send an AJAX request to add the item to the cart
                 $.ajax({
                 type: "POST",
-                url: "{% url 'addItem' %}", 
+                url: "{% url 'cashierAddItem' %}", 
                 data: {
                     'id': id,
                     'price': price,
@@ -397,7 +397,7 @@
                 var csrfToken = '{{ csrf_token }}';
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'addItem' %}", // URL for removing from cart
+                    url: "{% url 'cashierAddItem' %}", // URL for removing from cart
                     data: {
                         'id': id,
                         'price': price,
@@ -442,7 +442,7 @@
                var csrfToken = '{{ csrf_token }}';
                $.ajax({
                    type: "POST",
-                   url: "{% url 'removeItem' %}", // URL for removing from cart
+                   url: "{% url 'cashierRemoveItem' %}", // URL for removing from cart
                    data: {
                        'id': id,
                        'price': price,
@@ -562,7 +562,7 @@
                 var csrfToken = '{{ csrf_token }}';
                 $.ajax({
                     type: "POST",
-                    url: "{% url 'removeAllItems' %}", // URL for removing from cart
+                    url: "{% url 'cashierRemoveAllItems' %}", // URL for removing from cart
                     data: {
                         'id': id,
                         'price': price,
@@ -590,7 +590,7 @@
                     $('.order-items').append(itemHtml);
                 });
                 // Navigate to the transaction page
-                window.location.href = "{% url 'transaction' %}";
+                window.location.href = "{% url 'cashierTransaction' %}";
             });
 
             //This part of the script handles updating the cart count when an item is added or removed
