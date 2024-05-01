@@ -13,7 +13,7 @@
     <header>
         <a href="{% url 'orders' %}" id="return">Return</a>
         <img src="{% static 'rev.png' %}" alt="Logo" id="logo">
-        <span id="help">Help</span>
+        <a id="help" href="{% url 'Revs-Help-Screen' %}">Help</a>
     </header>
 
     <input type="hidden" id="login-url" value="{% url 'login' %}">

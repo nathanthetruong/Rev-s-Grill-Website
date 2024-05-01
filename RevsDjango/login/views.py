@@ -15,6 +15,9 @@ def login(request):
 def about(request):
     return render(request, 'login/about.html')
 
+def help(request):
+    return render(request, 'login/help.html')
+
 def employee(request):
 
     # First check if an employee is accessing the page

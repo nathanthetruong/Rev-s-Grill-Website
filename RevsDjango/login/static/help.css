@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    background: none;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2em 4em;
+    background: transparent;
+    margin-top: 3%;
+}
+
+.navbar-brand-text {
+    font-size: 40px;
+    margin-left: 1em;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-item {
+    font-size: 20px;
+    color: black;
+    text-decoration: none;
+    margin-left: 1em;
+}
+
+.help-heading {
+    text-align: center; 
+    margin-bottom: 1em; 
+    font-size: 2rem; 
+    font-weight: bold; 
+    color: #333; 
+}
+.about-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4em 2em;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    max-width: 1200px; 
+}
+
+.col {
+    flex-basis: calc(50% - 1em);
+    margin-bottom: 2em;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-right: 1em;
+    width: calc(50% - 2em);
+    
+}
+
+.card:hover {
+    
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+.card-body {
+    padding: 30px;
+}

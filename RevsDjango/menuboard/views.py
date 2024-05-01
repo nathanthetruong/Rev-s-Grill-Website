@@ -11,6 +11,7 @@ import time
 
 # Initializes all the menu items buttons
 
+
 def menu_board(request):
     with connection.cursor() as cursor:
         if 'cart' in request.session:
@@ -60,5 +61,4 @@ def menu_board(request):
 #     return render(request, 'orders/orders.html')
 
 def help(request):
-    # Your logic for the help page
-    return render(request, 'help.html')
+    return render(request, 'login/help.html')

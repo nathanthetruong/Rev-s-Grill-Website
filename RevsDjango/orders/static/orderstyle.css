@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #5e1f1f;
+    background-color: #4a1e1e;
     color: white;
     padding: 30px;
     font-family: serif;
@@ -495,7 +495,7 @@ h3 {
 /* Footer Styles */
 footer {
     margin-top: 15px;
-    background-color: #5e1f1f;
+    background-color: #4a1e1e;
     color: #fff; 
     padding: 20px 0; 
     text-align: center; 

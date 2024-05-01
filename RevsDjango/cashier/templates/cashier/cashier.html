@@ -1,4 +1,5 @@
 {% load static %} 
+{% load socialaccount %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,8 +21,8 @@
             <a href="{% url 'Revs-Login-Screen' %}" class="logo">
                 <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
             </a>
-            <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a>
-            <span id="help">Help</span>
+            <a id="login" href="{% provider_login_url 'google' %}" style="text-decoration: none;">Login</a>
+            <a id="login" href="{% url 'Revs-Help-Screen' %}">Help</a>
             <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
             <!-- Add the count span below -->
             <div class="cart-icon-container">

@@ -11,6 +11,10 @@ import time
 from .models import MenuItems, Inventory, Employees, Orders, Inventory, OrderBreakout
 
 # Initializes all the menu items buttons
+
+def help(request):
+    return render(request, 'login/help.html')
+
 def orders(request):
 
     # First check if an employee is accessing the page

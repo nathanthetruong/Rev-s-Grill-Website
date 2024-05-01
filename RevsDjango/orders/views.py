@@ -42,6 +42,9 @@ def textToSpeech(request):
     # Return binary for html to process
     return HttpResponse(response.audio_content, content_type='audio/mp3')
 
+def help(request):
+    return render(request, 'login/help.html')
+
 # Initializes all the menu items buttons
 def orders(request):
     with connection.cursor() as cursor:
