@@ -4,10 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>manager.views &#8212; Revs 1.0 documentation</title>
+    <title>manager.views &#8212; RevsDocumentation 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="../../_static/alabaster.css?v=12dfc556" />
-    <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -76,9 +76,7 @@
         <span class="n">image</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">)</span>
 
         <span class="c1"># validates the dates when adding menu items</span>
-        <span class="k">if</span> <span class="n">end_date</span> <span class="o">&lt;</span> <span class="n">start_date</span><span class="p">:</span>
-            <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;End date must be after start date&quot;</span><span class="p">)</span>
-
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-Manager-Screen&#39;</span><span class="p">)</span>
 
         <span class="c1"># Get an available ID for a new menu_item</span>
@@ -103,6 +101,7 @@
                 <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">image</span><span class="o">.</span><span class="n">chunks</span><span class="p">():</span>
                     <span class="n">destination</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
 
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Menu item successfully added.&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-Manager-Screen&#39;</span><span class="p">)</span>
 
@@ -137,6 +136,8 @@
                 <span class="c1"># Then, delete the item from menu_items</span>
                 <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;DELETE FROM menu_items WHERE id = </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">item_id</span><span class="p">])</span>
 
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Menu item successfully deleted.&#39;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-Manager-Screen&#39;</span><span class="p">)</span></div>
 
 
@@ -159,8 +160,12 @@
         <span class="n">description</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">)</span>
         <span class="n">category</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
         <span class="n">times_ordered</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;times_ordered&#39;</span><span class="p">)</span>
-        <span class="n">startDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
-        <span class="n">endDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
+        <span class="n">startDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;start_date&#39;</span><span class="p">)</span>
+        <span class="n">endDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;end_date&#39;</span><span class="p">)</span>
+
+        <span class="c1"># validates the dates when modifying menu items</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-Manager-Screen&#39;</span><span class="p">)</span>
 
         <span class="n">menu_item</span> <span class="o">=</span> <span class="n">MenuItems</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">item_id</span><span class="p">)</span>
         <span class="n">menu_item</span><span class="o">.</span><span class="n">price</span> <span class="o">=</span> <span class="n">price</span>
@@ -170,6 +175,9 @@
         <span class="n">menu_item</span><span class="o">.</span><span class="n">start_date</span> <span class="o">=</span> <span class="n">startDate</span>
         <span class="n">menu_item</span><span class="o">.</span><span class="n">end_date</span> <span class="o">=</span> <span class="n">endDate</span>
         <span class="n">menu_item</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Menu item successfully modified.&#39;</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-Manager-Screen&#39;</span><span class="p">)</span></div>
 
 
@@ -372,6 +380,11 @@
         <span class="n">startingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
         <span class="n">endingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
 
+        <span class="c1"># validate dates</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-excess-Screen&#39;</span><span class="p">)</span>
+
+
     <span class="n">excessReport</span> <span class="o">=</span> <span class="n">getExcessReport</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;currentField&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;currentField&#39;</span><span class="p">]</span>
@@ -411,6 +424,10 @@
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">startingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
         <span class="n">endingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
+
+        <span class="c1"># validate dates</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-productusage-Screen&#39;</span><span class="p">)</span>
 
     <span class="n">productUsageReport</span> <span class="o">=</span> <span class="n">getProductUsageReport</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;currentField&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
@@ -453,6 +470,10 @@
         <span class="n">startingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
         <span class="n">endingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
 
+        <span class="c1"># validate dates</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-sales-Screen&#39;</span><span class="p">)</span>
+
     <span class="n">salesReport</span> <span class="o">=</span> <span class="n">getSalesReport</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;currentField&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;currentField&#39;</span><span class="p">]</span>
@@ -493,6 +514,10 @@
         <span class="n">startingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
         <span class="n">endingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
 
+        <span class="c1"># validate dates</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-trends-Screen&#39;</span><span class="p">)</span>
+
     <span class="n">trends</span> <span class="o">=</span> <span class="n">getTrends</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span>
     <span class="k">if</span> <span class="s1">&#39;currentField&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
         <span class="k">del</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;currentField&#39;</span><span class="p">]</span>
@@ -507,7 +532,7 @@
 <span class="c1"># Validates date inputs</span>
 <div class="viewcode-block" id="validateDate">
 <a class="viewcode-back" href="../../manager.html#manager.views.validateDate">[docs]</a>
-<span class="k">def</span> <span class="nf">validateDate</span><span class="p">(</span><span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Examines the inputs and determines if they are valid dates for Rev&#39;s Grill</span>
 
@@ -518,15 +543,28 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: A bool of whether the dates were valid or not.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Convert string dates to datetime.date objects</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">startDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">startDate</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="n">endDate</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">endDate</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;Invalid date format. Please use YYYY-MM-DD format.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="c1"># Compare with our set dates</span>
     <span class="n">minimumDate</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2023</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">maximumDate</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2030</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">maximumDate</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="mi">2999</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">startDate</span> <span class="o">&gt;=</span> <span class="n">endDate</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;End Date should be after the Start Date&quot;</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s1">&#39;The End Date should be after the Start Date.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">startDate</span> <span class="o">&lt;</span> <span class="n">minimumDate</span> <span class="ow">or</span> <span class="n">endDate</span> <span class="o">&lt;</span> <span class="n">minimumDate</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Don&#39;t input anything lower than 01/01/2023&quot;</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;You may not input a date before Rev&#39;s Grill was created (01/01/2023)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">startDate</span> <span class="o">&gt;</span> <span class="n">maximumDate</span> <span class="ow">or</span> <span class="n">endDate</span> <span class="o">&gt;</span> <span class="n">maximumDate</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;Don&#39;t input anything higher than 01/01/2030&quot;</span>
-    <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;No error&quot;</span></div>
+        <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s2">&quot;You may not input anything higher than 01/01/2999&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 
@@ -727,6 +765,9 @@
         <span class="k">if</span> <span class="s1">&#39;submit_date&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
             <span class="n">startDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
             <span class="n">endDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
+            <span class="c1"># validate dates</span>
+            <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-ordermanagement-screen&#39;</span><span class="p">)</span>
             <span class="n">orders</span> <span class="o">=</span> <span class="n">Orders</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">order_time__date__range</span><span class="o">=</span><span class="p">[</span><span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">])</span>
         <span class="k">elif</span> <span class="s1">&#39;submit_id&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
             <span class="n">order_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;orderID&#39;</span><span class="p">)</span>
@@ -736,13 +777,13 @@
             <span class="n">order</span> <span class="o">=</span> <span class="n">Orders</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">order_id</span><span class="p">)</span>
             <span class="n">order</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;Complete&#39;</span>
             <span class="n">order</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-ordermanagement&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-ordermanagement-screen&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s1">&#39;cancel_order&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
             <span class="n">order_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;cancel_order&#39;</span><span class="p">)</span>
             <span class="n">order</span> <span class="o">=</span> <span class="n">Orders</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">order_id</span><span class="p">)</span>
             <span class="n">order</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">&#39;Cancelled&#39;</span>
             <span class="n">order</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-ordermanagement&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-ordermanagement-screen&#39;</span><span class="p">)</span>
         <span class="c1"># Get menu items associated with each order</span>
         <span class="n">context</span><span class="p">[</span><span class="s1">&#39;orders&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">orders</span>
         <span class="k">for</span> <span class="n">order</span> <span class="ow">in</span> <span class="n">orders</span><span class="p">:</span>
@@ -814,6 +855,10 @@
         <span class="n">startingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;startDate&#39;</span><span class="p">)</span>
         <span class="n">endingDate</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;endDate&#39;</span><span class="p">)</span>
         <span class="n">item_limit</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;item_limit&#39;</span><span class="p">,</span> <span class="s1">&#39;10&#39;</span><span class="p">)</span>
+
+        <span class="c1"># validate dates</span>
+        <span class="k">if</span> <span class="n">validateDate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">)</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="s1">&#39;Revs-popularity-Screen&#39;</span><span class="p">)</span>
 
     <span class="c1"># Obtain the popularity data with the given dates and send context to HTML for processing</span>
     <span class="n">popularityReport</span> <span class="o">=</span> <span class="n">getPopularityData</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">startingDate</span><span class="p">,</span> <span class="n">endingDate</span><span class="p">,</span> <span class="n">item_limit</span><span class="p">)</span>
@@ -914,7 +959,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../index.html">Revs</a></h1>
+<h1 class="logo"><a href="../../index.html">RevsDocumentation</a></h1>
 
 
 

@@ -10,26 +10,24 @@ from collections import defaultdict
 import time
 from .models import MenuItems, Inventory, Employees, Orders, Inventory, OrderBreakout
 
-
-"""
-    Renders the help page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered help page.
-"""
 def help(request):
+    """
+        Renders the help page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered help page.
+    """
     return render(request, 'login/help.html')
 
-"""
-    Renders the cashier page if the user is authenticated and an employee.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered cashier page if authenticated and employee, otherwise redirects to 'employee-noaccess' page.
-"""
 def orders(request):
-
+    """
+        Renders the cashier page if the user is authenticated and an employee.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered cashier page if authenticated and employee, otherwise redirects to 'employee-noaccess' page.
+    """
     # First check if an employee is accessing the page
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -81,15 +79,14 @@ def orders(request):
 
         return render(request, 'cashier/cashier.html', context)
 
-
-"""
-    Adds items to the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart items, cart count, and total price.
-"""
 def addItem(request):
+    """
+        Adds items to the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart items, cart count, and total price.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -119,15 +116,14 @@ def addItem(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-
-"""
-    Removes items from the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart items, cart count, and total price.
-"""
 def removeItem(request):
+    """
+        Removes items from the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart items, cart count, and total price.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -149,15 +145,14 @@ def removeItem(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-
-"""
-    Removes all occurrences of a specific item from the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart items, cart count, and total price.
-"""
 def removeAllIems(request):
+    """
+        Removes all occurrences of a specific item from the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart items, cart count, and total price.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -181,25 +176,25 @@ def removeAllIems(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-"""
-    Redirects to the transaction view.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponseRedirect: Redirects to the transaction view.
-"""
 def checkout(request):
+    """
+        Redirects to the transaction view.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponseRedirect: Redirects to the transaction view.
+    """
     if request.method == 'POST':
         return redirect('cashierTransaction') 
       
-"""
-    Handles the transaction process.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered transaction page.
-"""
 def transactionView(request):
+    """
+        Handles the transaction process.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered transaction page.
+    """
     cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     totalPrice = cart['totalPrice']
 
@@ -240,24 +235,24 @@ def transactionView(request):
 
     return render(request, 'cashier/transaction.html', context)
 
-"""
-    Renders the orders page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered orders page.
-"""
 def order_return(request):
+    """
+        Renders the orders page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered orders page.
+    """
     return render(request, 'cashier/cashier.html')
 
-"""
-    Retrieves cart items from the session.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing cart items.
-"""
 def getCartItems(request):
+    """
+        Retrieves cart items from the session.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing cart items.
+    """
     # Retrieve cart items from the session
     cartItems = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     context = {'cartItems': cartItems['menuItems']}
@@ -265,23 +260,22 @@ def getCartItems(request):
     # Return the cart items as JSON response
     return JsonResponse(context, safe=False)
 
-"""
-    Renders the login page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered login page.
-"""
 def loginView(request):
-    # Your login logic here
+    """
+        Renders the login page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered login page.
+    """
     return render(request, 'login/login.html')
 
-"""
-    Gets a new order ID.
-    Returns:
-        int: New order ID.
-"""
 def getNewOrderID():
+    """
+        Gets a new order ID.
+        Returns:
+            int: New order ID.
+    """
     # Get a new valid ID for the order
     with connection.cursor() as cursor:
         cursor.execute("SELECT MAX(id) FROM orders")
@@ -289,32 +283,31 @@ def getNewOrderID():
     
     return orderID
 
-"""
-    Updates the orders table.
-    Args:
-        customerId (int): ID of the customer.
-        employeeId (int): ID of the employee.
-        totalPrice (float): Total price of the order.
-        orderTime (datetime): Time of the order.
-        orderId (int): ID of the order.
-"""
 def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
+    """
+        Updates the orders table.
+        Args:
+            customerId (int): ID of the customer.
+            employeeId (int): ID of the employee.
+            totalPrice (float): Total price of the order.
+            orderTime (datetime): Time of the order.
+            orderId (int): ID of the order.
+    """
     # Inputs the order information into the orders table
     with connection.cursor() as cursor:
         sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time, status) " +
                     "VALUES (%s, %s, %s, %s, %s, %s)")
         cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime, "In Progress"])
 
-
-"""
-    Gets a list of all inventory items needed to be updated.
-    Args:
-        orderId (int): ID of the order.
-        currentId (int): ID of the current item.
-    Returns:
-        list: List of ingredient IDs.
-"""
 def getUsedInventoryItems(orderId, currentId):
+    """
+        Gets a list of all inventory items needed to be updated.
+        Args:
+            orderId (int): ID of the order.
+            currentId (int): ID of the current item.
+        Returns:
+            list: List of ingredient IDs.
+    """
     # Handles insertion into Order Breakout
     with connection.cursor() as cursor:
         sqlCommand = "INSERT INTO order_breakout (order_id, food_items) VALUES (%s, %s)"
@@ -333,36 +326,40 @@ def getUsedInventoryItems(orderId, currentId):
 
     return ingredientIds
 
-"""
-    Updates the inventory for all ingredients.
-    Args:
-        ingredientIds (list): List of ingredient IDs.
-"""
 def updateInventory(ingredientIds):
+    """
+        Updates the inventory for all ingredients.
+        Args:
+            ingredientIds (list): List of ingredient IDs.
+    """
     # Updates all the ingredient's quantity in the inventory table
     for currentIngredientID in ingredientIds:
         with connection.cursor() as cursor:
             sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
             cursor.execute(sqlCommand, [currentIngredientID])
 
-"""
-    Gets a specific menu item.
-    Args:
-        request: Django HttpRequest object.
-        menuItemId (str): ID of the menu item.
-    Returns:
-        dict: Dictionary containing menu item information.
-"""
 def getMenuItem(request, menuItemId):
+    """
+        Gets a specific menu item.
+        Args:
+            request: Django HttpRequest object.
+            menuItemId (str): ID of the menu item.
+        Returns:
+            dict: Dictionary containing menu item information.
+    """
     menuItems = request.session.get("menuItems")
     for menuItem in menuItems:
         if menuItem['id'] == int(menuItemId):
             return menuItem
 
-'''
-Function to get the required data in order management
-'''
 def orderManagement(request):
+    '''
+    Function to get the required data in order management
+    Args:
+        request: HttpRequest object containing metadata and user data submitted through the web form.
+    Returns:
+        Renders the 'cashier/ordermanagement.html' template with the context containing orders and their associated menu items.
+    '''
     context = {}
     if request.method == 'POST':
         if 'submit_date' in request.POST:
@@ -397,10 +394,14 @@ def orderManagement(request):
 
     return render(request, 'cashier/ordermanagement.html', context)
 
-'''
-This function will get all the menu items associated with a specific order id
-'''
 def getOrderItems(order_id):
+    '''
+    This function will get all the menu items associated with a specific order id
+    Args:
+        request: The ID of the order whose menu items are to be fetched
+    Returns:
+        list: A list of descriptions of menu items associated with the order.
+    '''
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT mi.description
