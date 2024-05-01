@@ -35,7 +35,7 @@
             <!-- 
             <script src="https://static.elfsight.com/platform/platform.js" data-use-service-core defer></script>
             <div class="elfsight-app-c090744f-9feb-4748-8c11-57759cf82b3d" data-elfsight-app-lazy></div>
-            --> 
+            -->
         </div>
     </section>
        
@@ -58,11 +58,26 @@
     </header>
     
     <!-- Redirection functionality for customer or employee -->
-    <div class="touch-to-order-container">
+    <!-- <div class="touch-to-order-container">
         <a href="{% url 'Revs-Order-Screen' %}">
             <img src="{% static 'order2.png' %}" alt="Touch anywhere to Order"></a>
         </a>
-    </div>
+    </div> -->
+    <section>
+        <div class="touch-to-order-container">
+            <a href="{% url 'Revs-Order-Screen' %}">
+                <img class="slideshow-image" src="{% static 'order2.png' %}" alt="Touch anywhere to Order"></a>
+            </a>
+            <a href="{% url 'Revs-Order-Screen' %}">
+                <img class="slideshow-image" src="{% static 'landing2.png' %}" alt="Touch anywhere to Order"></a>
+            </a>
+            <a href="{% url 'Revs-Order-Screen' %}">
+                <img class="slideshow-image" src="{% static 'landing3.png' %}" alt="Touch anywhere to Order"></a>
+            </a>
+        </div>
+    </section>
+    
+    
 
     <!-- <h2>Are you an Employee?</h2>
     <div class="btn-group">
@@ -112,6 +127,32 @@
           new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
         }
     </script>
+    <script>
+        // JavaScript for slideshow
+        var currentIndex = 0;
+        var slides = document.getElementsByClassName("slideshow-image");
+        
+        function showSlide() {
+            // Hide all slides
+            for (var i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            // Show current slide
+            slides[currentIndex].style.display = "block";
+            // Move to the next slide
+            currentIndex++;
+            // Reset index if it exceeds the number of slides
+            if (currentIndex >= slides.length) {
+                currentIndex = 0;
+            }
+            // Repeat after a certain interval (e.g., 3 seconds)
+            setTimeout(showSlide, 3000);
+        }
+        
+        // Start the slideshow
+        showSlide();
+    </script>
+    
 
 
 </body>
