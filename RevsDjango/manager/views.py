@@ -42,9 +42,7 @@ def manager(request):
         image = request.FILES.get('image')
 
         # validates the dates when adding menu items
-        if end_date < start_date:
-            messages.error(request, "End date must be after start date")
-
+        if validateDate(request, start_date, end_date) == False:
             return redirect('Revs-Manager-Screen')
 
         # Get an available ID for a new menu_item
@@ -69,6 +67,7 @@ def manager(request):
                 for chunk in image.chunks():
                     destination.write(chunk)
 
+        messages.success(request, 'Menu item successfully added.')
 
         return redirect('Revs-Manager-Screen')
 
@@ -100,6 +99,8 @@ def deleteItem(request):
                 # Then, delete the item from menu_items
                 cursor.execute("DELETE FROM menu_items WHERE id = %s", [item_id])
 
+        messages.success(request, 'Menu item successfully deleted.')
+
         return redirect('Revs-Manager-Screen')
 
 def modifyItem(request):
@@ -119,8 +120,12 @@ def modifyItem(request):
         description = request.POST.get('description')
         category = request.POST.get('category')
         times_ordered = request.POST.get('times_ordered')
-        startDate = request.POST.get('startDate')
-        endDate = request.POST.get('endDate')
+        startDate = request.POST.get('start_date')
+        endDate = request.POST.get('end_date')
+
+        # validates the dates when modifying menu items
+        if validateDate(request, startDate, endDate) == False:
+            return redirect('Revs-Manager-Screen')
 
         menu_item = MenuItems.objects.get(id=item_id)
         menu_item.price = price
@@ -130,6 +135,9 @@ def modifyItem(request):
         menu_item.start_date = startDate
         menu_item.end_date = endDate
         menu_item.save()
+
+        messages.success(request, 'Menu item successfully modified.')
+
     return redirect('Revs-Manager-Screen')
 
 def addInventory(request):
@@ -314,6 +322,11 @@ def excess(request):
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
 
+        # validate dates
+        if validateDate(request, startingDate, endingDate) == False:
+            return redirect('Revs-excess-Screen')
+
+
     excessReport = getExcessReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
@@ -350,6 +363,10 @@ def productusage(request):
     if request.method == "POST":
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
+
+        # validate dates
+        if validateDate(request, startingDate, endingDate) == False:
+            return redirect('Revs-productusage-Screen')
 
     productUsageReport = getProductUsageReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
@@ -389,6 +406,10 @@ def sales(request):
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
 
+        # validate dates
+        if validateDate(request, startingDate, endingDate) == False:
+            return redirect('Revs-sales-Screen')
+
     salesReport = getSalesReport(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
@@ -426,6 +447,10 @@ def trends(request):
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
 
+        # validate dates
+        if validateDate(request, startingDate, endingDate) == False:
+            return redirect('Revs-trends-Screen')
+
     trends = getTrends(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
@@ -437,7 +462,7 @@ def trends(request):
 
 
 # Validates date inputs
-def validateDate(startDate, endDate):
+def validateDate(request, startDate, endDate):
     """
     Examines the inputs and determines if they are valid dates for Rev's Grill
 
@@ -448,15 +473,28 @@ def validateDate(startDate, endDate):
     Returns:
         bool: A bool of whether the dates were valid or not.
     """
+
+    # Convert string dates to datetime.date objects
+    try:
+        startDate = datetime.strptime(startDate, '%Y-%m-%d').date()
+        endDate = datetime.strptime(endDate, '%Y-%m-%d').date()
+    except ValueError:
+        messages.error(request, 'Invalid date format. Please use YYYY-MM-DD format.')
+        return False
+
+    # Compare with our set dates
     minimumDate = date(2023, 1, 1)
-    maximumDate = date(2030, 1, 1)
+    maximumDate = date(2999, 1, 1)
     if startDate >= endDate:
-        return False, "End Date should be after the Start Date"
+        messages.error(request, 'The End Date should be after the Start Date.')
+        return False
     if startDate < minimumDate or endDate < minimumDate:
-        return False, "Don't input anything lower than 01/01/2023"
+        messages.error(request, "You may not input a date before Rev's Grill was created (01/01/2023)")
+        return False
     if startDate > maximumDate or endDate > maximumDate:
-        return False, "Don't input anything higher than 01/01/2030"
-    return True, "No error"
+        messages.error(request, "You may not input anything higher than 01/01/2999")
+        return False
+    return True
 
 
 def getExcessReport(request, startDate, endDate):
@@ -642,6 +680,9 @@ def orderManagement(request):
         if 'submit_date' in request.POST:
             startDate = request.POST.get('startDate')
             endDate = request.POST.get('endDate')
+            # validate dates
+            if validateDate(request, startDate, endDate) == False:
+                return redirect('Revs-ordermanagement-screen')
             orders = Orders.objects.filter(order_time__date__range=[startDate, endDate])
         elif 'submit_id' in request.POST:
             order_id = request.POST.get('orderID')
@@ -651,13 +692,13 @@ def orderManagement(request):
             order = Orders.objects.get(id=order_id)
             order.status = 'Complete'
             order.save()
-            return redirect('Revs-ordermanagement')
+            return redirect('Revs-ordermanagement-screen')
         elif 'cancel_order' in request.POST:
             order_id = request.POST.get('cancel_order')
             order = Orders.objects.get(id=order_id)
             order.status = 'Cancelled'
             order.save()
-            return redirect('Revs-ordermanagement')
+            return redirect('Revs-ordermanagement-screen')
         # Get menu items associated with each order
         context['orders'] = orders
         for order in orders:
@@ -723,6 +764,10 @@ def popularity(request):
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
         item_limit = request.POST.get('item_limit', '10')
+
+        # validate dates
+        if validateDate(request, startingDate, endingDate) == False:
+            return redirect('Revs-popularity-Screen')
 
     # Obtain the popularity data with the given dates and send context to HTML for processing
     popularityReport = getPopularityData(request, startingDate, endingDate, item_limit)
