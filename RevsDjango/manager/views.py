@@ -9,7 +9,16 @@ import os
 from django.conf import settings
 
 def manager(request):
+    """
+    Manage restaurant menu items by adding, modifying, and deleting items.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object containing metadata and user information.
+
+    Returns:
+        HttpResponse: Redirects to different views based on user actions and permissions or renders the manager.html template with menu items data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -71,10 +80,17 @@ def manager(request):
         }
         return render(request, 'manager/manager.html', context)
 
-'''
-This function will give us the ability to remove menu items from our database
-'''
 def deleteItem(request):
+    """
+    Deletes a menu item from the database based on the item ID provided through the POST request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the menu item ID to delete.
+
+    Returns:
+        HttpResponse: Redirects to the manager screen after deleting the item.
+    """
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         if item_id:
@@ -86,10 +102,17 @@ def deleteItem(request):
 
         return redirect('Revs-Manager-Screen')
 
-'''
-This function will give us the ability to modify menu items in our database
-'''
 def modifyItem(request):
+    """
+    Modifies details of an existing menu item based on form data received through a POST request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing updated data for the menu item.
+
+    Returns:
+        HttpResponse: Redirects to the manager screen after updating the item.
+    """
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         price = request.POST.get('price')
@@ -109,10 +132,17 @@ def modifyItem(request):
         menu_item.save()
     return redirect('Revs-Manager-Screen')
 
-'''
-This function will give us the ability to add new inventory items
-'''
 def addInventory(request):
+    """
+    Adds a new inventory item to the database using data from a POST request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing new inventory item details.
+
+    Returns:
+        HttpResponse: Redirects to the inventory management screen with a success message.
+    """
     if request.method == 'POST':
         new_description = request.POST.get('new_description')
         new_quantity_remaining = request.POST.get('new_quantity_remaining')
@@ -132,10 +162,17 @@ def addInventory(request):
         messages.success(request, 'New inventory item added successfully.')
         return redirect('Revs-inventory-Screen')
     
-'''
-This function will give us the ability to remove inventory items
-'''
 def deleteInventory(request):
+    """
+    Deletes an inventory item from the database using the item ID from a POST request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the inventory item ID to delete.
+
+    Returns:
+        HttpResponse: Redirects to the inventory management screen with a success message.
+    """
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         item = Inventory.objects.get(id=item_id)
@@ -143,10 +180,17 @@ def deleteInventory(request):
         messages.success(request, 'Inventory item successfully deleted.')
         return redirect('Revs-inventory-Screen')
     
-'''
-This function will give us the ability to modify inventory items
-'''
 def modifyInventory(request):
+    """
+    Modifies details of an existing inventory item based on form data received through a POST request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing updated data for the inventory item.
+
+    Returns:
+        HttpResponse: Redirects to the inventory management screen with a success message.
+    """
     if request.method == 'POST':
         item_id = request.POST.get('item_id')
         description = request.POST.get('description')
@@ -164,7 +208,16 @@ def modifyInventory(request):
 
 
 def inventory(request):
+    """
+    Displays current inventory items and their details.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the inventory.html template with inventory items data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -194,6 +247,28 @@ def inventory(request):
         return render(request, 'manager/inventory.html', context)
 
 def restocking(request):
+    """
+    Provides a view for items that need restocking based on their current quantity versus target quantity.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the restocking.html template with items needing restocking.
+    """
+
+    # Check if whoever is accessing the page is allowed to access it
+    if not request.user.is_authenticated:
+        return redirect('employee-noaccess')
+    user_email = request.user.email
+    try:
+        employee = Employees.objects.get(email=user_email)
+        if employee.is_manager == False:
+            return redirect('manager-noaccess')
+    except Employees.DoesNotExist:
+        return redirect('employee-noaccess')
+
     with connection.cursor() as cursor:
         sqlCommand = ("""
                         SELECT id, description, quantity_remaining, quantity_target
@@ -212,7 +287,16 @@ def restocking(request):
         return render(request, 'manager/restocking.html', context)
 
 def excess(request):
+    """
+    Displays items that have not met expected usage over a specified date range, helping identify excess inventory.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the excess.html template with items considered excess.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -240,7 +324,16 @@ def excess(request):
 
 # Creates the Product Usage Page
 def productusage(request):
+    """
+    Generates a report on the usage of products over a specified date range.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the productusage.html template with product usage data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -269,7 +362,16 @@ def productusage(request):
 
 # Creates the Sales Report Page
 def sales(request):
+    """
+    Generates a sales report detailing the quantity ordered and revenue generated for each menu item over a specified date range.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the sales.html template with sales data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -297,7 +399,16 @@ def sales(request):
 
 
 def trends(request):
+    """
+    Analyzes ordering trends to identify frequently ordered together items over a specified date range from the POST request.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the trends.html template with trend data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -315,12 +426,6 @@ def trends(request):
         startingDate = request.POST.get('startDate')
         endingDate = request.POST.get('endDate')
 
-    '''
-    # Fetch real sales trends data
-    sales_trends_data = getSalesTrendsData(request, startingDate, endingDate)
-    monthly_growth_rates = getMonthlySalesData(request, startingDate, endingDate)
-    '''
-
     trends = getTrends(request, startingDate, endingDate)
     if 'currentField' in request.session:
         del request.session['currentField']
@@ -333,6 +438,16 @@ def trends(request):
 
 # Validates date inputs
 def validateDate(startDate, endDate):
+    """
+    Examines the inputs and determines if they are valid dates for Rev's Grill
+
+    Args:
+        startDate (date): Inputted start date.
+        endDate (date): Inputted end date.
+
+    Returns:
+        bool: A bool of whether the dates were valid or not.
+    """
     minimumDate = date(2023, 1, 1)
     maximumDate = date(2030, 1, 1)
     if startDate >= endDate:
@@ -345,6 +460,18 @@ def validateDate(startDate, endDate):
 
 
 def getExcessReport(request, startDate, endDate):
+    """
+    Retrieves a report detailing inventory items that have consumption below 10% of their target quantity between two dates.
+    The function queries the database to identify the inventory items and calculates their consumption as a percentage of the target.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        startDate (date): The start date for the report period.
+        endDate (date): The end date for the report period.
+
+    Returns:
+        list[dict]: A list of dictionaries where each dictionary represents an inventory item that is below 10% of their target quantity between two dates.
+    """
     with connection.cursor() as cursor:
         # Queries for available inventory items still below their quantity target between two dates
         sqlCommand = ("""
@@ -378,6 +505,18 @@ def getExcessReport(request, startDate, endDate):
 
 # Function for getting the history of product usage
 def getProductUsageReport(request, startDate, endDate):
+    """
+    Generates a detailed report on the usage of inventory items between two dates.
+    The function queries the database to sum up the total quantity used from inventory across all orders within the specified date range.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        startDate (date): The start date for the report period.
+        endDate (date): The end date for the report period.
+
+    Returns:
+        list[dict]: A list of dictionaries with each dictionary containing details of inventory usage such as item ID, description, and quantity used.
+    """
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("SELECT inventory.id AS inventory_id, inventory.description AS inventory_description, " +
@@ -400,6 +539,18 @@ def getProductUsageReport(request, startDate, endDate):
 
 # Function for getting the history of sales
 def getSalesReport(request, startDate, endDate=timezone.now()):
+    """
+    Produces a sales report for menu items showing the quantity ordered and the total revenue generated within a specified date range.
+    The function queries the database for all orders placed between the start and end dates, aggregating data by menu item.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        startDate (date): The start date for the report period.
+        endDate (date): The end date for the report period.
+
+    Returns:
+        list[dict]: A list of dictionaries, each containing details of sales for a specific menu item including ID, description, total ordered, and revenue.
+    """
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("""
@@ -426,6 +577,18 @@ def getSalesReport(request, startDate, endDate=timezone.now()):
 
 
 def getTrends(request, startDate, endDate):
+    """
+    Identifies trends by analyzing which menu items are frequently ordered together over a specified period.
+    The function queries the database to find pairs of items that are often included in the same orders and ranks them by frequency.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        startDate (date): The start date for the report period.
+        endDate (date): The end date for the report period.
+
+    Returns:
+        list[dict]: A list of dictionaries, each representing a pair of items and the frequency with which they were ordered together.
+    """
     with connection.cursor() as cursor:
         # Queries for all items within the year
         sqlCommand = ("""
@@ -452,64 +615,17 @@ def getTrends(request, startDate, endDate):
 
         return dataReport
 
-'''
-def getSalesTrendsData(request, startDate, endDate):
-    with connection.cursor() as cursor:
-        sqlCommand = """
-        SELECT DATE(orders.order_time) AS order_date, SUM(menu_items.price * order_breakout.food_items) AS total_sales
-        FROM orders 
-        JOIN order_breakout ON orders.id = order_breakout.order_id 
-        JOIN menu_items ON order_breakout.food_items = menu_items.id 
-        WHERE orders.order_time BETWEEN %s AND %s 
-        GROUP BY DATE(orders.order_time)
-        ORDER BY DATE(orders.order_time);
-        """
-        cursor.execute(sqlCommand, [startDate, endDate])
-        result = cursor.fetchall()
-
-        # Convert query results into a list of dictionaries
-        dataReport = [{'date': row[0], 'total_sales': row[1]} for row in result]
-
-        return dataReport
-
-def getMonthlySalesData(request, startDate, endDate):
-    with connection.cursor() as cursor:
-        sqlCommand = """
-        SELECT DATE_TRUNC('month', orders.order_time) AS order_month, SUM(menu_items.price * order_breakout.food_items) AS monthly_sales
-        FROM orders 
-        JOIN order_breakout ON orders.id = order_breakout.order_id 
-        JOIN menu_items ON order_breakout.food_items = menu_items.id 
-        WHERE orders.order_time BETWEEN %s AND %s 
-        GROUP BY DATE_TRUNC('month', orders.order_time)
-        ORDER BY DATE_TRUNC('month', orders.order_time);
-        """
-        cursor.execute(sqlCommand, [startDate, endDate])
-        result = cursor.fetchall()
-        
-        # Store monthly data in a dict for easy month-to-month comparison
-        monthly_data = {}
-        for row in result:
-            # Convert date to first day of the month for uniformity
-            month = row[0].strftime('%Y-%m')
-            monthly_data[month] = row[1]
-        
-        # Calculate growth rates
-        months_sorted = sorted(monthly_data.keys())
-        monthly_growth_rates = []
-        for i in range(1, len(months_sorted)):
-            earlier_month = monthly_data[months_sorted[i-1]]
-            later_month = monthly_data[months_sorted[i]]
-            if earlier_month > 0:  # To avoid division by zero
-                growth_rate = ((later_month - earlier_month) / earlier_month) * 100
-            else:
-                growth_rate = 0
-            monthly_growth_rates.append((months_sorted[i], growth_rate))
-        
-        return monthly_growth_rates
-'''
-
 def orderManagement(request):
+    """
+    Manages and updates the status of orders through an interface that allows viewing, completing, or cancelling orders.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object containing metadata and user actions.
+
+    Returns:
+        HttpResponse: Renders the ordermanagement.html template with order details or redirects after performing an action.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -555,10 +671,17 @@ def orderManagement(request):
 
     return render(request, 'manager/ordermanagement.html', context)
 
-'''
-This function will get all the menu items associated with a specific order id
-'''
 def getOrderItems(order_id):
+    """
+    Retrieves the descriptions of all menu items associated with a specific order.
+    This function queries the database to get a list of item descriptions.
+
+    Args:
+        order_id (int): The specific ID of the order to retrieve item descriptions.
+
+    Returns:
+        list[str]: A list of descriptions for each menu item included in the order.
+    """
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT mi.description
@@ -571,7 +694,16 @@ def getOrderItems(order_id):
     return [item[0] for item in items]
 
 def popularity(request):
+    """
+    Displays a report on the popularity of menu items based on the number of times they were ordered over a specified date range.
+    Access is restricted to authenticated users with manager privileges.
 
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        HttpResponse: Renders the popularity.html template with popularity data.
+    """
     # Check if whoever is accessing the page is allowed to access it
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
@@ -592,6 +724,7 @@ def popularity(request):
         endingDate = request.POST.get('endDate')
         item_limit = request.POST.get('item_limit', '10')
 
+    # Obtain the popularity data with the given dates and send context to HTML for processing
     popularityReport = getPopularityData(request, startingDate, endingDate, item_limit)
     context = {
         'report': popularityReport,
@@ -602,6 +735,19 @@ def popularity(request):
     return render(request, 'manager/popularity.html', context)
 
 def getPopularityData(request, startDate, endDate, limit):
+    """
+    Fetches data on the popularity of menu items based on the number of times each has been ordered within a specified date range.
+    The function performs a query to count orders per item, ordering the results by popularity and limiting to the desired number of results.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+        startDate (date): The start date for the report period.
+        endDate (date): The end date for the report period.
+        limit (int): The maximum number of items to return in the report and chart.
+
+    Returns:
+        list[dict]: A list of dictionaries, each containing a menu item's ID, description, and order count.
+    """
     with connection.cursor() as cursor:
         sqlCommand = """
                     SELECT mi.id, mi.description, COUNT(ob.order_id) AS times_ordered
@@ -625,6 +771,16 @@ def getPopularityData(request, startDate, endDate, limit):
 
 # Sort function for tables
 def sortTable(request):
+    """
+    Sorts data in various reports dynamically based on the user's selection of sort parameters via GET request.
+    Access is restricted to authenticated users with manager privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing sort parameters.
+
+    Returns:
+        HttpResponse: Re-renders the relevant table view with sorted data.
+    """
     sortField = request.GET.get('sortField', 'description')
     tableName = request.GET.get('tableName', 'sales')
 
