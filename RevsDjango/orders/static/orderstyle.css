@@ -56,7 +56,7 @@ header {
     text-decoration: none;
 }
 
-#login {
+#login, #googleLogin {
     margin-left: 10px;
     position: relative;
     transition: color 0.3s ease;
@@ -74,7 +74,8 @@ header {
 
 #help:hover::after,
 #login:hover::after,
-#menu:hover::after {
+#menu:hover::after,
+#googleLogin:hover::after {
     content: '';
     position: absolute;
     left: 0;
