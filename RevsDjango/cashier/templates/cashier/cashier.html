@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orders</title>
+    <title>Cashier</title>
 
     <!-- Imports Django Button Interaction -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -21,8 +21,9 @@
             <a href="{% url 'Revs-Login-Screen' %}" class="logo">
                 <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
             </a>
-            <a id="login" href="{% provider_login_url 'google' %}" style="text-decoration: none;">Login</a>
-            <a id="login" href="{% url 'Revs-Help-Screen' %}">Help</a>
+            <a id="login" href="{% url 'Revs-Employee-Screen' %}" style="text-decoration: none;">Exit</a>
+            <a id="login" href="{% url 'Revs-Cashier-Screen' %}" style="text-decoration: none;">Cashier Page</a>
+            <a id="login" href="{% url 'Revs-ordermanagement' %}" style="text-decoration: none;">Kitchen</a>
             <!-- <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar">           -->
             <!-- Add the count span below -->
             <div class="cart-icon-container">
