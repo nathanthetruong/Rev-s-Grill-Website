@@ -10,6 +10,16 @@ from django.contrib import messages
 
 
 def administrator(request):
+    """
+    Displays the administrator page with a list of all employees.
+    Access is restricted to authenticated users with admin privileges.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing user session data.
+
+    Returns:
+        HttpResponse: Renders the administrator page with employee data or redirects to no access pages.
+    """
     if not request.user.is_authenticated:
         return redirect('employee-noaccess')
     
@@ -28,10 +38,17 @@ def administrator(request):
     except Employees.DoesNotExist:
         return redirect('employee-noaccess')
     
-'''
-This function will give us the ability to modify the staff's properties
-'''
 def modifyStaff(request):
+    """
+    Modifies the properties of an existing staff member based on form data received via a POST request.
+    This function updates details such as name, manager status, admin status, and email in the PSQL database.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the updated staff details.
+
+    Returns:
+        HttpResponse: Redirects to the administrator management screen after updating the employee data.
+    """
     if request.method == 'POST':
         employee_id = request.POST.get('id')
         name = request.POST.get('name')
@@ -48,10 +65,17 @@ def modifyStaff(request):
         employee.save()
     return redirect('Revs-Administrator-Screen')
 
-'''
-This function will give us the ability to delete staff
-'''
 def deleteStaff(request):
+    """
+    Deletes a staff member from the database using the employee ID provided through a POST request.
+    Also, this sets the employee_id in related orders to 0 so the reports aren't affected.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing the employee ID to delete.
+
+    Returns:
+        HttpResponse: Redirects to the administrator screen with a success message after deleting the employee.
+    """
     if request.method == 'POST':
         employee_id = request.POST.get('employee_id')
         if employee_id:
@@ -63,10 +87,18 @@ def deleteStaff(request):
 
         return redirect('Revs-Administrator-Screen')
 
-'''
-This function will give us the ability to add new staff
-'''
 def addStaff(request):
+    """
+    Adds a new staff member to the database using data from a POST request.
+    Validates that the employee ID and email are unique before creation. If either is already in use, it returns an error message.
+    Upon successful creation, the new staff member is saved in the database.
+
+    Args:
+        request (HttpRequest): The HTTP request object containing new staff member details.
+
+    Returns:
+        HttpResponse: Redirects to the administrator screen with either a success or error message.
+    """
     if request.method == 'POST':
         employee_id = request.POST.get('new_id')
         name = request.POST.get('new_name')
