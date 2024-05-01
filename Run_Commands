@@ -5,3 +5,7 @@ Website: https://revs-8f3def7ff00e.herokuapp.com/
 Get database models: python manage.py inspectdb > models.py
 
 pytest
+
+For Documentation Go to: http://127.0.0.1:8000/admin/
+User: admin
+password: revs
