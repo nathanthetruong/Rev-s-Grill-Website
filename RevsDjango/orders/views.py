@@ -18,14 +18,14 @@ import logging
 # Set up Google Cloud credentials
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "gcp_service_account.json"
 
-"""
-    Converts text to speech using Google Cloud Text-to-Speech API.
-    Args:
-        request: Django HttpRequest object containing 'text' parameter.
-    Returns:
-        HttpResponse: MP3 audio content of the synthesized speech.
-"""
 def textToSpeech(request):
+    """
+        Converts text to speech using Google Cloud Text-to-Speech API.
+        Args:
+            request: Django HttpRequest object containing 'text' parameter.
+        Returns:
+            HttpResponse: MP3 audio content of the synthesized speech.
+    """
     # Allows us to convert HTML text in the frontend to speech
     client = texttospeech.TextToSpeechClient()
     text = request.GET.get('text', 'Default text')
@@ -49,25 +49,24 @@ def textToSpeech(request):
     # Return binary for html to process
     return HttpResponse(response.audio_content, content_type='audio/mp3')
 
-"""
-    Renders the help page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered help page.
-"""
 def help(request):
+    """
+        Renders the help page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered help page.
+    """
     return render(request, 'login/help.html')
 
-
-"""
-    Renders the orders page with categorized menu items.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered orders page.
-"""
 def orders(request):
+    """
+        Renders the orders page with categorized menu items.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered orders page.
+    """
     with connection.cursor() as cursor:
         if 'cart' in request.session:
             del request.session['cart']
@@ -111,15 +110,14 @@ def orders(request):
 
         return render(request, 'orders/orders.html', context)
 
-
-"""
-    Adds an item to the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart information.
-"""
 def addItem(request):
+    """
+        Adds an item to the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart information.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -149,15 +147,14 @@ def addItem(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-
-"""
-    Removes an item from the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart information.
-"""
 def removeItem(request):
+    """
+        Removes an item from the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart information.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -179,15 +176,14 @@ def removeItem(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-
-"""
-    Removes all instances of a specific item from the cart.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing updated cart information.
-"""
 def removeAllIems(request):
+    """
+        Removes all instances of a specific item from the cart.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing updated cart information.
+    """
     if request.method == 'POST':
         price = float(request.POST.get('price'))
         buttonId = request.POST.get('id')
@@ -211,25 +207,25 @@ def removeAllIems(request):
     
     return JsonResponse({'error': 'failed'}, status=400)
 
-"""
-    Redirects to the transaction view.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponseRedirect: Redirects to the transaction view.
-"""
 def checkout(request):
+    """
+        Redirects to the transaction view.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponseRedirect: Redirects to the transaction view.
+    """
     if request.method == 'POST':
         return redirect('transaction') 
 
-"""
-    Handles the transaction process.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered transaction page.
-"""
 def transactionView(request):
+    """
+        Handles the transaction process.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered transaction page.
+    """
     cart = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     totalPrice = cart['totalPrice']
 
@@ -270,25 +266,24 @@ def transactionView(request):
 
     return render(request, 'orders/transaction.html', context)
 
-"""
-    Renders the orders page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered orders page.
-"""
 def order_return(request):
+    """
+        Renders the orders page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered orders page.
+    """
     return render(request, 'orders/orders.html')
 
-
-"""
-    Retrieves cart items from the session.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        JsonResponse: JSON response containing cart items.
-"""
 def getCartItems(request):
+    """
+        Retrieves cart items from the session.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            JsonResponse: JSON response containing cart items.
+    """
     # Retrieve cart items from the session
     cartItems = request.session.get('cart', {'totalPrice': 0.0, 'menuItems': {}})
     context = {'cartItems': cartItems['menuItems']}
@@ -296,24 +291,22 @@ def getCartItems(request):
     # Return the cart items as JSON response
     return JsonResponse(context, safe=False)
 
-"""
-    Renders the login page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered login page.
-"""
 def loginView(request):
-    # Your login logic here
+    """
+        Renders the login page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered login page.
+    """
     return render(request, 'login/login.html')
 
-
-"""
-    Gets a new order ID.
-    Returns:
-        int: New order ID.
-"""
 def getNewOrderID():
+    """
+        Gets a new order ID.
+        Returns:
+            int: New order ID.
+    """
     # Get a new valid ID for the order
     with connection.cursor() as cursor:
         cursor.execute("SELECT MAX(id) FROM orders")
@@ -321,31 +314,31 @@ def getNewOrderID():
     
     return orderID
 
-"""
-    Updates the orders table.
-    Args:
-        customerId (int): ID of the customer.
-        employeeId (int): ID of the employee.
-        totalPrice (float): Total price of the order.
-        orderTime (datetime): Time of the order.
-        orderId (int): ID of the order.
-"""
 def updateOrders(customerId, employeeId, totalPrice, orderTime, orderId):
+    """
+        Updates the orders table.
+        Args:
+            customerId (int): ID of the customer.
+            employeeId (int): ID of the employee.
+            totalPrice (float): Total price of the order.
+            orderTime (datetime): Time of the order.
+            orderId (int): ID of the order.
+    """
     # Inputs the order information into the orders table
     with connection.cursor() as cursor:
         sqlCommand = ("INSERT INTO orders (id, customer_id, employee_id, total_price, order_time, status) " +
                     "VALUES (%s, %s, %s, %s, %s, %s)")
         cursor.execute(sqlCommand, [orderId, customerId, employeeId, totalPrice, orderTime, "In Progress"])
 
-"""
-    Gets a list of all inventory items needed to be updated.
-    Args:
-        orderId (int): ID of the order.
-        currentId (int): ID of the current item.
-    Returns:
-        list: List of ingredient IDs.
-"""
 def getUsedInventoryItems(orderId, currentId):
+    """
+        Gets a list of all inventory items needed to be updated.
+        Args:
+            orderId (int): ID of the order.
+            currentId (int): ID of the current item.
+        Returns:
+            list: List of ingredient IDs.
+    """
     # Handles insertion into Order Breakout
     with connection.cursor() as cursor:
         sqlCommand = "INSERT INTO order_breakout (order_id, food_items) VALUES (%s, %s)"
@@ -364,27 +357,27 @@ def getUsedInventoryItems(orderId, currentId):
 
     return ingredientIds
 
-"""
-    Updates the inventory for all ingredients.
-    Args:
-        ingredientIds (list): List of ingredient IDs.
-"""
 def updateInventory(ingredientIds):
+    """
+        Updates the inventory for all ingredients.
+        Args:
+            ingredientIds (list): List of ingredient IDs.
+    """
     # Updates all the ingredient's quantity in the inventory table
     for currentIngredientID in ingredientIds:
         with connection.cursor() as cursor:
             sqlCommand = "UPDATE inventory SET quantity_remaining = quantity_remaining - 1 WHERE id = %s"
             cursor.execute(sqlCommand, [currentIngredientID])
 
-"""
-    Gets a specific menu item.
-    Args:
-        request: Django HttpRequest object.
-        menuItemId (str): ID of the menu item.
-    Returns:
-        dict: Dictionary containing menu item information.
-"""
 def getMenuItem(request, menuItemId):
+    """
+        Gets a specific menu item.
+        Args:
+            request: Django HttpRequest object.
+            menuItemId (str): ID of the menu item.
+        Returns:
+            dict: Dictionary containing menu item information.
+    """
     menuItems = request.session.get("menuItems")
     for menuItem in menuItems:
         if menuItem['id'] == int(menuItemId):

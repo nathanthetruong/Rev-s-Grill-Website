@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>login package &#8212; Revs 1.0 documentation</title>
+    <title>login package &#8212; RevsDocumentation 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/documentation_options.js?v=8d563738"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -2226,6 +2226,7 @@ object the first time, the query is executed.</p>
 <dt class="sig sig-object py" id="login.views.CustomSignupView">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">CustomSignupView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#CustomSignupView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.CustomSignupView" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SignupView</span></code></p>
+<p>Custom Signup view for handling social signups.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="login.views.CustomSignupView.form_valid">
 <span class="sig-name descname"><span class="pre">form_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">form</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#CustomSignupView.form_valid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.CustomSignupView.form_valid" title="Link to this definition">¶</a></dt>
@@ -2237,47 +2238,142 @@ object the first time, the query is executed.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.about">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">about</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#about"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.about" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the about page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered about page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.adminAccess">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">adminAccess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#adminAccess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.adminAccess" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Redirects the user to the admin page if authenticated and an admin.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponseRedirect: Redirects to the admin page if authenticated and an admin, otherwise redirects to ‘admin-noaccess’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.employee">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">employee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#employee"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.employee" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the employee page if the user is authenticated and an employee.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered employee page if authenticated and employee, otherwise redirects to ‘employee-noaccess’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.employeeRedirect">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">employeeRedirect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#employeeRedirect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.employeeRedirect" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Redirects the user to the appropriate employee page based on authentication and role.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponseRedirect: Redirects to the appropriate employee page.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="login.views.help">
+<span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.help" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the help page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered help page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.login">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#login"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.login" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the login page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered login page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.managerAccess">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">managerAccess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#managerAccess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.managerAccess" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Redirects the user to the manager page if authenticated and a manager.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponseRedirect: Redirects to the manager page if authenticated and a manager, otherwise redirects to ‘manager-noaccess’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.noaccess">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">noaccess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#noaccess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.noaccess" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the ‘noaccess’ page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered ‘noaccess’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.noaccessAdmin">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">noaccessAdmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#noaccessAdmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.noaccessAdmin" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the ‘noaccessadministrator’ page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered ‘noaccessadministrator’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="login.views.noaccessManager">
 <span class="sig-prename descclassname"><span class="pre">login.views.</span></span><span class="sig-name descname"><span class="pre">noaccessManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/login/views.html#noaccessManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#login.views.noaccessManager" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the ‘noaccessmanager’ page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered ‘noaccessmanager’ page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 <section id="module-login">
@@ -2292,7 +2388,7 @@ object the first time, the query is executed.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Revs</a></h1>
+<h1 class="logo"><a href="index.html">RevsDocumentation</a></h1>
 
 
 

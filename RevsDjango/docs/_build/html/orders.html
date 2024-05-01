@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>orders package &#8212; Revs 1.0 documentation</title>
+    <title>orders package &#8212; RevsDocumentation 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="_static/documentation_options.js?v=8d563738"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -153,77 +153,220 @@ object the first time, the query is executed.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.addItem">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">addItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#addItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.addItem" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Adds an item to the cart.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>JsonResponse: JSON response containing updated cart information.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.checkout">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">checkout</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#checkout"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.checkout" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Redirects to the transaction view.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponseRedirect: Redirects to the transaction view.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.getCartItems">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">getCartItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#getCartItems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.getCartItems" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves cart items from the session.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>JsonResponse: JSON response containing cart items.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.getMenuItem">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">getMenuItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">menuItemId</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#getMenuItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.getMenuItem" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets a specific menu item.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.
+menuItemId (str): ID of the menu item.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>dict: Dictionary containing menu item information.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.getNewOrderID">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">getNewOrderID</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#getNewOrderID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.getNewOrderID" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets a new order ID.
+Returns:</p>
+<blockquote>
+<div><p>int: New order ID.</p>
+</div></blockquote>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.getUsedInventoryItems">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">getUsedInventoryItems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orderId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currentId</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#getUsedInventoryItems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.getUsedInventoryItems" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Gets a list of all inventory items needed to be updated.
+Args:</p>
+<blockquote>
+<div><p>orderId (int): ID of the order.
+currentId (int): ID of the current item.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list: List of ingredient IDs.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="orders.views.help">
+<span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">help</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#help"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.help" title="Link to this definition">¶</a></dt>
+<dd><p>Renders the help page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered help page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.loginView">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">loginView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#loginView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.loginView" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the login page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered login page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.order_return">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">order_return</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#order_return"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.order_return" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the orders page.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered orders page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.orders">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">orders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#orders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.orders" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Renders the orders page with categorized menu items.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered orders page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.removeAllIems">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">removeAllIems</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#removeAllIems"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.removeAllIems" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removes all instances of a specific item from the cart.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>JsonResponse: JSON response containing updated cart information.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.removeItem">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">removeItem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#removeItem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.removeItem" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Removes an item from the cart.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>JsonResponse: JSON response containing updated cart information.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.textToSpeech">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">textToSpeech</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#textToSpeech"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.textToSpeech" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Converts text to speech using Google Cloud Text-to-Speech API.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object containing ‘text’ parameter.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: MP3 audio content of the synthesized speech.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.transactionView">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">transactionView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#transactionView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.transactionView" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Handles the transaction process.
+Args:</p>
+<blockquote>
+<div><p>request: Django HttpRequest object.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>HttpResponse: Rendered transaction page.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.updateInventory">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">updateInventory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ingredientIds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#updateInventory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.updateInventory" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates the inventory for all ingredients.
+Args:</p>
+<blockquote>
+<div><p>ingredientIds (list): List of ingredient IDs.</p>
+</div></blockquote>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="orders.views.updateOrders">
 <span class="sig-prename descclassname"><span class="pre">orders.views.</span></span><span class="sig-name descname"><span class="pre">updateOrders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customerId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">employeeId</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">totalPrice</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orderTime</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orderId</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/orders/views.html#updateOrders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#orders.views.updateOrders" title="Link to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Updates the orders table.
+Args:</p>
+<blockquote>
+<div><p>customerId (int): ID of the customer.
+employeeId (int): ID of the employee.
+totalPrice (float): Total price of the order.
+orderTime (datetime): Time of the order.
+orderId (int): ID of the order.</p>
+</div></blockquote>
+</dd></dl>
 
 </section>
 <section id="module-orders">
@@ -238,7 +381,7 @@ object the first time, the query is executed.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Revs</a></h1>
+<h1 class="logo"><a href="index.html">RevsDocumentation</a></h1>
 
 
 

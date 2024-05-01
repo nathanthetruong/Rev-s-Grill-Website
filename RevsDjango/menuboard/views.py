@@ -8,15 +8,14 @@ from django.contrib import messages
 from collections import defaultdict
 import time
 
-
-"""
-    Renders the menu board page with categorized menu items.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered menu board page.
-"""
 def menu_board(request):
+    """
+        Renders the menu board page with categorized menu items.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered menu board page.
+    """
     with connection.cursor() as cursor:
         if 'cart' in request.session:
             del request.session['cart']
@@ -58,13 +57,12 @@ def menu_board(request):
 
         return render(request, 'menuboard/menuboard.html', context)
 
-
-"""
-    Renders the help page.
-    Args:
-        request: Django HttpRequest object.
-    Returns:
-        HttpResponse: Rendered help page.
-"""
 def help(request):
+    """
+        Renders the help page.
+        Args:
+            request: Django HttpRequest object.
+        Returns:
+            HttpResponse: Rendered help page.
+    """
     return render(request, 'login/help.html')
