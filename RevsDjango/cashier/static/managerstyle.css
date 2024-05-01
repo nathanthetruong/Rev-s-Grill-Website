@@ -136,3 +136,22 @@ p {
     background-color: #ddd;
     color: black;
 } */
+
+#login {
+    margin-left: 10px;
+    position: relative;
+    transition: color 0.3s ease;
+    color: white;
+    text-decoration: none;
+}
+
+#login:hover::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px; 
+    width: 100%;
+    height: 2px; 
+    background-image: linear-gradient(to right, rgb(233, 233, 233), rgb(10, 9, 9));
+    transition: width 0.3s ease;
+}
