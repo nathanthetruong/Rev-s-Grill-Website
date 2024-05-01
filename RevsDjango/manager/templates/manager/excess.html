@@ -17,6 +17,18 @@
     </style>
 </head>
 <body>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if forloop.last %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">X</button>
+                    <strong>{{message}}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <header>
         <!-- Navigation bar -->
         <div class="navbar" id="google_translate_element">
@@ -25,7 +37,7 @@
                     <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
                 </a>
             </div>
-            <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Employee-Screen' %}">Exit</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-inventory-Screen' %}">Inventory Management</a>
             <a href="{% url 'Revs-restocking-Screen' %}">Restock Report</a>

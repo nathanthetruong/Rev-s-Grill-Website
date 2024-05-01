@@ -25,7 +25,7 @@
                 <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
                 </a>
             </div>
-            <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Employee-Screen' %}">Exit</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-inventory-Screen' %}">Inventory Management</a>
             <a href="{% url 'Revs-restocking-Screen' %}">Restock Report</a>
@@ -45,7 +45,7 @@
     </h1>
 
     <!-- Display the Date Forms -->
-    <form method="post" action="{% url 'Revs-ordermanagement' %}">
+    <form method="post" action="{% url 'Revs-ordermanagement-screen' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="startDate">Start Date:</label>
@@ -59,7 +59,7 @@
     </form>
 
     <!-- Display Specific order form -->
-    <form method="post" action="{% url 'Revs-ordermanagement' %}">
+    <form method="post" action="{% url 'Revs-ordermanagement-screen' %}">
         {% csrf_token %}
         <div class="form-group">
             <label for="orderID">Specific Order ID:</label>
@@ -120,7 +120,7 @@
                 </td>            
                 <td>
                     <!-- Set Complete -->
-                    <form action="{% url 'Revs-ordermanagement' %}" method="post">
+                    <form action="{% url 'Revs-ordermanagement-screen' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="complete_order" value="{{ order.id }}">
                         <button type="submit" class="btn btn-success">Complete</button>
@@ -128,7 +128,7 @@
                 </td>
                 <td>
                     <!-- Set Cancelled -->
-                    <form action="{% url 'Revs-ordermanagement' %}" method="post">
+                    <form action="{% url 'Revs-ordermanagement-screen' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" name="cancel_order" value="{{ order.id }}">
                         <button type="submit" class="btn btn-danger">Cancel</button>

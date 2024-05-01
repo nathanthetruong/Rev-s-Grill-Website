@@ -26,7 +26,7 @@
                 <img src="{% static 'rev.png' %}" alt="Rev's Grill Logo">
                 </a>
             </div>
-            <a href="{% url 'Revs-Employee-Screen' %}">Logout</a>
+            <a href="{% url 'Revs-Employee-Screen' %}">Exit</a>
             <a href="{% url 'Revs-Manager-Screen' %}">Manager Page</a>
             <a href="{% url 'Revs-inventory-Screen' %}">Inventory Management</a>
             <a href="{% url 'Revs-restocking-Screen' %}">Restock Report</a>
@@ -38,6 +38,17 @@
             <a href="{% url 'Revs-ordermanagement-screen' %}"> Order Management</a>
         </div>
     </header>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if forloop.last %}
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">X</button>
+                    <strong>{{message}}</strong>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
     <div class="container mt-5">
         <h1 class="text-center mb-4">

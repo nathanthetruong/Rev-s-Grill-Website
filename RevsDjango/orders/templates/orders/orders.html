@@ -34,9 +34,9 @@
                 <div class="logo"><img src="{% static 'rev.png' %}" alt="logo"></div>
             </a>
             <!-- <a id="login" href="{% url 'Revs-Login-Screen' %}" style="text-decoration: none;">Login</a> -->
-            <a id="login" href="{% provider_login_url 'google' %}" style="text-decoration: none;">Login</a>
+            <a id="googleLogin" href="{% provider_login_url 'google' %}" style="text-decoration: none; ">Login</a>
             <a id="login" href="{% url 'Revs-Help-Screen' %}">Help</a>
-            <div class="cart-icon-container">
+            <div class="cart-icon-container">            
                 <img src="{% static 'R.png' %}" alt="cart" class="icon" id="sidebar"> 
                 <span id="cart-count" class="cart-count">0</span> <!-- This will show the count -->
             </div>
@@ -52,8 +52,9 @@
             </div>
             <!-- Resize text -->
             <div class="tts-checkbox">
-                <label for="textResize"> Resize text: </label>
+                <label for="textResize"> Resize text:
                 <input type="range" id="text-size-slider" min="12" max="24" value="16" step="1">
+                </label>
             </div>            
         </div>
     </header>

@@ -190,7 +190,8 @@ def removeAllIems(request):
 """
 def checkout(request):
     if request.method == 'POST':
-        return redirect('transaction') 
+        return redirect('cashierTransaction') 
+      
 """
     Handles the transaction process.
     Args:
