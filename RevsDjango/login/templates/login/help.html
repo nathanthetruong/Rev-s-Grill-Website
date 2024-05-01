@@ -1,0 +1,62 @@
+{% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="{% static 'help.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="{% url 'Revs-Login-Screen' %}" class="navbar-brand-text">REVs</a>
+            </div>
+            <div class="nav-right">
+                <a class="nav-item" href="{% url 'Revs-Order-Screen' %}">Order Now</a>
+                <a class="nav-item" href="{% url 'Revs-Menuboard-Screen' %}">Menu Board</a>
+                <a class="nav-item" href="{% url 'Revs-About-Screen' %}">About</a>
+            </div>
+        </nav>
+    </header>
+    <h1 class="help-heading">Help Center</h1>
+    <main class="about-page-container">
+        <div class="row">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Frequently Asked Questions</h5>
+                    <div class="faq-item">
+                        <h3>How do I make a reservation?</h3>
+                        <br>
+                        <p>To make a reservation, you can call us at 123-456-7890 or use our online reservation system on the <a href="reservation.html">Reservations</a> page.</p>
+                        <br>
+                        <br>
+                    </div>
+                    <div class="faq-item">
+                        <h3>What are your opening hours?</h3>
+                        <br>
+                        <p>We are open from 11am to 10pm every day of the week. Please check our <a href="{% url 'Revs-Login-Screen' %}">Hours</a> page for more details.</p>
+                        <br>
+                    </div>
+                    <!-- Add more FAQ items as needed -->
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Contact Us</h5>
+                    <p>If you have any other questions or need further assistance, please feel free to contact us:</p><br>
+                    <div style="text-align: center;">
+                        Email: info@restaurant.com <br>
+                        Phone: 123-456-7890
+                    </div>
+                                
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p style="text-align: center;">&copy; 2024 Revs American Grill. All rights reserved.</p>
+    </footer>
+</body>
+</html>

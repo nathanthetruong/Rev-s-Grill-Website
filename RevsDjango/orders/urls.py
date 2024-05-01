@@ -17,4 +17,5 @@ urlpatterns = [
     path('removeItem/', views.removeItem, name='removeItem'),
     path('removeAllIems/', views.removeAllIems, name='removeAllItems'),
     path('textToSpeech/', views.textToSpeech, name='textToSpeech'),
+    path('help/', views.help, name='Revs-Help-Screen'),
 ]

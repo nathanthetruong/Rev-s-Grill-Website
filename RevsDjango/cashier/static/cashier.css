@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: #5e1f1f;
+    background-color: #4a1e1e;
     color: white;
     padding: 30px;
 }
@@ -15,7 +15,7 @@ header {
     top: 0;
     width: 97%;
     z-index: 1000;
-    background-color: #5e1f1f;
+    background-color: #4a1e1e;
     color: white;
     padding: 30px;
 }
@@ -345,17 +345,16 @@ section {
 }
 
 .box {
-    border: 2px solid #5e1f1f; /* Softer shade of the header color for a cohesive look */
-    /* background-color: #5e1f1f */
+    border: 2px solid #4a1e1e; 
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #ffffff; /* Keeps the background light for contrast */
-    flex: 0 1 calc(22.333% - 20px); /* Adjusts width minus the gap */
+    background-color: #ffffff; 
+    flex: 0 1 calc(22.333% - 20px); 
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Ensures content alignment to the left */
+    align-items: flex-start; 
     height: auto;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); 
 }
 
 .details-section {

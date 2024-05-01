@@ -1,12 +1,54 @@
+{% load static %} 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About</title>
+    <link rel="stylesheet" href="{% static 'about.css' %}">
 </head>
 <body>
-    <h1> About Rev's Grill </h1>
-    <p> Rev's American Grill - MSC is a Restaurant located in College Station in the Texas A&M University Campus </p>
+    <header>
+        <nav class="navbar">
+                <div class="nav-left">
+                    <a href="{% url 'Revs-Login-Screen' %}" class="navbar-brand-text">REVs</a>
+                </div>
+            <div class="nav-right">
+                <a class="nav-item" href="{% url 'Revs-Order-Screen' %}">Order Now</a>
+                <a class="nav-item" href="{% url 'Revs-Menuboard-Screen' %}">Menu Board</a>
+                <a class="nav-item" href="#">Help</a>
+            </div>
+            
+        </nav>
+    </header>
+    <h1 class="about-heading">About Revs</h1>
+    <main class="about-page-container"> 
+        
+        <div class="row"> 
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Discover Culinary Excellence</h5>
+                    <p class="card-text">REV’s American Grill is more than just a restaurant; it's a culinary destination 
+                        that celebrates the essence of American cuisine with a modern twist. Nestled in the heart of Aggie community, REV’s American Grill 
+                        offers an inviting ambiance where guests can indulge in an array of delectable dishes crafted with locally sourced ingredients 
+                        and culinary expertise. From sizzling burgers and hearty sandwiches to mouthwatering sides and refreshing shakes, every item on 
+                        the menu is a testament to our commitment to quality and flavor.</p>
+                </div>
+            </div>
+        
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">A Place for Memorable Experiences</h5>
+                    <p class="card-text">Beyond the food, REV’s American Grill provides a welcoming atmosphere that 
+                        fosters connections and creates memorable experiences. Whether you're gathering with friends for a casual meal, celebrating a 
+                        special occasion with family, or simply unwinding after a long day, our restaurant offers a cozy yet vibrant setting where pur Aggies and guests 
+                        can relax and enjoy the company of loved ones. With exceptional service and a dedication to hospitality, we strive to ensure that 
+                        every visit to REV’s American Grill is an unforgettable culinary journey filled with warmth, flavor, and camaraderie.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+      
+    
 </body>
 </html>

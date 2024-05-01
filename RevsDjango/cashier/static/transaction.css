@@ -6,7 +6,7 @@ body {
 
 /* Header styling starts here */
 header {
-    background-color: #5e1f1f;
+    background-color: #4a1e1e;
     padding: 10px 0;
     display: flex;
     justify-content: space-evenly;
@@ -15,21 +15,24 @@ header {
     color: white;
     font-size: 20px;
 }
-#return {
-    margin-left: 20px;
-    color: white;
-    text-decoration: none; 
-}
+
 
 #logo {
     width: 100px;
     height: auto;
 }
-
 #return:hover,
 #help:hover {
     position: relative;
     color: rgb(203, 203, 191);
+}
+
+#help {
+    margin-left: 10px;
+    position: relative;
+    transition: color 0.3s ease;
+    color: white;
+    text-decoration: none;
 }
 
 #return:hover::after,
@@ -37,10 +40,10 @@ header {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -2px;
+    bottom: -2px; 
     width: 100%;
-    height: 2px;
-    background-image: linear-gradient(to right, rgb(233, 233, 233), rgb(223, 214, 214));
+    height: 2px; 
+    background-image: linear-gradient(to right, rgb(233, 233, 233), rgb(10, 9, 9));
     transition: width 0.3s ease;
 }
 
@@ -100,7 +103,7 @@ header {
 }
 
 #btn:hover {
-    background-color: #5b2a2a;
+    background-color: #4a1e1e;
 }
 
 
@@ -209,7 +212,7 @@ hr {
 
 #hr-footer {
     border: none;
-    border-top: 3px solid #9d1616; 
+    border-top: 3px solid #4a1e1e; 
     margin: 10px 0; 
     width: 100%; 
     

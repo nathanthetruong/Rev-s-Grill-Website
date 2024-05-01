@@ -17,4 +17,5 @@ urlpatterns = [
     path('noaccessmanager/', views.noaccessManager, name='manager-noaccess'),
     path('adminaccess/', views.adminAccess, name='admin-access'),
     path('noaccessadmin/', views.noaccessAdmin, name='admin-noaccess'),
+    path('help/', views.help, name='Revs-Help-Screen'),
 ]

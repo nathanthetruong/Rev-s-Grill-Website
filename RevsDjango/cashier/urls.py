@@ -16,4 +16,5 @@ urlpatterns = [
     path('ordermanagement/', views.orderManagement, name='Revs-ordermanagement'),
     path('removeItem/', views.removeItem, name='cashierRemoveItem'),
     path('removeAllIems/', views.removeAllIems, name='cashierRemoveAllItems'),
+    path('help/', views.help, name='Revs-Help-Screen'),
 ]
