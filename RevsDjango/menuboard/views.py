@@ -9,9 +9,13 @@ from collections import defaultdict
 import time
 
 
-# Initializes all the menu items buttons
-
-
+"""
+    Renders the menu board page with categorized menu items.
+    Args:
+        request: Django HttpRequest object.
+    Returns:
+        HttpResponse: Rendered menu board page.
+"""
 def menu_board(request):
     with connection.cursor() as cursor:
         if 'cart' in request.session:
@@ -55,10 +59,12 @@ def menu_board(request):
         return render(request, 'menuboard/menuboard.html', context)
 
 
-# def order_view(request):
-#     # Your logic for the help page
-#     print("requesting orders page")
-#     return render(request, 'orders/orders.html')
-
+"""
+    Renders the help page.
+    Args:
+        request: Django HttpRequest object.
+    Returns:
+        HttpResponse: Rendered help page.
+"""
 def help(request):
     return render(request, 'login/help.html')
