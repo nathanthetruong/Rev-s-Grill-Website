@@ -13,6 +13,7 @@ from django.http import JsonResponse
 
 from google.cloud import texttospeech
 import os
+import requests
 import logging
 
 # Set up Google Cloud credentials
@@ -71,6 +72,8 @@ def orders(request):
         if 'cart' in request.session:
             del request.session['cart']
 
+        recommendedWeatherItem, weatherMessage = getWeatherItem()
+
         # Gets a list of all the menu items and sorts in alphabetical order
         cursor.execute("SELECT description, price, category, id FROM menu_items")
         data = cursor.fetchall()
@@ -106,7 +109,9 @@ def orders(request):
             else:
                 categorizedButtons['Sides'].append(button)
 
-        context = {'categorizedButtons': categorizedButtons}
+        context = {'categorizedButtons': categorizedButtons,
+                   'recommendedItems': categorizedButtons.get(recommendedWeatherItem, []),
+                   'weatherMessage': weatherMessage}
 
         return render(request, 'orders/orders.html', context)
 
@@ -382,3 +387,30 @@ def getMenuItem(request, menuItemId):
     for menuItem in menuItems:
         if menuItem['id'] == int(menuItemId):
             return menuItem
+
+def getWeatherItem():
+    """
+    Recommends a menu item based on the current weather.
+    Args:
+        None
+    Returns:
+        str: Comment on the weather with the temperature
+        str: Category to use depending on the weather
+    """
+
+    api_key = open('weatherApiKey', 'r').read().strip()
+    city = 'College Station'
+    url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=imperial"
+
+    weatherData = requests.get(url).json()
+    temperature = weatherData['main']['temp']
+    condition = weatherData['weather'][0]['main']
+
+    if condition in ['Rain', 'Drizzle', 'Thunderstorm']:
+        return 'Beverages', f"Since it's rainy, why not get a drink? Temperature: {temperature}°F"
+    elif temperature <= 50:
+        return 'Burgers', f"Since it's cold, why not get a fresh and hot burger? Temperature: {temperature}°F"
+    elif temperature >= 80:
+        return 'Shakes', f"Since it's hot, why not get a nice cold shake? Temperature: {temperature}°F"
+    else:
+        return 'Sandwiches', f"Since the temperature is perfect, why not get a nice sandwich? Temperature: {temperature}°F"

@@ -72,6 +72,7 @@
             <span class="item readable" onclick="scrollToSection('shakes_section')">Shakes</span>
             <span class="item readable" onclick="scrollToSection('beverages_section')">Beverages</span>
             <span class="item readable" onclick="scrollToSection('sides_section')">Sides</span>
+            <span class="item readable" onclick="scrollToSection('weather_recommendations')">Weather Recommendation</span>
         </div>
         <div class="scroll-arrow"></div>
     </section>
@@ -222,8 +223,26 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
-    
+
+        <div class="section" id="weather_recommendations">
+            <h2>{{ weatherMessage }}</h2>
+            <div class="box-container">
+                {% for item in recommendedItems %}
+                <div class="box">
+                    <div class="image-section">
+                        <img src="{% static item.description %}.jpeg" alt="{{ item.description }}" class="icon">
+                    </div>
+                    <div class="details-section">
+                        <div class="price readable text-resizable">${{ item.price|floatformat:"2" }}</div>
+                        <button class="menuButton readable text-resizable" aria-label="Click to add a {{ item.description }} to the order"
+                                data-price="{{ item.price }}" data-id="{{ item.id }}"
+                                id="{{ item.description }}_button">{{ item.description }}</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
     <!-- Foooter Section -->
     <footer>
         <div class="footer-content">
